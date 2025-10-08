@@ -1,1 +1,104 @@
 /* You can add global styles to this file, and also import other style files */
+@import '@angular/material/prebuilt-themes/azure-blue.css';
+
+html, body { 
+  height: 100%; 
+  margin: 0; 
+  font-family: Roboto, "Helvetica Neue", sans-serif; 
+}
+
+/* Light theme */
+.light-theme {
+  --mat-app-background-color: #fafafa;
+  --mat-app-surface-color: #ffffff;
+  --mat-app-on-surface: #212121;
+  --mat-app-on-surface-variant: #757575;
+  --mat-app-primary: #1976d2;
+  --mat-app-on-primary: #ffffff;
+}
+
+/* Dark theme */
+.dark-theme {
+  --mat-app-background-color: #121212;
+  --mat-app-surface-color: #1e1e1e;
+  --mat-app-on-surface: #ffffff;
+  --mat-app-on-surface-variant: #b3b3b3;
+  --mat-app-primary: #90caf9;
+  --mat-app-on-primary: #000000;
+  
+  background-color: var(--mat-app-background-color);
+  color: var(--mat-app-on-surface);
+}
+
+/* Apply dark theme to Material components */
+.dark-theme .mat-toolbar {
+  background-color: #1e1e1e !important;
+  color: #ffffff !important;
+}
+
+.dark-theme .mat-card {
+  background-color: #1e1e1e !important;
+  color: #ffffff !important;
+}
+
+.dark-theme .mat-menu-panel {
+  background-color: #2d2d2d !important;
+}
+
+.dark-theme .mat-menu-item {
+  color: #ffffff !important;
+}
+
+.dark-theme .mat-menu-item:hover {
+  background-color: #404040 !important;
+}
+
+.dark-theme .mat-chip {
+  background-color: #2d2d2d !important;
+  color: #ffffff !important;
+}
+
+/* System theme detection */
+@media (prefers-color-scheme: dark) {
+  body:not(.light-theme):not(.dark-theme) {
+    --mat-app-background-color: #121212;
+    --mat-app-surface-color: #1e1e1e;
+    --mat-app-on-surface: #ffffff;
+    --mat-app-on-surface-variant: #b3b3b3;
+    --mat-app-primary: #90caf9;
+    --mat-app-on-primary: #000000;
+    
+    background-color: var(--mat-app-background-color);
+    color: var(--mat-app-on-surface);
+  }
+  
+  body:not(.light-theme):not(.dark-theme) .mat-toolbar {
+    background-color: #1e1e1e !important;
+    color: #ffffff !important;
+  }
+  
+  body:not(.light-theme):not(.dark-theme) .mat-card {
+    background-color: #1e1e1e !important;
+    color: #ffffff !important;
+  }
+  
+  body:not(.light-theme):not(.dark-theme) .mat-menu-panel {
+    background-color: #2d2d2d !important;
+  }
+  
+  body:not(.light-theme):not(.dark-theme) .mat-menu-item {
+    color: #ffffff !important;
+  }
+  
+  body:not(.light-theme):not(.dark-theme) .mat-menu-item:hover {
+    background-color: #404040 !important;
+  }
+  
+  body:not(.light-theme):not(.dark-theme) .mat-chip {
+    background-color: #2d2d2d !important;
+    color: #ffffff !important;
+  }
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
