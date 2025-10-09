@@ -1,13 +1,8 @@
 <mat-toolbar color="primary" class="app-toolbar">
   <span class="app-title">{{ title() }}</span>
-  
+
   <div class="toolbar-spacer"></div>
-  
-  <mat-chip class="online-chip">
-    <mat-icon>wifi</mat-icon>
-    {{ translate('online') }}
-  </mat-chip>
-  
+
   <!-- Language Menu -->
   <button mat-icon-button [matMenuTriggerFor]="languageMenu" class="toolbar-button">
     <mat-icon>language</mat-icon>
@@ -26,7 +21,7 @@
       Español
     </button>
   </mat-menu>
-  
+
   <!-- Theme Menu -->
   <button mat-icon-button [matMenuTriggerFor]="themeMenu" class="toolbar-button">
     <mat-icon>
@@ -51,7 +46,7 @@
       {{ translate('theme.system') }}
     </button>
   </mat-menu>
-  
+
   <button mat-raised-button color="accent" class="new-competition-btn">
     {{ translate('new.competition') }}
   </button>
@@ -60,7 +55,7 @@
 <main class="main-content">
   <div class="content-container">
     <h1 class="page-title">{{ translate('competitions.title') }}</h1>
-    
+
     <div class="features-grid">
       <mat-card class="feature-card">
         <mat-card-header>
@@ -73,7 +68,7 @@
           <p>{{ translate('create.competition.description') }}</p>
         </mat-card-content>
       </mat-card>
-      
+
       <mat-card class="feature-card">
         <mat-card-header>
           <div mat-card-avatar class="feature-avatar">
