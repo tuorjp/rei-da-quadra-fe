@@ -1,0 +1,79 @@
+<div class="ongoing-events-section">
+  <h2 class="section-title">{{ translate('events.ongoing') }}</h2>
+
+  <div class="events-grid" *ngIf="events.length > 0; else noEvents">
+    <mat-card
+      *ngFor="let event of events"
+      class="event-card"
+      (click)="onEventClick(event)">
+
+      <mat-card-header>
+        <div mat-card-avatar class="event-avatar">
+          <mat-icon *ngIf="event.isOrganizer" class="crown-icon">workspace_premium</mat-icon>
+          <mat-icon *ngIf="!event.isOrganizer">sports_soccer</mat-icon>
+        </div>
+
+        <mat-card-title class="event-title">
+          {{ event.name }}
+          <mat-icon *ngIf="event.isOrganizer" class="organizer-crown">workspace_premium</mat-icon>
+        </mat-card-title>
+
+        <mat-card-subtitle>
+          <div class="event-location">
+            <mat-icon class="location-icon">location_on</mat-icon>
+            {{ event.location }}
+          </div>
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <div class="event-details">
+          <div class="event-date">
+            <mat-icon>schedule</mat-icon>
+            {{ formatDate(event.date) }}
+          </div>
+
+          <div class="participants-info">
+            <mat-icon>group</mat-icon>
+            {{ event.participantCount }}/{{ event.maxParticipants }}
+          </div>
+        </div>
+
+        <div class="event-chips">
+          <mat-chip [color]="getStatusColor(event.status)" selected>
+            {{ event.status === 'ongoing' ? 'Em Andamento' :
+               event.status === 'upcoming' ? 'Próximo' : 'Finalizado' }}
+          </mat-chip>
+
+          <mat-chip *ngIf="event.isOrganizer" color="accent" selected>
+            <mat-icon class="chip-icon">workspace_premium</mat-icon>
+            {{ translate('events.organizer') }}
+          </mat-chip>
+
+          <mat-chip *ngIf="!event.isOrganizer" color="primary" selected>
+            <mat-icon class="chip-icon">person</mat-icon>
+            {{ translate('events.participant') }}
+          </mat-chip>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <button mat-button color="primary">
+          <mat-icon>visibility</mat-icon>
+          {{ translate('events.details')}}
+        </button>
+        <button mat-button *ngIf="event.isOrganizer" color="accent">
+          <mat-icon>settings</mat-icon>
+          {{ translate('events.manage')}}
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <ng-template #noEvents>
+    <div class="no-events">
+      <mat-icon class="no-events-icon">event_busy</mat-icon>
+      <p class="no-events-text">Nenhum evento em andamento no momento</p>
+    </div>
+  </ng-template>
+</div>

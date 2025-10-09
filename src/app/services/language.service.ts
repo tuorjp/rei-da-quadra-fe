@@ -15,44 +15,44 @@ export interface Translations {
 })
 export class LanguageService {
   private readonly LANGUAGE_KEY = 'rei-da-quadra-language';
-  
+
   currentLanguage = signal<Language>('pt');
-  
+
   private translations: Translations = {
     'app.title': {
       pt: 'Rei da Quadra',
       en: 'Court King',
       es: 'Rey de la Cancha'
     },
-    'competitions.title': {
-      pt: 'Competições de Futebol',
-      en: 'Football Competitions',
-      es: 'Competiciones de Fútbol'
+    'events.title': {
+      pt: 'Eventos de Futebol',
+      en: 'Football Events',
+      es: 'Eventos de Fútbol'
     },
-    'create.competition': {
-      pt: 'Criar Competição',
-      en: 'Create Competition',
-      es: 'Crear Competición'
+    'create.event': {
+      pt: 'Criar Evento',
+      en: 'Create Event',
+      es: 'Crear Evento'
     },
-    'create.competition.description': {
-      pt: 'Crie sua primeira competição de futebol para começar',
-      en: 'Create your first football competition to get started',
-      es: 'Crea tu primera competición de fútbol para comenzar'
+    'create.event.description': {
+      pt: 'Crie seu primeiro evento de futebol para começar',
+      en: 'Create your first football event to get started',
+      es: 'Crea tu primer evento de fútbol para comenzar'
     },
-    'player.rotation': {
-      pt: 'Rodízio de Jogadores',
-      en: 'Player Rotation',
-      es: 'Rotación de Jugadores'
+    'join.event': {
+      pt: 'Entrar em Evento',
+      en: 'Join Event',
+      es: 'Unirse a Evento'
     },
-    'player.rotation.description': {
-      pt: 'Gerencie times com rodízio automático de jogadores',
-      en: 'Manage teams with automatic player rotation',
-      es: 'Gestiona equipos con rotación automática de jugadores'
+    'join.event.description': {
+      pt: 'Participe de eventos criados por outros organizadores',
+      en: 'Join events created by other organizers',
+      es: 'Únete a eventos creados por otros organizadores'
     },
-    'new.competition': {
-      pt: 'Nova Competição',
-      en: 'New Competition',
-      es: 'Nueva Competición'
+    'new.event': {
+      pt: 'Novo Evento',
+      en: 'New Event',
+      es: 'Nuevo Evento'
     },
     'online': {
       pt: 'Online',
@@ -83,6 +83,46 @@ export class LanguageService {
       pt: 'Sistema',
       en: 'System',
       es: 'Sistema'
+    },
+    'events.ongoing': {
+      pt: 'Eventos em Andamento',
+      en: 'Ongoing Events',
+      es: 'Eventos en Curso'
+    },
+    'events.participant': {
+      pt: 'Participante',
+      en: 'Participant',
+      es: 'Participante'
+    },
+    'events.organizer': {
+      pt: 'Organizador',
+      en: 'Organizer',
+      es: 'Organizador'
+    },
+    'profile': {
+      pt: 'Perfil',
+      en: 'Profile',
+      es: 'Perfil'
+    },
+    'skill.points': {
+      pt: 'Pontos de Habilidade',
+      en: 'Skill Points',
+      es: 'Puntos de Habilidad'
+    },
+    'footer.rights': {
+      pt: 'Todos os direitos reservados.',
+      en: 'All rights reserved.',
+      es: 'Todos los derechos reservados.'
+    },
+    'events.details': {
+      pt: 'Detalhes',
+      en: 'Details',
+      es: 'Detalles'
+    },
+    'events.manage': {
+      pt: 'Gerenciar',
+      en: 'Manage',
+      es: 'Administrar'
     }
   };
 
