@@ -1,0 +1,31 @@
+<div class="content-container">
+  <h1 class="page-title">{{ translate('events.title') }}</h1>
+
+  <div class="features-grid">
+    <mat-card class="feature-card" (click)="onCreateEvent()">
+      <mat-card-header>
+        <div mat-card-avatar class="feature-avatar">
+          <mat-icon>emoji_events</mat-icon>
+        </div>
+        <mat-card-title>{{ translate('create.event') }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>{{ translate('create.event.description') }}</p>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="feature-card" (click)="onJoinEvent()">
+      <mat-card-header>
+        <div mat-card-avatar class="feature-avatar">
+          <mat-icon>group_add</mat-icon>
+        </div>
+        <mat-card-title>{{ translate('join.event') }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>{{ translate('join.event.description') }}</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <app-ongoing-events></app-ongoing-events>
+</div>

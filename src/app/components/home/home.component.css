@@ -1,0 +1,97 @@
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  padding: 32px 24px;
+  background: var(--mat-app-background-color);
+}
+
+.content-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-title {
+  font-size: 2.5rem;
+  font-weight: 300;
+  margin-bottom: 48px;
+  text-align: center;
+  color: var(--mat-app-on-surface);
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 32px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.feature-card {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.feature-avatar {
+  background-color: var(--mat-app-primary);
+  color: var(--mat-app-on-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.feature-avatar mat-icon {
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
+}
+
+mat-card-title {
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+mat-card-content p {
+  color: var(--mat-app-on-surface-variant);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Dark theme specific styles */
+:host-context(.dark-theme) .online-chip {
+  background-color: rgba(76, 175, 80, 0.2);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .features-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  
+  .page-title {
+    font-size: 2rem;
+    margin-bottom: 32px;
+  }
+  
+  .main-content {
+    padding: 24px 16px;
+  }
+  
+  .app-title {
+    font-size: 1.1rem;
+  }
+  
+  .new-competition-btn {
+    margin-left: 8px;
+  }
+}
