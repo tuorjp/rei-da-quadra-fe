@@ -22,6 +22,11 @@ html, body {
   --mat-app-on-surface-variant: #757575;
   --mat-app-primary: #1976d2;
   --mat-app-on-primary: #ffffff;
+  --background-color: #fafafa;
+  --card-background: #ffffff;
+  --text-color: #212121;
+  --border-color: #e0e0e0;
+  --input-background: #ffffff;
 }
 
 /* Dark theme */
@@ -48,6 +53,19 @@ html, body {
   color: #ffffff !important;
 }
 
+.dark-theme .mat-mdc-card {
+  background-color: #1e1e1e !important;
+  color: #ffffff !important;
+}
+
+.dark-theme .mat-mdc-card-title {
+  color: #ffffff !important;
+}
+
+.dark-theme .mat-mdc-card-content {
+  color: #ffffff !important;
+}
+
 .dark-theme .mat-menu-panel {
   background-color: #2d2d2d !important;
 }
@@ -63,6 +81,251 @@ html, body {
 .dark-theme .mat-chip {
   background-color: #2d2d2d !important;
   color: #ffffff !important;
+}
+
+/* Form Fields in Dark Mode */
+.dark-theme .mat-mdc-form-field {
+  color: #ffffff !important;
+}
+
+.dark-theme .mat-mdc-text-field-wrapper {
+  background-color: transparent !important;
+}
+
+.dark-theme .mat-mdc-form-field-label,
+.dark-theme .mdc-floating-label {
+  color: #b3b3b3 !important;
+}
+
+.dark-theme .mat-mdc-input-element {
+  color: #ffffff !important;
+  caret-color: #90caf9 !important;
+}
+
+.dark-theme .mat-mdc-input-element::placeholder {
+  color: #9e9e9e !important;
+  opacity: 1 !important;
+}
+
+.dark-theme .mat-mdc-form-field-input-control::placeholder {
+  color: #9e9e9e !important;
+  opacity: 1 !important;
+}
+
+.dark-theme input::placeholder,
+.dark-theme textarea::placeholder {
+  color: #9e9e9e !important;
+  opacity: 1 !important;
+}
+
+.dark-theme .mdc-line-ripple::after {
+  border-bottom-color: #90caf9 !important;
+}
+
+.dark-theme .mdc-notched-outline__leading,
+.dark-theme .mdc-notched-outline__notch,
+.dark-theme .mdc-notched-outline__trailing {
+  border-color: #757575 !important;
+}
+
+/* Filled variant text fields in dark mode */
+.dark-theme .mdc-text-field--filled {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.dark-theme .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-line-ripple::before {
+  border-bottom-color: #757575 !important;
+}
+
+.dark-theme .mdc-text-field--filled .mdc-floating-label {
+  color: #b3b3b3 !important;
+}
+
+.dark-theme .mdc-text-field--filled .mdc-text-field__input {
+  color: #ffffff !important;
+}
+
+.dark-theme .mdc-text-field--filled .mdc-text-field__input::placeholder {
+  color: #9e9e9e !important;
+  opacity: 1 !important;
+}
+
+.dark-theme .mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
+.dark-theme .mat-mdc-form-field.mat-focused .mdc-notched-outline__notch,
+.dark-theme .mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing {
+  border-color: #90caf9 !important;
+}
+
+.dark-theme .mat-mdc-form-field.mat-focused .mat-mdc-form-field-label {
+  color: #90caf9 !important;
+}
+
+/* Buttons in Dark Mode */
+.dark-theme .mat-mdc-raised-button:not([disabled]) {
+  background-color: #90caf9 !important;
+  color: #000000 !important;
+}
+
+.dark-theme .mat-mdc-outlined-button {
+  border-color: #757575 !important;
+  color: #ffffff !important;
+}
+
+/* Icons in Dark Mode */
+.dark-theme .mat-icon {
+  color: #b3b3b3;
+}
+
+.dark-theme .mat-mdc-form-field-icon-prefix .mat-icon,
+.dark-theme .mat-mdc-form-field-icon-suffix .mat-icon {
+  color: #b3b3b3 !important;
+}
+
+/* Textarea in Dark Mode */
+.dark-theme textarea.mat-mdc-input-element {
+  color: #ffffff !important;
+}
+
+/* Select in Dark Mode */
+.dark-theme .mat-mdc-select-value {
+  color: #ffffff !important;
+}
+
+.dark-theme .mat-mdc-select-arrow {
+  color: #b3b3b3 !important;
+}
+
+/* Snackbar in Dark Mode */
+.dark-theme .mat-mdc-snack-bar-container {
+  background-color: #323232 !important;
+  color: #ffffff !important;
+}
+
+/* Dialog in Dark Mode */
+.dark-theme .mat-mdc-dialog-container {
+  background-color: #1e1e1e !important;
+  color: #ffffff !important;
+}
+
+.dark-theme .mat-mdc-dialog-title {
+  color: #ffffff !important;
+}
+
+/* Progress Spinner in Dark Mode */
+.dark-theme .mat-mdc-progress-spinner circle {
+  stroke: #90caf9 !important;
+}
+
+/* Error messages in Dark Mode */
+.dark-theme .mat-mdc-form-field-error,
+.dark-theme .mat-error {
+  color: #f48fb1 !important;
+}
+
+/* Dividers in Dark Mode */
+.dark-theme .mat-divider {
+  border-top-color: #424242 !important;
+}
+
+/* Lists in Dark Mode */
+.dark-theme .mat-mdc-list-item {
+  color: #ffffff !important;
+}
+
+/* Chips in Dark Mode */
+.dark-theme .mat-mdc-chip {
+  background-color: #2d2d2d !important;
+  color: #ffffff !important;
+}
+
+/* Table in Dark Mode */
+.dark-theme .mat-mdc-table {
+  background-color: #1e1e1e !important;
+  color: #ffffff !important;
+}
+
+.dark-theme .mat-mdc-header-cell {
+  color: #b3b3b3 !important;
+}
+
+.dark-theme .mat-mdc-cell {
+  color: #ffffff !important;
+}
+
+/* Radio and Checkbox in Dark Mode */
+.dark-theme .mat-mdc-radio-button .mdc-radio {
+  --mdc-radio-selected-icon-color: #90caf9 !important;
+  --mdc-radio-unselected-icon-color: #757575 !important;
+}
+
+.dark-theme .mat-mdc-checkbox .mdc-checkbox {
+  --mdc-checkbox-selected-checkmark-color: #000000 !important;
+  --mdc-checkbox-selected-icon-color: #90caf9 !important;
+  --mdc-checkbox-unselected-icon-color: #757575 !important;
+}
+
+/* Slide Toggle in Dark Mode */
+.dark-theme .mat-mdc-slide-toggle {
+  --mdc-switch-selected-track-color: #90caf9 !important;
+  --mdc-switch-unselected-track-color: #757575 !important;
+}
+
+/* Tabs in Dark Mode */
+.dark-theme .mat-mdc-tab {
+  color: #b3b3b3 !important;
+}
+
+.dark-theme .mat-mdc-tab.mat-mdc-tab-active {
+  color: #90caf9 !important;
+}
+
+/* Paginator in Dark Mode */
+.dark-theme .mat-mdc-paginator {
+  background-color: #1e1e1e !important;
+  color: #ffffff !important;
+}
+
+/* Tooltip in Dark Mode */
+.dark-theme .mat-mdc-tooltip {
+  background-color: #424242 !important;
+}
+
+/* Autocomplete Panel in Dark Mode */
+.dark-theme .mat-mdc-autocomplete-panel {
+  background-color: #2d2d2d !important;
+}
+
+.dark-theme .mat-mdc-option {
+  color: #ffffff !important;
+}
+
+.dark-theme .mat-mdc-option:hover {
+  background-color: #404040 !important;
+}
+
+/* Date Picker in Dark Mode */
+.dark-theme .mat-datepicker-content {
+  background-color: #1e1e1e !important;
+  color: #ffffff !important;
+}
+
+.dark-theme .mat-calendar {
+  background-color: #1e1e1e !important;
+}
+
+.dark-theme .mat-calendar-body-label,
+.dark-theme .mat-calendar-body-cell-content {
+  color: #ffffff !important;
+}
+
+/* Stepper in Dark Mode */
+.dark-theme .mat-stepper-horizontal,
+.dark-theme .mat-stepper-vertical {
+  background-color: #1e1e1e !important;
+}
+
+.dark-theme .mat-step-header {
+  color: #b3b3b3 !important;
 }
 
 /* System theme detection */
@@ -104,6 +367,21 @@ html, body {
   body:not(.light-theme):not(.dark-theme) .mat-chip {
     background-color: #2d2d2d !important;
     color: #ffffff !important;
+  }
+
+  /* Form Fields in System Dark Mode */
+  body:not(.light-theme):not(.dark-theme) .mat-mdc-input-element {
+    color: #ffffff !important;
+  }
+
+  body:not(.light-theme):not(.dark-theme) .mat-mdc-form-field-label {
+    color: #b3b3b3 !important;
+  }
+
+  body:not(.light-theme):not(.dark-theme) .mdc-notched-outline__leading,
+  body:not(.light-theme):not(.dark-theme) .mdc-notched-outline__notch,
+  body:not(.light-theme):not(.dark-theme) .mdc-notched-outline__trailing {
+    border-color: #757575 !important;
   }
 }
 
