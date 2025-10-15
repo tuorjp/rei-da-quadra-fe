@@ -1,4 +1,5 @@
-import { Component, computed } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { OngoingEventsComponent } from '../ongoing-events/ongoing-events.component';
@@ -16,17 +17,18 @@ import { LanguageService } from '../../services/language.service';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
-  constructor(public languageService: LanguageService) {}
+  private router = inject(Router);
+  public languageService = inject(LanguageService);
 
   translate(key: string): string {
     return this.languageService.translate(key);
   }
 
   onCreateEvent() {
-    console.log('Navigate to create event');
+    this.router.navigate(['/create-event']);
   }
 
   onJoinEvent() {
-    console.log('Navigate to join event');
+    this.router.navigate(['/my-events']);
   }
 }

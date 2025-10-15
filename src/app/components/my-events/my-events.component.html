@@ -1,0 +1,70 @@
+<div class="my-events-container">
+  <div class="header">
+    <h1>
+      <mat-icon>event_note</mat-icon>
+      {{ langService.translate('my.events') }}
+    </h1>
+    <button mat-raised-button color="primary" (click)="onCreateEvent()">
+      <mat-icon>add</mat-icon>
+      {{ langService.translate('create.event') }}
+    </button>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading-container" *ngIf="isLoading()">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>{{ langService.translate('loading') }}</p>
+  </div>
+
+  <!-- Error -->
+  <div class="error-container" *ngIf="!isLoading() && error()">
+    <mat-icon color="warn">error</mat-icon>
+    <p>{{ error() }}</p>
+    <button mat-button (click)="loadEvents()">
+      {{ langService.translate('retry') }}
+    </button>
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-state" *ngIf="!isLoading() && !error() && eventos().length === 0">
+    <mat-icon>event_busy</mat-icon>
+    <h2>{{ langService.translate('no.events') }}</h2>
+    <p>{{ langService.translate('no.events.description') }}</p>
+    <button mat-raised-button color="primary" (click)="onCreateEvent()">
+      <mat-icon>add</mat-icon>
+      {{ langService.translate('create.first.event') }}
+    </button>
+  </div>
+
+  <!-- Events List -->
+  <div class="events-grid" *ngIf="!isLoading() && !error() && eventos().length > 0">
+    <mat-card class="event-card" *ngFor="let evento of eventos()">
+      <mat-card-header>
+        <mat-card-title>{{ evento.nome }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="event-info">
+          <div class="info-item">
+            <mat-icon>location_on</mat-icon>
+            <span>{{ evento.local }}</span>
+          </div>
+          <div class="info-item">
+            <mat-icon>schedule</mat-icon>
+            <span>{{ formatDate(evento.dataHorario) }}</span>
+          </div>
+          <div class="info-item">
+            <mat-icon>person</mat-icon>
+            <span>{{ evento.usuarioLogin }}</span>
+          </div>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button color="primary" (click)="onViewEvent(evento.id)">
+          <mat-icon>visibility</mat-icon>
+          {{ langService.translate('view.details') }}
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>
+

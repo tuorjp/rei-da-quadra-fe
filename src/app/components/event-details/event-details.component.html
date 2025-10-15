@@ -1,0 +1,127 @@
+<div class="event-details-container">
+  <!-- Loading -->
+  <div class="loading-container" *ngIf="isLoading()">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>{{ langService.translate('loading') }}</p>
+  </div>
+
+  <!-- Event Details -->
+  <mat-card class="event-details-card" *ngIf="!isLoading() && evento()">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>event</mat-icon>
+        <span *ngIf="!isEditing()">{{ evento()?.nome }}</span>
+        <span *ngIf="isEditing()">{{ langService.translate('edit.event') }}</span>
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <!-- View Mode -->
+      <div class="view-mode" *ngIf="!isEditing()">
+        <div class="detail-item">
+          <mat-icon>location_on</mat-icon>
+          <div class="detail-content">
+            <span class="label">{{ langService.translate('event.location') }}</span>
+            <span class="value">{{ evento()?.local }}</span>
+          </div>
+        </div>
+
+        <div class="detail-item">
+          <mat-icon>schedule</mat-icon>
+          <div class="detail-content">
+            <span class="label">{{ langService.translate('event.datetime') }}</span>
+            <span class="value">{{ formatDate(evento()?.dataHorario) }}</span>
+          </div>
+        </div>
+
+        <div class="detail-item">
+          <mat-icon>person</mat-icon>
+          <div class="detail-content">
+            <span class="label">{{ langService.translate('event.organizer') }}</span>
+            <span class="value">{{ evento()?.usuarioLogin }}</span>
+          </div>
+        </div>
+
+        <div class="detail-item">
+          <mat-icon>fingerprint</mat-icon>
+          <div class="detail-content">
+            <span class="label">ID</span>
+            <span class="value">{{ evento()?.id }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Edit Mode -->
+      <form [formGroup]="eventForm" *ngIf="isEditing()" class="edit-form">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>{{ langService.translate('event.name') }}</mat-label>
+          <input matInput formControlName="nome">
+          <mat-icon matPrefix>sports_soccer</mat-icon>
+          <mat-error *ngIf="eventForm.get('nome')?.hasError('required')">
+            {{ langService.translate('field.required') }}
+          </mat-error>
+          <mat-error *ngIf="eventForm.get('nome')?.hasError('minlength')">
+            {{ langService.translate('field.minlength') }}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>{{ langService.translate('event.location') }}</mat-label>
+          <input matInput formControlName="local">
+          <mat-icon matPrefix>location_on</mat-icon>
+          <mat-error *ngIf="eventForm.get('local')?.hasError('required')">
+            {{ langService.translate('field.required') }}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>{{ langService.translate('event.datetime') }}</mat-label>
+          <input matInput type="datetime-local" formControlName="dataHorario">
+          <mat-icon matPrefix>schedule</mat-icon>
+          <mat-error *ngIf="eventForm.get('dataHorario')?.hasError('required')">
+            {{ langService.translate('field.required') }}
+          </mat-error>
+        </mat-form-field>
+      </form>
+    </mat-card-content>
+
+    <mat-card-actions>
+      <div class="actions-left">
+        <button mat-button (click)="onBack()">
+          <mat-icon>arrow_back</mat-icon>
+          {{ langService.translate('button.back') }}
+        </button>
+      </div>
+
+      <div class="actions-right">
+        <button mat-button color="warn" (click)="onDelete()" *ngIf="!isEditing()">
+          <mat-icon>delete</mat-icon>
+          {{ langService.translate('button.delete') }}
+        </button>
+
+        <button mat-stroked-button (click)="toggleEdit()" *ngIf="!isEditing()">
+          <mat-icon>edit</mat-icon>
+          {{ langService.translate('button.edit') }}
+        </button>
+
+        <button mat-button (click)="toggleEdit()" *ngIf="isEditing()" [disabled]="isSaving()">
+          <mat-icon>close</mat-icon>
+          {{ langService.translate('button.cancel') }}
+        </button>
+
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="onSave()"
+          *ngIf="isEditing()"
+          [disabled]="isSaving() || eventForm.invalid"
+        >
+          <mat-spinner diameter="20" *ngIf="isSaving()"></mat-spinner>
+          <mat-icon *ngIf="!isSaving()">save</mat-icon>
+          {{ isSaving() ? langService.translate('button.saving') : langService.translate('button.save') }}
+        </button>
+      </div>
+    </mat-card-actions>
+  </mat-card>
+</div>
+
