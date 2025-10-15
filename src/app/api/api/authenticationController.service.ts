@@ -19,6 +19,8 @@ import { Observable }                                        from 'rxjs';
 // @ts-ignore
 import { AuthenticationDTO } from '../model/authenticationDTO';
 // @ts-ignore
+import { LoginResponseDTO } from '../model/loginResponseDTO';
+// @ts-ignore
 import { RegisterDTO } from '../model/registerDTO';
 
 // @ts-ignore
@@ -42,9 +44,9 @@ export class AuthenticationControllerService extends BaseService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public login(authenticationDTO: AuthenticationDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<string>;
-    public login(authenticationDTO: AuthenticationDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<string>>;
-    public login(authenticationDTO: AuthenticationDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<string>>;
+    public login(authenticationDTO: AuthenticationDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<LoginResponseDTO>;
+    public login(authenticationDTO: AuthenticationDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<LoginResponseDTO>>;
+    public login(authenticationDTO: AuthenticationDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<LoginResponseDTO>>;
     public login(authenticationDTO: AuthenticationDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (authenticationDTO === null || authenticationDTO === undefined) {
             throw new Error('Required parameter authenticationDTO was null or undefined when calling login.');
@@ -86,7 +88,7 @@ export class AuthenticationControllerService extends BaseService {
 
         let localVarPath = `/auth/login`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<string>('post', `${basePath}${localVarPath}`,
+        return this.httpClient.request<LoginResponseDTO>('post', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: authenticationDTO,
