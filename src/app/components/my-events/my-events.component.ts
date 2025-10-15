@@ -45,7 +45,17 @@ export class MyEventsComponent implements OnInit {
     this.eventoService.listarEventos()
       .pipe(finalize(() => this.isLoading.set(false)))
       .subscribe({
-        next: (eventos) => {
+        next: async (eventos) => {
+          console.log(eventos)
+          
+          if(eventos instanceof Blob) {
+            const blobText = await eventos.text()
+            const eventosJson = JSON.parse(blobText)
+
+            this.eventos.set(eventosJson)
+            return
+          }
+          
           this.eventos.set(eventos);
         },
         error: (error) => {
