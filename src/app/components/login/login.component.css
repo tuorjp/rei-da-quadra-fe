@@ -13,7 +13,7 @@
   justify-content: center;
   height: 100vh;
   width: 100%;
-  background-color: #D0D3D9;
+  background-color: rgba(208, 211, 217, 0.37);
   overflow: hidden;
 }
 
@@ -46,7 +46,7 @@
 /* --- CARD BRANCO --- */
 .login-form-container {
   width: 100%;
-  max-width: 450px; /* mantém o mesmo tamanho de antes */
+  max-width: 550px;
   padding: 3rem;
   background-color: #fff;
   border-radius: 16px;
@@ -67,7 +67,7 @@
 }
 
 .app-name {
-  font-size: 4.0rem;
+  font-size: 4.5rem;
   font-weight: bold;
   margin: 0 0 8px 0;
   color: #283040;
@@ -87,11 +87,21 @@ form {
   gap: 20px;
 }
 
+/* Botão principal */
 button[mat-flat-button] {
   width: 100%;
   height: 52px;
   font-size: 1rem;
   border-radius: 8px;
+  background-color: #283040 !important;
+  color: white !important;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+/* Efeito hover */
+button[mat-flat-button]:hover {
+  background-color: #3E5922 !important;
 }
 
 :host ::ng-deep .mat-mdc-text-field-wrapper {
