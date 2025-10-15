@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy, Renderer2 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '../../services/auth.service';
 import { LanguageService } from '../../services/language.service';
 import { finalize } from 'rxjs';
@@ -21,27 +22,37 @@ import { finalize } from 'rxjs';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatIconModule
   ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit, OnDestroy {
   loginForm: FormGroup;
   isLoading = false;
   errorMessage: string | null = null;
+  hidePassword = true;
 
-  // Injeção de dependência
   private fb = inject(FormBuilder);
-  private authService = inject(AuthService);
+  public authService = inject(AuthService);
   private router = inject(Router);
   public languageService = inject(LanguageService);
+  private renderer = inject(Renderer2);
 
   constructor() {
     this.loginForm = this.fb.group({
       login: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]]
     });
+  }
+
+  ngOnInit(): void {
+    this.renderer.addClass(document.body, 'login-page-active');
+  }
+
+  ngOnDestroy(): void {
+    this.renderer.removeClass(document.body, 'login-page-active');
   }
 
   onSubmit(): void {
@@ -56,7 +67,6 @@ export class LoginComponent {
 
     this.authService.login(credentials)
       .pipe(
-        // finalize sempre será executado, no sucesso ou no erro.
         finalize(() => this.isLoading = false)
       )
       .subscribe({

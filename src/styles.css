@@ -1,10 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
 @import '@angular/material/prebuilt-themes/azure-blue.css';
 
-html, body { 
-  height: 100%; 
-  margin: 0; 
-  font-family: Roboto, "Helvetica Neue", sans-serif; 
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden; /* Impede qualquer barra de rolagem no nível da página */
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 /* Light theme */
@@ -25,7 +32,7 @@ html, body {
   --mat-app-on-surface-variant: #b3b3b3;
   --mat-app-primary: #90caf9;
   --mat-app-on-primary: #000000;
-  
+
   background-color: var(--mat-app-background-color);
   color: var(--mat-app-on-surface);
 }
@@ -67,33 +74,33 @@ html, body {
     --mat-app-on-surface-variant: #b3b3b3;
     --mat-app-primary: #90caf9;
     --mat-app-on-primary: #000000;
-    
+
     background-color: var(--mat-app-background-color);
     color: var(--mat-app-on-surface);
   }
-  
+
   body:not(.light-theme):not(.dark-theme) .mat-toolbar {
     background-color: #1e1e1e !important;
     color: #ffffff !important;
   }
-  
+
   body:not(.light-theme):not(.dark-theme) .mat-card {
     background-color: #1e1e1e !important;
     color: #ffffff !important;
   }
-  
+
   body:not(.light-theme):not(.dark-theme) .mat-menu-panel {
     background-color: #2d2d2d !important;
   }
-  
+
   body:not(.light-theme):not(.dark-theme) .mat-menu-item {
     color: #ffffff !important;
   }
-  
+
   body:not(.light-theme):not(.dark-theme) .mat-menu-item:hover {
     background-color: #404040 !important;
   }
-  
+
   body:not(.light-theme):not(.dark-theme) .mat-chip {
     background-color: #2d2d2d !important;
     color: #ffffff !important;
@@ -102,3 +109,29 @@ html, body {
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+app-root {
+  display: block;
+  height: 100%;
+}
+
+/*
+  Quando a página de login estiver ativa, força todos os containers
+  a ocuparem 100% da altura e remove qualquer padding.
+*/
+body.login-page-active,
+body.login-page-active .app-container,
+body.login-page-active .main-content,
+body.login-page-active router-outlet,
+body.login-page-active app-login { /* Alvo direto no seu componente */
+  height: 100%;
+  padding: 0 !important; /* Remove o padding que causa a faixa branca */
+  margin: 0 !important; /* Remove qualquer margem por segurança */
+  box-sizing: border-box;
+}
+
+/* Garante que o componente de login se comporte como um bloco de altura total */
+body.login-page-active app-login {
+  display: flex;
+  width: 100%;
+}
