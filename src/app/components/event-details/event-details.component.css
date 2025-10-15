@@ -41,12 +41,12 @@ mat-card-title {
   align-items: flex-start;
   gap: 1rem;
   padding: 1rem;
-  background: rgba(0, 0, 0, 0.02);
+  background: var(--input-background, rgba(0, 0, 0, 0.02));
   border-radius: 8px;
 }
 
 .detail-item mat-icon {
-  color: rgba(0, 0, 0, 0.54);
+  color: var(--mat-app-on-surface-variant);
   margin-top: 0.25rem;
 }
 
@@ -59,13 +59,13 @@ mat-card-title {
 
 .detail-content .label {
   font-size: 0.875rem;
-  color: rgba(0, 0, 0, 0.6);
+  color: var(--mat-app-on-surface-variant);
   font-weight: 500;
 }
 
 .detail-content .value {
   font-size: 1rem;
-  color: rgba(0, 0, 0, 0.87);
+  color: var(--mat-app-on-surface);
 }
 
 .edit-form {
@@ -83,7 +83,7 @@ mat-card-actions {
   justify-content: space-between;
   padding: 1rem;
   margin: 0;
-  border-top: 1px solid rgba(0, 0, 0, 0.12);
+  border-top: 1px solid var(--border-color);
 }
 
 .actions-left,

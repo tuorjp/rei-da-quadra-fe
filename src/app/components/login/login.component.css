@@ -3,13 +3,14 @@
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-color: var(--mat-app-background-color);
+  background-color: var(--background-color, var(--mat-app-background-color));
 }
 
 .login-card {
   width: 100%;
   max-width: 400px;
   padding: 24px;
+  background-color: var(--card-background) !important;
 }
 
 mat-card-header {
@@ -20,12 +21,21 @@ mat-card-header {
 mat-card-title {
   font-size: 2rem;
   font-weight: 300;
+  color: var(--text-color, var(--mat-app-on-surface)) !important;
+}
+
+mat-card-subtitle {
+  color: var(--mat-app-on-surface-variant) !important;
 }
 
 form {
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+
+.login-actions {
+  margin-top: 8px;
 }
 
 mat-form-field {
@@ -39,7 +49,85 @@ button[mat-raised-button] {
 }
 
 .error-message {
-  color: var(--mat-app-warn);
+  color: #f48fb1;
   text-align: center;
   margin-bottom: 16px;
+}
+
+/* Dark mode specific improvements for login */
+:host-context(.dark-theme) .login-container {
+  background-color: #121212 !important;
+}
+
+:host-context(.dark-theme) .login-card {
+  background-color: #1e1e1e !important;
+}
+
+:host-context(.dark-theme) mat-card-title {
+  color: #ffffff !important;
+}
+
+:host-context(.dark-theme) mat-card-subtitle {
+  color: #b3b3b3 !important;
+}
+
+/* Ensure form fields are visible in login */
+:host-context(.dark-theme) mat-form-field {
+  color: #ffffff !important;
+}
+
+:host-context(.dark-theme) .mat-mdc-text-field-wrapper {
+  background-color: transparent !important;
+}
+
+:host-context(.dark-theme) input.mat-mdc-input-element {
+  color: #ffffff !important;
+  caret-color: #90caf9 !important;
+}
+
+:host-context(.dark-theme) .mat-mdc-form-field-label,
+:host-context(.dark-theme) .mdc-floating-label {
+  color: #b3b3b3 !important;
+}
+
+:host-context(.dark-theme) input.mat-mdc-input-element::placeholder {
+  color: #757575 !important;
+  opacity: 1 !important;
+}
+
+:host-context(.dark-theme) .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+:host-context(.dark-theme) .mat-mdc-form-field-focus-overlay {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Force outline borders to be visible */
+:host-context(.dark-theme) .mdc-notched-outline__leading,
+:host-context(.dark-theme) .mdc-notched-outline__notch,
+:host-context(.dark-theme) .mdc-notched-outline__trailing {
+  border-color: #757575 !important;
+  border-width: 1px !important;
+}
+
+:host-context(.dark-theme) .mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
+:host-context(.dark-theme) .mat-mdc-form-field.mat-focused .mdc-notched-outline__notch,
+:host-context(.dark-theme) .mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing {
+  border-color: #90caf9 !important;
+  border-width: 2px !important;
+}
+
+/* Ensure labels are visible when floating */
+:host-context(.dark-theme) .mat-mdc-form-field-label {
+  color: #b3b3b3 !important;
+}
+
+:host-context(.dark-theme) .mat-mdc-form-field.mat-focused .mat-mdc-form-field-label {
+  color: #90caf9 !important;
+}
+
+/* Ensure spinner is visible */
+:host-context(.dark-theme) mat-spinner circle {
+  stroke: #90caf9 !important;
 }
