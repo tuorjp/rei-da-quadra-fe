@@ -9,7 +9,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 
 export function apiConfigFactory(): Configuration {
   return new Configuration({
-    basePath: 'http://localhost:8080'
+    basePath: 'http://localhost:8090'
   });
 }
 

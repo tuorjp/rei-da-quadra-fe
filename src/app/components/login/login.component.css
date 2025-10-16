@@ -14,7 +14,7 @@
   height: 100vh;
   width: 100%;
   background-color: rgba(208, 211, 217, 0.37);
-  overflow: hidden;
+  overflow: auto;
 }
 
 /* --- Seções laterais --- */
