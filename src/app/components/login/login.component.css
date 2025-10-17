@@ -108,6 +108,32 @@ button[mat-flat-button]:hover {
   background-color: #F5F5F5 !important;
 }
 
+/* --- Link de Cadastro --- */
+.signup-container {
+  text-align: center;
+  margin-top: 8px; /* Reduz a distância do botão */
+}
+
+.signup-link {
+  color: #283040;
+  text-decoration: none;
+  font-weight: 500;
+  transition: text-decoration 0.3s ease, color 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.signup-link:hover {
+  color: #3E5922;
+}
+
+/* --- Mensagem de Erro --- */
+.error-message {
+  color: #f44336; /* Cor de erro padrão do Material Design */
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+
 /* --- Responsividade --- */
 @media (max-width: 960px) {
   .login-page {

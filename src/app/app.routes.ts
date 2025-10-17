@@ -6,33 +6,39 @@ import { MyEventsComponent } from './components/my-events/my-events.component';
 import { EventDetailsComponent } from './components/event-details/event-details.component';
 import { authGuard } from './config/auth.guard';
 import { loginGuard } from './config/login.guard';
+import { CadastroComponent } from './components/cadastro/cadastro.component';
 
 export const routes: Routes = [
-    {
-        path: '',
-        component: HomeComponent,
-        canActivate: [authGuard] // Protege a rota principal
-    },
-    {
-        path: 'login',
-        component: LoginComponent,
-        canActivate: [loginGuard]
-    },
-    {
-        path: 'create-event',
-        component: CreateEventComponent,
-        canActivate: [authGuard]
-    },
-    {
-        path: 'my-events',
-        component: MyEventsComponent,
-        canActivate: [authGuard]
-    },
-    {
-        path: 'event-details/:id',
-        component: EventDetailsComponent,
-        canActivate: [authGuard]
-    },
-    // Redireciona qualquer outra rota para a home
-    { path: '**', redirectTo: '' }
+  {
+    path: '',
+    component: HomeComponent,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
+    canActivate: [loginGuard]
+  },
+
+  {
+    path: 'cadastro',
+    component: CadastroComponent,
+    canActivate: [loginGuard] // Impede que um usuário já logado acesse a página
+  },
+  {
+    path: 'create-event',
+    component: CreateEventComponent,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'my-events',
+    component: MyEventsComponent,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'event-details/:id',
+    component: EventDetailsComponent,
+    canActivate: [authGuard]
+  },
+  { path: '**', redirectTo: '' }
 ];

@@ -77,20 +77,20 @@ mat-card-content p {
     grid-template-columns: 1fr;
     gap: 24px;
   }
-  
+
   .page-title {
     font-size: 2rem;
     margin-bottom: 32px;
   }
-  
+
   .main-content {
     padding: 24px 16px;
   }
-  
+
   .app-title {
     font-size: 1.1rem;
   }
-  
+
   .new-competition-btn {
     margin-left: 8px;
   }
