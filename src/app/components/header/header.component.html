@@ -35,30 +35,6 @@
     </button>
   </mat-menu>
 
-  <button mat-icon-button [matMenuTriggerFor]="themeMenu" class="toolbar-button">
-    <mat-icon>
-      @switch (themeService.themeMode()) {
-        @case ('light') { light_mode }
-        @case ('dark') { dark_mode }
-        @default { brightness_auto }
-      }
-    </mat-icon>
-  </button>
-  <mat-menu #themeMenu="matMenu">
-    <button mat-menu-item (click)="setTheme('light')">
-      <mat-icon>{{ themeService.themeMode() === 'light' ? 'check' : 'light_mode' }}</mat-icon>
-      {{ translate('theme.light') }}
-    </button>
-    <button mat-menu-item (click)="setTheme('dark')">
-      <mat-icon>{{ themeService.themeMode() === 'dark' ? 'check' : 'dark_mode' }}</mat-icon>
-      {{ translate('theme.dark') }}
-    </button>
-    <button mat-menu-item (click)="setTheme('system')">
-      <mat-icon>{{ themeService.themeMode() === 'system' ? 'check' : 'brightness_auto' }}</mat-icon>
-      {{ translate('theme.system') }}
-    </button>
-  </mat-menu>
-
   <button mat-icon-button class="toolbar-button" (click)="logout()" matTooltip="Sair">
     <mat-icon>logout</mat-icon>
   </button>

@@ -7,7 +7,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { ThemeService, ThemeMode } from '../../services/theme.service';
 import { LanguageService, Language } from '../../services/language.service';
 import { AuthService } from '../../services/auth.service';
 
@@ -28,20 +27,13 @@ import { AuthService } from '../../services/auth.service';
 })
 export class HeaderComponent {
   userSkillPoints = 1250;
-  // Simula um usuário sem foto. Se tivesse, seria algo como: 'assets/minha-foto.jpg'
   userAvatar: string | null = null;
 
   constructor(
-    public themeService: ThemeService,
     public languageService: LanguageService,
     private authService: AuthService,
     private router: Router
   ) { }
-
-  // ... (resto dos seus métodos)
-  setTheme(mode: ThemeMode) {
-    this.themeService.setTheme(mode);
-  }
 
   setLanguage(language: Language) {
     this.languageService.setLanguage(language);
@@ -52,8 +44,7 @@ export class HeaderComponent {
   }
 
   onProfileClick() {
-    // Navigate to profile page
-    console.log('Navigate to profile');
+    console.log('Navigate to profile page');
   }
 
   logout(): void {
