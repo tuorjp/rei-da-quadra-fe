@@ -1,4 +1,3 @@
-// --- MUDANÇA 1: Importe OnInit, OnDestroy e Renderer2 ---
 import { Component, inject, OnInit, OnDestroy, Renderer2 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
@@ -9,11 +8,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
-// import { AuthService } from '../../services/auth.service';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { AuthenticationControllerService } from '../../api/api/authenticationController.service';
+import { RegisterDTO } from '../../api/model/registerDTO';
 
-/**
- * Validador customizado para verificar se dois campos coincidem.
- */
 export const passwordMatchValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
   const password = control.get('senha');
   const confirmPassword = control.get('confirmarSenha');
@@ -41,12 +39,12 @@ export const passwordMatchValidator: ValidatorFn = (control: AbstractControl): V
     MatInputModule,
     MatButtonModule,
     MatIconModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatSnackBarModule
   ],
   templateUrl: './cadastro.component.html',
   styleUrl: './cadastro.component.css'
 })
-// --- MUDANÇA 2: Implemente OnInit e OnDestroy ---
 export class CadastroComponent implements OnInit, OnDestroy {
   registerForm: FormGroup;
   isLoading = false;
@@ -56,9 +54,9 @@ export class CadastroComponent implements OnInit, OnDestroy {
 
   private fb = inject(FormBuilder);
   private router = inject(Router);
-  // --- MUDANÇA 3: Injete o Renderer2 ---
   private renderer = inject(Renderer2);
-  // private authService = inject(AuthService);
+  private authService = inject(AuthenticationControllerService);
+  private snackBar = inject(MatSnackBar);
 
   constructor() {
     this.registerForm = this.fb.group({
@@ -71,14 +69,10 @@ export class CadastroComponent implements OnInit, OnDestroy {
     });
   }
 
-  // --- MUDANÇA 4: Adicione o metodo ngOnInit ---
-  // Este metodo é chamado quando o componente é criado e adiciona a classe ao body
   ngOnInit(): void {
     this.renderer.addClass(document.body, 'full-screen-page');
   }
 
-  // --- MUDANÇA 5: Adicione o metodo ngOnDestroy ---
-  // Este metodo é chamado quando você sai da página, removendo a classe
   ngOnDestroy(): void {
     this.renderer.removeClass(document.body, 'full-screen-page');
   }
@@ -88,14 +82,38 @@ export class CadastroComponent implements OnInit, OnDestroy {
       this.registerForm.markAllAsTouched();
       return;
     }
+
     this.isLoading = true;
     this.errorMessage = null;
-    const { confirmarSenha, ...userData } = this.registerForm.value;
-    console.log('Dados para cadastro:', userData);
 
-    setTimeout(() => {
-      this.isLoading = false;
-      console.log('Cadastro realizado com sucesso (simulação)');
-    }, 2000);
+    const registerData: RegisterDTO = {
+      nome: this.registerForm.value.nome,
+      login: this.registerForm.value.email,
+      password: this.registerForm.value.senha
+    };
+
+    this.authService.register(registerData).subscribe({
+      next: (response) => {
+        this.isLoading = false;
+        this.snackBar.open('Cadastro realizado com sucesso!', 'Fechar', {
+          duration: 4000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+          panelClass: ['success-snackbar']
+        });
+        this.router.navigate(['/login']);
+      },
+      error: (error) => {
+        this.isLoading = false;
+        const errorMsg = error.error?.message || 'Erro ao realizar cadastro. Tente novamente.';
+        this.errorMessage = errorMsg;
+        this.snackBar.open(errorMsg, 'Fechar', {
+          duration: 5000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+          panelClass: ['error-snackbar']
+        });
+      }
+    });
   }
 }

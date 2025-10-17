@@ -1,0 +1,92 @@
+<div class="profile-container">
+  <div class="profile-content">
+    <mat-card class="profile-card">
+      <div class="profile-header">
+        <div class="avatar-section">
+          <div class="large-avatar">
+            <mat-icon class="avatar-icon">account_circle</mat-icon>
+          </div>
+          <button mat-mini-fab color="primary" class="edit-avatar-btn">
+            <mat-icon>photo_camera</mat-icon>
+          </button>
+        </div>
+
+        <div class="user-info">
+          <h1 class="user-name">{{ userName }}</h1>
+          <p class="user-email">{{ userEmail }}</p>
+          <div class="member-since">
+            <mat-icon>event</mat-icon>
+            <span>Membro desde {{ memberSince }}</span>
+          </div>
+        </div>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <div class="stats-section">
+        <h2 class="section-title">Estatísticas</h2>
+        <div class="stats-grid">
+          <div class="stat-card skill-card">
+            <div class="stat-icon">
+              <mat-icon>star</mat-icon>
+            </div>
+            <div class="stat-content">
+              <span class="stat-label">Pontuação de Habilidade</span>
+              <span class="stat-value skill-value">{{ skillRating.toFixed(2) }}</span>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">
+              <mat-icon>sports_soccer</mat-icon>
+            </div>
+            <div class="stat-content">
+              <span class="stat-label">Eventos Participados</span>
+              <span class="stat-value">{{ totalEvents }}</span>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">
+              <mat-icon>emoji_events</mat-icon>
+            </div>
+            <div class="stat-content">
+              <span class="stat-label">Eventos Vencidos</span>
+              <span class="stat-value">{{ eventsWon }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <div class="actions-section">
+        <button mat-raised-button color="primary" class="action-btn" (click)="editProfile()">
+          <mat-icon>edit</mat-icon>
+          Editar Perfil
+        </button>
+        <button mat-stroked-button class="action-btn logout-btn" (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          Sair
+        </button>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <div class="danger-zone">
+        <h3 class="danger-title">
+          <mat-icon>warning</mat-icon>
+          Zona de Perigo
+        </h3>
+        <p class="danger-description">
+          Ao deletar sua conta, todos os seus dados serão permanentemente removidos e não poderão ser recuperados.
+        </p>
+        <button mat-stroked-button color="warn" class="delete-btn" (click)="deleteAccount()">
+          <mat-icon>delete_forever</mat-icon>
+          Deletar Conta Permanentemente
+        </button>
+      </div>
+    </mat-card>
+  </div>
+</div>
+

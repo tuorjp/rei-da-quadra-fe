@@ -4,17 +4,11 @@ html, body {
   margin: 0;
   padding: 0;
   height: 100%;
-  overflow: auto; /* Impede qualquer barra de rolagem no nível da página */
-}
-
-html, body {
-  height: 100%;
-  margin: 0;
+  overflow: auto;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-/* Light theme */
-.light-theme {
+body {
   --mat-app-background-color: #D0D3D9;
   --mat-app-surface-color: #ffffff;
   --mat-app-on-surface: #212121;
@@ -28,374 +22,11 @@ html, body {
   --input-background: #D0D3D9;
 }
 
-/* Dark theme */
-.dark-theme {
-  --mat-app-background-color: #121212;
-  --mat-app-surface-color: #1e1e1e;
-  --mat-app-on-surface: #ffffff;
-  --mat-app-on-surface-variant: #D0D3D9;
-  --mat-app-primary: #5B8C2A;
-  --mat-app-on-primary: #000000;
-
-  background-color: var(--mat-app-background-color);
-  color: var(--mat-app-on-surface);
-}
-
-/* Apply dark theme to Material components */
-.dark-theme .mat-toolbar {
-  background-color: #1e1e1e !important;
-  color: #ffffff !important;
-}
-
-.dark-theme .mat-card {
-  background-color: #1e1e1e !important;
-  color: #ffffff !important;
-}
-
-.dark-theme .mat-mdc-card {
-  background-color: #1e1e1e !important;
-  color: #ffffff !important;
-}
-
-.dark-theme .mat-mdc-card-title {
-  color: #ffffff !important;
-}
-
-.dark-theme .mat-mdc-card-content {
-  color: #ffffff !important;
-}
-
-.dark-theme .mat-menu-panel {
-  background-color: #2d2d2d !important;
-}
-
-.dark-theme .mat-menu-item {
-  color: #ffffff !important;
-}
-
-.dark-theme .mat-menu-item:hover {
-  background-color: #404040 !important;
-}
-
-.dark-theme .mat-chip {
-  background-color: #2d2d2d !important;
-  color: #ffffff !important;
-}
-
-/* Form Fields in Dark Mode */
-.dark-theme .mat-mdc-form-field {
-  color: #ffffff !important;
-}
-
-.dark-theme .mat-mdc-text-field-wrapper {
-  background-color: transparent !important;
-}
-
-.dark-theme .mat-mdc-form-field-label,
-.dark-theme .mdc-floating-label {
-  color: #D0D3D9 !important;
-}
-
-.dark-theme .mat-mdc-input-element {
-  color: #000 !important;
-  caret-color: #5B8C2A !important;
-}
-
-.dark-theme .mat-mdc-input-element::placeholder {
-  color: #9e9e9e !important;
-  opacity: 1 !important;
-}
-
-.dark-theme .mat-mdc-form-field-input-control::placeholder {
-  color: #9e9e9e !important;
-  opacity: 1 !important;
-}
-
-.dark-theme input::placeholder,
-.dark-theme textarea::placeholder {
-  color: #9e9e9e !important;
-  opacity: 1 !important;
-}
-
-.dark-theme .mdc-line-ripple::after {
-  border-bottom-color: #5B8C2A !important;
-}
-
-.dark-theme .mdc-notched-outline__leading,
-.dark-theme .mdc-notched-outline__notch,
-.dark-theme .mdc-notched-outline__trailing {
-  border-color: #757575 !important;
-}
-
-/* Filled variant text fields in dark mode */
-.dark-theme .mdc-text-field--filled {
-  background-color: rgba(255, 255, 255, 0.08) !important;
-}
-
-.dark-theme .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-line-ripple::before {
-  border-bottom-color: #757575 !important;
-}
-
-.dark-theme .mdc-text-field--filled .mdc-floating-label {
-  color: #D0D3D9 !important;
-}
-
-.dark-theme .mdc-text-field--filled .mdc-text-field__input {
-  color: #ffffff !important;
-}
-
-.dark-theme .mdc-text-field--filled .mdc-text-field__input::placeholder {
-  color: #9e9e9e !important;
-  opacity: 1 !important;
-}
-
-.dark-theme .mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
-.dark-theme .mat-mdc-form-field.mat-focused .mdc-notched-outline__notch,
-.dark-theme .mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing {
-  border-color: #5B8C2A !important;
-}
-
-.dark-theme .mat-mdc-form-field.mat-focused .mat-mdc-form-field-label {
-  color: #5B8C2A !important;
-}
-
-/* Buttons in Dark Mode */
-.dark-theme .mat-mdc-raised-button:not([disabled]) {
-  background-color: #5B8C2A !important;
-  color: #000000 !important;
-}
-
-.dark-theme .mat-mdc-outlined-button {
-  border-color: #757575 !important;
-  color: #ffffff !important;
-}
-
-/* Icons in Dark Mode */
-.dark-theme .mat-icon {
-  color: #D0D3D9;
-}
-
-.dark-theme .mat-mdc-form-field-icon-prefix .mat-icon,
-.dark-theme .mat-mdc-form-field-icon-suffix .mat-icon {
-  color: #D0D3D9 !important;
-}
-
-/* Textarea in Dark Mode */
-.dark-theme textarea.mat-mdc-input-element {
-  color: #000 !important;
-}
-
-/* Select in Dark Mode */
-.dark-theme .mat-mdc-select-value {
-  color: #ffffff !important;
-}
-
-.dark-theme .mat-mdc-select-arrow {
-  color: #D0D3D9 !important;
-}
-
-/* Snackbar in Dark Mode */
-.dark-theme .mat-mdc-snack-bar-container {
-  background-color: #323232 !important;
-  color: #ffffff !important;
-}
-
-/* Dialog in Dark Mode */
-.dark-theme .mat-mdc-dialog-container {
-  background-color: #1e1e1e !important;
-  color: #ffffff !important;
-}
-
-.dark-theme .mat-mdc-dialog-title {
-  color: #ffffff !important;
-}
-
-/* Progress Spinner in Dark Mode */
-.dark-theme .mat-mdc-progress-spinner circle {
-  stroke: #5B8C2A !important;
-}
-
-/* Error messages in Dark Mode */
-.dark-theme .mat-mdc-form-field-error,
-.dark-theme .mat-error {
-  color: #f48fb1 !important;
-}
-
-/* Dividers in Dark Mode */
-.dark-theme .mat-divider {
-  border-top-color: #424242 !important;
-}
-
-/* Lists in Dark Mode */
-.dark-theme .mat-mdc-list-item {
-  color: #ffffff !important;
-}
-
-/* Chips in Dark Mode */
-.dark-theme .mat-mdc-chip {
-  background-color: #2d2d2d !important;
-  color: #ffffff !important;
-}
-
-/* Table in Dark Mode */
-.dark-theme .mat-mdc-table {
-  background-color: #1e1e1e !important;
-  color: #ffffff !important;
-}
-
-.dark-theme .mat-mdc-header-cell {
-  color: #D0D3D9 !important;
-}
-
-.dark-theme .mat-mdc-cell {
-  color: #ffffff !important;
-}
-
-/* Radio and Checkbox in Dark Mode */
-.dark-theme .mat-mdc-radio-button .mdc-radio {
-  --mdc-radio-selected-icon-color: #5B8C2A !important;
-  --mdc-radio-unselected-icon-color: #757575 !important;
-}
-
-.dark-theme .mat-mdc-checkbox .mdc-checkbox {
-  --mdc-checkbox-selected-checkmark-color: #000000 !important;
-  --mdc-checkbox-selected-icon-color: #5B8C2A !important;
-  --mdc-checkbox-unselected-icon-color: #757575 !important;
-}
-
-/* Slide Toggle in Dark Mode */
-.dark-theme .mat-mdc-slide-toggle {
-  --mdc-switch-selected-track-color: #5B8C2A !important;
-  --mdc-switch-unselected-track-color: #757575 !important;
-}
-
-/* Tabs in Dark Mode */
-.dark-theme .mat-mdc-tab {
-  color: #D0D3D9 !important;
-}
-
-.dark-theme .mat-mdc-tab.mat-mdc-tab-active {
-  color: #5B8C2A !important;
-}
-
-/* Paginator in Dark Mode */
-.dark-theme .mat-mdc-paginator {
-  background-color: #1e1e1e !important;
-  color: #ffffff !important;
-}
-
-/* Tooltip in Dark Mode */
-.dark-theme .mat-mdc-tooltip {
-  background-color: #424242 !important;
-}
-
-/* Autocomplete Panel in Dark Mode */
-.dark-theme .mat-mdc-autocomplete-panel {
-  background-color: #2d2d2d !important;
-}
-
-.dark-theme .mat-mdc-option {
-  color: #ffffff !important;
-}
-
-.dark-theme .mat-mdc-option:hover {
-  background-color: #404040 !important;
-}
-
-/* Date Picker in Dark Mode */
-.dark-theme .mat-datepicker-content {
-  background-color: #1e1e1e !important;
-  color: #ffffff !important;
-}
-
-.dark-theme .mat-calendar {
-  background-color: #1e1e1e !important;
-}
-
-.dark-theme .mat-calendar-body-label,
-.dark-theme .mat-calendar-body-cell-content {
-  color: #ffffff !important;
-}
-
-/* Stepper in Dark Mode */
-.dark-theme .mat-stepper-horizontal,
-.dark-theme .mat-stepper-vertical {
-  background-color: #1e1e1e !important;
-}
-
-.dark-theme .mat-step-header {
-  color: #D0D3D9 !important;
-}
-
-/* System theme detection */
-@media (prefers-color-scheme: dark) {
-  body:not(.light-theme):not(.dark-theme) {
-    --mat-app-background-color: #121212;
-    --mat-app-surface-color: #1e1e1e;
-    --mat-app-on-surface: #ffffff;
-    --mat-app-on-surface-variant: #D0D3D9;
-    --mat-app-primary: #5B8C2A;
-    --mat-app-on-primary: #5b8c2a;
-
-    background-color: var(--mat-app-background-color);
-    color: var(--mat-app-on-surface);
-  }
-
-  body:not(.light-theme):not(.dark-theme) .mat-toolbar {
-    background-color: #1e1e1e !important;
-    color: #ffffff !important;
-  }
-
-  body:not(.light-theme):not(.dark-theme) .mat-card {
-    background-color: #1e1e1e !important;
-    color: #ffffff !important;
-  }
-
-  body:not(.light-theme):not(.dark-theme) .mat-menu-panel {
-    background-color: #2d2d2d !important;
-  }
-
-  body:not(.light-theme):not(.dark-theme) .mat-menu-item {
-    color: #ffffff !important;
-  }
-
-  body:not(.light-theme):not(.dark-theme) .mat-menu-item:hover {
-    background-color: #404040 !important;
-  }
-
-  body:not(.light-theme):not(.dark-theme) .mat-chip {
-    background-color: #2d2d2d !important;
-    color: #ffffff !important;
-  }
-
-  /* Form Fields in System Dark Mode */
-  body:not(.light-theme):not(.dark-theme) .mat-mdc-input-element {
-    color: #000 !important;
-  }
-
-  body:not(.light-theme):not(.dark-theme) .mat-mdc-form-field-label {
-    color: #D0D3D9 !important;
-  }
-
-  body:not(.light-theme):not(.dark-theme) .mdc-notched-outline__leading,
-  body:not(.light-theme):not(.dark-theme) .mdc-notched-outline__notch,
-  body:not(.light-theme):not(.dark-theme) .mdc-notched-outline__trailing {
-    border-color: #757575 !important;
-  }
-}
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
 app-root {
   display: block;
   height: 100%;
 }
 
-/*
-  Quando a página de login estiver ativa, força todos os containers
-  a ocuparem 100% da altura e remove qualquer padding.
-*/
 body.login-page-active,
 body.login-page-active .app-container,
 body.login-page-active .main-content,
@@ -407,13 +38,37 @@ body.login-page-active app-login {
   box-sizing: border-box;
 }
 
-/* Garante que o componente de login se comporte como um bloco de altura total */
 body.login-page-active app-login {
   display: flex;
   width: 100%;
 }
 
-/* Remove o padding do contêiner principal em páginas de tela cheia (login/cadastro) */
 body.full-screen-page .main-content {
   padding: 0;
+}
+
+.success-snackbar {
+  background-color: #4caf50 !important;
+  color: white !important;
+}
+
+.success-snackbar .mat-mdc-snack-bar-label {
+  color: white !important;
+}
+
+.success-snackbar .mat-mdc-button {
+  color: white !important;
+}
+
+.error-snackbar {
+  background-color: #f44336 !important;
+  color: white !important;
+}
+
+.error-snackbar .mat-mdc-snack-bar-label {
+  color: white !important;
+}
+
+.error-snackbar .mat-mdc-button {
+  color: white !important;
 }

@@ -1,10 +1,9 @@
 # Rei da Quadra
 
-Uma aplicação Angular para gerenciamento de competições de futebol com suporte a múltiplos idiomas e temas.
+Uma aplicação Angular para gerenciamento de competições de futebol com suporte a múltiplos idiomas.
 
 ## 🚀 Funcionalidades
 
-- **Múltiplos Temas**: Suporte a tema claro, escuro e automático (baseado no sistema)
 - **Internacionalização**: Suporte a Português, Inglês e Espanhol
 - **Interface Moderna**: Desenvolvida com Angular Material
 - **Responsiva**: Adaptada para dispositivos móveis e desktop
@@ -37,14 +36,6 @@ ng serve
 
 4. Acesse `http://localhost:4200` no seu navegador
 
-## 🎨 Temas
-
-A aplicação oferece três opções de tema:
-
-- **Claro**: Interface com cores claras
-- **Escuro**: Interface com cores escuras (padrão baseado no print)
-- **Sistema**: Segue a preferência do sistema operacional
-
 ## 🌍 Idiomas Suportados
 
 - **Português (pt)**: Idioma padrão
@@ -57,7 +48,6 @@ A aplicação oferece três opções de tema:
 src/
 ├── app/
 │   ├── services/
-│   │   ├── theme.service.ts      # Gerenciamento de temas
 │   │   └── language.service.ts   # Gerenciamento de idiomas
 │   ├── app.component.ts          # Componente principal
 │   ├── app.component.html        # Template principal

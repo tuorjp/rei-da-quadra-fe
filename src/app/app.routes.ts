@@ -4,6 +4,7 @@ import { LoginComponent } from './components/login/login.component';
 import { CreateEventComponent } from './components/create-event/create-event.component';
 import { MyEventsComponent } from './components/my-events/my-events.component';
 import { EventDetailsComponent } from './components/event-details/event-details.component';
+import { ProfileComponent } from './components/profile/profile.component';
 import { authGuard } from './config/auth.guard';
 import { loginGuard } from './config/login.guard';
 import { CadastroComponent } from './components/cadastro/cadastro.component';
@@ -23,7 +24,12 @@ export const routes: Routes = [
   {
     path: 'cadastro',
     component: CadastroComponent,
-    canActivate: [loginGuard] // Impede que um usuário já logado acesse a página
+    canActivate: [loginGuard]
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'create-event',

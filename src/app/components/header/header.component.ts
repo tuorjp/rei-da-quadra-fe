@@ -45,7 +45,7 @@ export class HeaderComponent {
   }
 
   onProfileClick() {
-    console.log('Navigate to profile page');
+    this.router.navigate(['/profile']);
   }
 
   logout(): void {

@@ -10,8 +10,9 @@
 
 
 export interface RegisterDTO { 
-    login?: string;
-    password?: string;
+    login: string;
+    password: string;
+    nome: string;
     role?: RegisterDTO.RoleEnum;
 }
 export namespace RegisterDTO {
