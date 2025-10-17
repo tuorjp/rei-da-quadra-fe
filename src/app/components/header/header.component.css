@@ -5,9 +5,23 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.logo-title-container {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.header-logo {
+  height: 40px;
+  width: auto;
+  margin-right: 16px;
+}
+
+
 .app-title {
   font-size: 1.25rem;
-  font-weight: 600;
+  font-weight: bold;
+  color: #283040;
 }
 
 .toolbar-spacer {
@@ -23,7 +37,6 @@
   background-color: rgba(255, 255, 255, 0.1);
   cursor: pointer;
   transition: background-color 0.2s ease;
-  margin-right: 16px;
 }
 
 .profile-section:hover {
@@ -78,9 +91,13 @@
 
 /* Responsive design */
 @media (max-width: 768px) {
-  .app-title {
-    font-size: 1.1rem;
+  /* Adicionado ajuste para a logo em telas menores */
+  .header-logo {
+    height: 35px;
+    margin-right: 12px;
   }
+
+
 
   .profile-section {
     padding: 6px 12px;

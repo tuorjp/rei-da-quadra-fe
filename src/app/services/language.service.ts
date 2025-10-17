@@ -20,9 +20,9 @@ export class LanguageService {
 
   private translations: Translations = {
     'app.title': {
-      pt: 'Rei da Quadra',
-      en: 'Court King',
-      es: 'Rey de la Cancha'
+      pt: 'Rei da Quadra Club',
+      en: 'Rei da Quadra Club',
+      es: 'Rei da Quadra Club'
     },
     'events.title': {
       pt: 'Eventos de Futebol',
@@ -35,9 +35,9 @@ export class LanguageService {
       es: 'Crear Evento'
     },
     'create.event.description': {
-      pt: 'Crie seu primeiro evento de futebol para começar',
-      en: 'Create your first football event to get started',
-      es: 'Crea tu primer evento de fútbol para comenzar'
+      pt: 'Crie seu primeiro evento para começar',
+      en: 'Create your first event to get started',
+      es: 'Crea tu primer evento para comenzar'
     },
     'join.event': {
       pt: 'Entrar em Evento',
