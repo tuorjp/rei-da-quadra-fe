@@ -19,10 +19,20 @@ export class LanguageService {
   currentLanguage = signal<Language>('pt');
 
   private translations: Translations = {
-    'app.title': {
+    'welcome.text': {
+      pt: 'Bem-vindo ao',
+      en: 'Welcome to',
+      es: 'Bienvenido a'
+    },
+    'app.name': {
       pt: 'Rei da Quadra Club',
       en: 'Rei da Quadra Club',
       es: 'Rei da Quadra Club'
+    },
+    'app.subtitle': {
+      pt: 'Gerenciador de partidas',
+      en: 'Match Manager',
+      es: 'Administrador de Partidos'
     },
     'events.title': {
       pt: 'Eventos de Futebol',

@@ -2,8 +2,7 @@
   <!-- Mostra o header e o footer apenas se o usuário estiver logado -->
   <app-header *ngIf="authService.isLoggedIn()"></app-header>
 
-  <main class="main-content">
-    <!-- O router-outlet é onde o seu componente de login será renderizado -->
+  <main>
     <router-outlet></router-outlet>
   </main>
 
