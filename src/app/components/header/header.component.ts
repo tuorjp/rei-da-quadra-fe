@@ -1,40 +1,44 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router'; // Importar o Router
+import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatBadgeModule } from '@angular/material/badge';
-import { MatTooltipModule } from '@angular/material/tooltip'; // Importar o MatTooltipModule
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { ThemeService, ThemeMode } from '../../services/theme.service';
 import { LanguageService, Language } from '../../services/language.service';
-import { AuthService } from '../../services/auth.service'; // Importar o AuthService
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-header',
   standalone: true,
   imports: [
+    CommonModule,
     MatToolbarModule,
     MatButtonModule,
     MatIconModule,
     MatMenuModule,
     MatBadgeModule,
-    MatTooltipModule // Adicionar MatTooltipModule aqui
+    MatTooltipModule
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
   userSkillPoints = 1250;
-  userAvatar = 'assets/default-avatar.svg';
+  // Simula um usuário sem foto. Se tivesse, seria algo como: 'assets/minha-foto.jpg'
+  userAvatar: string | null = null;
 
   constructor(
     public themeService: ThemeService,
     public languageService: LanguageService,
-    private authService: AuthService, // Injetar AuthService
-    private router: Router // Injetar Router
+    private authService: AuthService,
+    private router: Router
   ) { }
 
+  // ... (resto dos seus métodos)
   setTheme(mode: ThemeMode) {
     this.themeService.setTheme(mode);
   }
@@ -48,11 +52,12 @@ export class HeaderComponent {
   }
 
   onProfileClick() {
+    // Navigate to profile page
     console.log('Navigate to profile');
   }
 
   logout(): void {
-    this.authService.logout(); // Chama o metodog de logout do seu serviço (que deve limpar o token, etc.)
-    this.router.navigate(['/login']); // Redireciona o usuário para a página de login
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }

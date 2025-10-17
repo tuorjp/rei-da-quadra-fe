@@ -5,7 +5,11 @@
 
   <div class="profile-section" (click)="onProfileClick()">
     <div class="profile-avatar">
-      <img [src]="userAvatar" alt="Profile" class="avatar-image">
+      @if (userAvatar) {
+        <img [src]="userAvatar" alt="Profile" class="avatar-image">
+      } @else {
+        <mat-icon class="default-avatar-icon">account_circle</mat-icon>
+      }
     </div>
     <div class="skill-points">
       <mat-icon class="skill-icon">star</mat-icon>
