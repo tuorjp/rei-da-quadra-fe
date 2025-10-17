@@ -3,7 +3,6 @@
 
   <div class="toolbar-spacer"></div>
 
-  <!-- Profile Section -->
   <div class="profile-section" (click)="onProfileClick()">
     <div class="profile-avatar">
       <img [src]="userAvatar" alt="Profile" class="avatar-image">
@@ -14,7 +13,6 @@
     </div>
   </div>
 
-  <!-- Language Menu -->
   <button mat-icon-button [matMenuTriggerFor]="languageMenu" class="toolbar-button">
     <mat-icon>language</mat-icon>
   </button>
@@ -33,7 +31,6 @@
     </button>
   </mat-menu>
 
-  <!-- Theme Menu -->
   <button mat-icon-button [matMenuTriggerFor]="themeMenu" class="toolbar-button">
     <mat-icon>
       @switch (themeService.themeMode()) {
@@ -57,4 +54,8 @@
       {{ translate('theme.system') }}
     </button>
   </mat-menu>
+
+  <button mat-icon-button class="toolbar-button" (click)="logout()" matTooltip="Sair">
+    <mat-icon>logout</mat-icon>
+  </button>
 </mat-toolbar>
