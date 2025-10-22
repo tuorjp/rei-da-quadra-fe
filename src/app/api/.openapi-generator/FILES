@@ -15,6 +15,7 @@ model/eventoResponseDTO.ts
 model/loginResponseDTO.ts
 model/models.ts
 model/registerDTO.ts
+model/userProfileDTO.ts
 param.ts
 provide-api.ts
 variables.ts

@@ -1,6 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthenticationControllerService, AuthenticationDTO, LoginResponseDTO } from '../api';
+import { AuthenticationControllerService, AuthenticationDTO, LoginResponseDTO, UserProfileDTO } from '../api';
 import { Observable, tap } from 'rxjs';
 
 @Injectable({
@@ -32,6 +32,10 @@ export class AuthService {
         }
       })
     );
+  }
+
+  getProfile(): Observable<UserProfileDTO> {
+    return this.authApi.getProfile();
   }
 
   logout(): void {

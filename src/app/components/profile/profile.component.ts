@@ -46,18 +46,27 @@ export class ProfileComponent implements OnInit {
   }
 
   loadUserData(): void {
-    const token = this.authService.getToken();
-    if (token) {
-      try {
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        this.userName = payload.nome || payload.username || payload.nome || payload.sub || 'Usuário';
-        this.userEmail = payload.email || payload.sub || '';
-        console.log('Token payload:', payload);
-      } catch (error) {
-        console.error('Erro ao decodificar token:', error);
-        this.userName = 'Usuário';
+    this.authService.getProfile().subscribe({
+      next: (profile) => {
+        console.log('Profile data:', profile);
+        this.userName = profile.nome || 'Usuário';
+        this.userEmail = profile.email || '';
+      },
+      error: (error) => {
+        console.error('Erro ao buscar perfil:', error);
+        const token = this.authService.getToken();
+        if (token) {
+          try {
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            this.userEmail = payload.email || payload.sub || '';
+            this.userName = payload.nome || 'Usuário';
+          } catch (e) {
+            console.error('Erro ao decodificar token:', e);
+            this.userName = 'Usuário';
+          }
+        }
       }
-    }
+    });
 
     this.memberSince = 'Janeiro 2025';
   }
