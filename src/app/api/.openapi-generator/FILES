@@ -12,9 +12,10 @@ index.ts
 model/authenticationDTO.ts
 model/eventoRequestDTO.ts
 model/eventoResponseDTO.ts
+model/grantedAuthority.ts
 model/loginResponseDTO.ts
 model/models.ts
-model/registerDTO.ts
+model/user.ts
 model/userProfileDTO.ts
 param.ts
 provide-api.ts

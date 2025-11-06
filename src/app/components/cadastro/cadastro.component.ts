@@ -11,6 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { AuthenticationControllerService } from '../../api/api/authenticationController.service';
 import { RegisterDTO } from '../../api/model/registerDTO';
+import {User} from '../../api';
 
 export const passwordMatchValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
   const password = control.get('senha');
@@ -86,13 +87,13 @@ export class CadastroComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.errorMessage = null;
 
-    const registerData: RegisterDTO = {
+    const registerData: User = {
       nome: this.registerForm.value.nome,
-      login: this.registerForm.value.email,
+      email: this.registerForm.value.email,
       password: this.registerForm.value.senha
     };
 
-    this.authService.register(registerData).subscribe({
+    this.authService.registrar(registerData).subscribe({
       next: (response) => {
         this.isLoading = false;
         this.snackBar.open('Cadastro realizado com sucesso!', 'Fechar', {
