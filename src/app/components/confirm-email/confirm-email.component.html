@@ -1,21 +1,29 @@
-<div class="confirm-container">
-  <div class="card">
-    <div *ngIf="isLoading" class="loading">
+<div class="confirm-page">
+
+  <div class="card-container">
+    <img src="/Logo.png" alt="Logo Rei da Quadra Club" class="logo" />
+
+    <!-- Carregando -->
+    <div *ngIf="isLoading" class="loading-box">
       <mat-spinner diameter="50"></mat-spinner>
-      <p>Confirmando seu email...</p>
+      <p class="loading-text">Confirmando seu email...</p>
     </div>
 
-    <div *ngIf="!isLoading">
-      <h2 [class.success]="isSuccess" [class.error]="!isSuccess">
+    <!-- Resultado -->
+    <div *ngIf="!isLoading" class="content-box">
+      <h2 class="title" [class.success]="isSuccess" [class.error]="!isSuccess">
         {{ message }}
       </h2>
 
-      <p *ngIf="isSuccess">Você será redirecionado para a tela de login em instantes...</p>
-      <p *ngIf="!isSuccess">Por favor, tente realizar o cadastro novamente.</p>
+      <p class="subtitle" *ngIf="isSuccess">
+        Redirecionando para a tela de login...
+      </p>
 
-      <button mat-flat-button color="primary" routerLink="/login">
-        Voltar ao login
-      </button>
+      <p class="subtitle" *ngIf="!isSuccess">
+        Por favor, tente realizar o cadastro novamente.
+      </p>
     </div>
+
   </div>
+
 </div>

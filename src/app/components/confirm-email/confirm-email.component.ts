@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import {MatProgressSpinner} from '@angular/material/progress-spinner';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-confirm-email',
   templateUrl: './confirm-email.component.html',
   imports: [
+    CommonModule,
     MatProgressSpinner
   ],
   styleUrls: ['./confirm-email.component.css']
@@ -33,8 +35,8 @@ export class ConfirmEmailComponent implements OnInit {
             this.isSuccess = true;
             this.isLoading = false;
 
-            // Redireciona automaticamente para login após 5s
-            setTimeout(() => this.router.navigate(['/login']), 5000);
+            // Redireciona automaticamente (1,5s)
+            setTimeout(() => this.router.navigate(['/login']), 1500);
           },
           error: (err) => {
             this.message = err.error || 'Erro ao confirmar o email. O token pode estar expirado.';

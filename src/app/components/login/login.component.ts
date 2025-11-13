@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   constructor() {
     this.loginForm = this.fb.group({
-      login: ['', [Validators.required, Validators.email]],
+      email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]]
     });
   }
@@ -64,12 +64,13 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.errorMessage = null;
 
-    const credentials = this.loginForm.value;
+    const credentials = {
+      email: this.loginForm.value.email,
+      password: this.loginForm.value.password
+    };
 
     this.authService.login(credentials)
-      .pipe(
-        finalize(() => this.isLoading = false)
-      )
+      .pipe(finalize(() => this.isLoading = false))
       .subscribe({
         next: () => {
           console.log('Login bem-sucedido!');
