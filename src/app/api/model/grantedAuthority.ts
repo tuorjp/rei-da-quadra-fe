@@ -9,8 +9,7 @@
  */
 
 
-export interface AuthenticationDTO { 
-    email?: string;
-    password?: string;
+export interface GrantedAuthority { 
+    authority?: string;
 }
 

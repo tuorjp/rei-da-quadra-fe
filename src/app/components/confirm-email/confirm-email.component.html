@@ -1,0 +1,21 @@
+<div class="confirm-container">
+  <div class="card">
+    <div *ngIf="isLoading" class="loading">
+      <mat-spinner diameter="50"></mat-spinner>
+      <p>Confirmando seu email...</p>
+    </div>
+
+    <div *ngIf="!isLoading">
+      <h2 [class.success]="isSuccess" [class.error]="!isSuccess">
+        {{ message }}
+      </h2>
+
+      <p *ngIf="isSuccess">Você será redirecionado para a tela de login em instantes...</p>
+      <p *ngIf="!isSuccess">Por favor, tente realizar o cadastro novamente.</p>
+
+      <button mat-flat-button color="primary" routerLink="/login">
+        Voltar ao login
+      </button>
+    </div>
+  </div>
+</div>
