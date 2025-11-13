@@ -1,23 +1,41 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { RouterOutlet } from '@angular/router';
 import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
-    CommonModule, // CommonModule para usar *ngIf
-    RouterOutlet,
+    CommonModule,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    RouterOutlet
   ],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  // AuthService para controlar a visibilidade do header/footer
-  constructor(public authService: AuthService) {}
+
+  private router = inject(Router);
+  authService = inject(AuthService);
+
+  constructor() {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        const url = event.urlAfterRedirects;
+
+        const isLoginPage = url.startsWith('/login');
+
+        if (isLoginPage) {
+          document.body.classList.add('login-page-active');
+        } else {
+          document.body.classList.remove('login-page-active');
+        }
+      }
+    });
+  }
 }

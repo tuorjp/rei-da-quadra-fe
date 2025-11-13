@@ -27,24 +27,13 @@ app-root {
   height: 100%;
 }
 
-body.login-page-active,
-body.login-page-active .app-container,
-body.login-page-active .main-content,
-body.login-page-active router-outlet,
+body.login-page-active {
+  overflow: hidden !important;
+}
+
 body.login-page-active app-login {
   height: 100%;
-  padding: 0 !important;
-  margin: 0 !important;
-  box-sizing: border-box;
-}
-
-body.login-page-active app-login {
-  display: flex;
   width: 100%;
-}
-
-body.full-screen-page .main-content {
-  padding: 0;
 }
 
 .success-snackbar {

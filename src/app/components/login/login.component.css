@@ -11,10 +11,11 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  height: 100dvh;
   width: 100%;
   background-color: rgba(208, 211, 217, 0.37);
-  overflow: auto;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 /* --- Seções laterais --- */
@@ -23,24 +24,22 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 2rem;
   box-sizing: border-box;
-}
-
-.image-section {
   flex: 0 0 50%;
-}
 
-.form-section {
-  flex: 0 0 50%;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-top: clamp(0.5rem, 3vh, 2rem);
+  padding-bottom: clamp(0.5rem, 3vh, 2rem);
 }
 
 /* --- LOGO --- */
 .image-section img {
   width: 100%;
-  max-width: 630px; /* tamanho da logo */
+  max-width: 630px;
   height: auto;
   object-fit: contain;
+  max-height: 90vh;
 }
 
 /* --- CARD BRANCO --- */
@@ -51,43 +50,46 @@
   background-color: #fff;
   border-radius: 16px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+
+  max-height: 75vh;
+  overflow: hidden;
+
+  transition: padding 0.2s ease;
 }
 
-/* --- Cabeçalho e textos --- */
 .login-header {
   margin-bottom: 32px;
   text-align: left;
+  transition: margin-bottom 0.2s ease;
 }
-
 .welcome-text {
   font-size: 2.5rem;
   font-weight: 300;
   margin: 0;
   color: #757575;
+  transition: font-size 0.2s ease;
 }
-
 .app-name {
   font-size: 4.5rem;
   font-weight: bold;
   margin: 0 0 8px 0;
   color: #283040;
+  transition: font-size 0.2s ease, margin 0.2s ease;
 }
-
 .app-subtitle {
   font-size: 1.8rem;
   font-weight: 300;
   margin: 0;
   color: #616161;
+  transition: font-size 0.2s ease;
 }
 
-/* --- Formulário --- */
 form {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  transition: gap 0.2s ease;
 }
-
-/* Botão principal */
 button[mat-flat-button] {
   width: 100%;
   height: 52px;
@@ -96,71 +98,112 @@ button[mat-flat-button] {
   background-color: #283040 !important;
   color: white !important;
   font-weight: 500;
-  transition: background-color 0.3s ease;
+  transition: height 0.2s ease, font-size 0.2s ease;
 }
-
-/* Efeito hover */
 button[mat-flat-button]:hover {
   background-color: #3E5922 !important;
 }
-
 :host ::ng-deep .mat-mdc-text-field-wrapper {
   background-color: #F5F5F5 !important;
 }
 
-/* --- Link de Cadastro --- */
 .signup-container {
   text-align: center;
-  margin-top: 8px; /* Reduz a distância do botão */
+  margin-top: 8px;
 }
-
 .signup-link {
   color: #283040;
   text-decoration: none;
   font-weight: 500;
-  transition: text-decoration 0.3s ease, color 0.3s ease;
   font-size: 0.9rem;
 }
-
 .signup-link:hover {
   color: #3E5922;
 }
-
-/* --- Mensagem de Erro --- */
 .error-message {
-  color: #f44336; /* Cor de erro padrão do Material Design */
+  color: #f44336;
   text-align: center;
   font-size: 0.9rem;
 }
 
-
-/* --- Responsividade --- */
-@media (max-width: 960px) {
+/* Responsividade (MODO RETRATO / ALTURA > LARGURA)*/
+@media (orientation: portrait) {
   .login-page {
     flex-direction: column;
     justify-content: center;
     gap: 1.5rem;
     padding: 1.5rem;
   }
-
   .image-section,
   .form-section {
     width: 100%;
     flex: none;
+    padding: 0;
   }
-
   .image-section img {
-    max-width: 400px; /* logo maior no mobile */
-    width: 90%;
+    max-width: 250px;
+    width: 70%;
+    max-height: none;
   }
-
   .login-form-container {
     width: 100%;
-    max-width: 450px; /* mantém o mesmo tamanho */
+    max-width: 450px;
     padding: 2rem;
+    max-height: none;
   }
 
+  .welcome-text { font-size: 1.8rem; }
+  .app-name { font-size: 2.5rem; }
+  .app-subtitle { font-size: 1.2rem; }
+  .login-header { margin-bottom: 24px; }
+  form { gap: 15px; }
+}
+
+/* Responsividade (PAISAGEM CURTA / LARGURA > ALTURA)*/
+@media (orientation: landscape) and (max-height: 746px) {
+
+  .login-form-container {
+    padding: 6.4vh;
+  }
+
+  .login-header {
+    margin-bottom: 4.2vh;
+  }
+
+  .welcome-text {
+    font-size: 5.3vh;
+  }
   .app-name {
-    font-size: 2rem;
+    font-size: 9.6vh;
+    margin-bottom: 1vh;
+  }
+  .app-subtitle {
+    font-size: 3.8vh;
+  }
+
+  form {
+    gap: 2.6vh;
+  }
+
+  button[mat-flat-button] {
+    height: 6.9vh;
+    font-size: 2.1vh;
+  }
+
+  .signup-container {
+    margin-top: 1vh;
+  }
+
+  :host ::ng-deep .mat-mdc-form-field-flex {
+    height: 7vh !important;
+  }
+  :host ::ng-deep .mat-mdc-text-field-wrapper {
+    height: 7vh !important;
+  }
+  :host ::ng-deep .mat-mdc-floating-label {
+    top: 3.5vh !important;
+  }
+  :host ::ng-deep .mat-mdc-input-element {
+    font-size: 2.1vh !important;
   }
 }
