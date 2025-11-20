@@ -96,12 +96,19 @@ export class CadastroComponent implements OnInit, OnDestroy {
     this.authService.registrar(registerData).subscribe({
       next: (response) => {
         this.isLoading = false;
-        this.snackBar.open('Cadastro realizado com sucesso!', 'Fechar', {
-          duration: 4000,
-          horizontalPosition: 'center',
-          verticalPosition: 'top',
-          panelClass: ['success-snackbar']
-        });
+        this.snackBar.open(
+          `Cadastro realizado com sucesso!\nVerifique seu email para confirmá-lo.`,
+          'Fechar',
+          {
+            duration: 4000,
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+            panelClass: ['success-snackbar', 'snackbar-center']
+          }
+        );
+
+
+
         this.router.navigate(['/login']);
       },
       error: (error) => {
