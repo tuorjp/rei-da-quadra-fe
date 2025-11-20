@@ -113,8 +113,16 @@ export class CadastroComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         this.isLoading = false;
-        const errorMsg = error.error?.message || 'Erro ao realizar cadastro. Tente novamente.';
+
+        let errorMsg = 'Erro ao realizar cadastro. Tente novamente.';
+
+        // Caso backend retorne 409 - Email já existe
+        if (error.status === 409) {
+          errorMsg = 'Erro ao realizar cadastro. Já existe um cadastro com esse email.';
+        }
+
         this.errorMessage = errorMsg;
+
         this.snackBar.open(errorMsg, 'Fechar', {
           duration: 5000,
           horizontalPosition: 'center',
@@ -122,6 +130,7 @@ export class CadastroComponent implements OnInit, OnDestroy {
           panelClass: ['error-snackbar']
         });
       }
+
     });
   }
 }
