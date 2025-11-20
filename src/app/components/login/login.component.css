@@ -51,7 +51,7 @@
   border-radius: 16px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 
-  max-height: 75vh;
+  max-height: 80vh;
   overflow: hidden;
 
   transition: padding 0.2s ease;
