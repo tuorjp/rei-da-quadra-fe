@@ -1,0 +1,54 @@
+<div class="login-page">
+  <div class="image-section">
+    <img src="/Logo.png" alt="Logo Rei da Quadra Club">
+  </div>
+
+  <div class="form-section">
+    <div class="login-form-container">
+
+      <div class="login-header">
+        <p class="welcome-text">Bem vindo ao</p>
+        <h1 class="app-name">Rei da Quadra Club</h1>
+        <p class="app-subtitle">Gerenciador de partidas</p>
+      </div>
+
+      <h2 class="page-context-title">Recuperação de Senha</h2>
+
+      <p class="instruction-text" *ngIf="!isSuccess">
+        Informe o email cadastrado para receber o link de redefinição.
+      </p>
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="!isSuccess">
+
+        <mat-form-field appearance="outline">
+          <mat-label>Email cadastrado</mat-label>
+          <mat-icon matPrefix>email</mat-icon>
+          <input matInput formControlName="email" type="email" placeholder="exemplo@gmail.com" />
+          <mat-error *ngIf="form.get('email')?.hasError('required')">Email obrigatório</mat-error>
+          <mat-error *ngIf="form.get('email')?.hasError('email')">Email inválido</mat-error>
+        </mat-form-field>
+
+        <div *ngIf="message && !isSuccess" class="error-message">
+          {{ message }}
+        </div>
+
+        <div class="login-actions">
+          <button mat-flat-button color="primary" type="submit" [disabled]="isLoading">
+            <span *ngIf="!isLoading">Enviar Email</span>
+            <mat-spinner *ngIf="isLoading" diameter="24"></mat-spinner>
+          </button>
+        </div>
+      </form>
+
+      <div *ngIf="isSuccess" class="success-box">
+        <mat-icon class="success-icon">check_circle</mat-icon>
+        <p class="success-text">{{ message }}</p>
+      </div>
+
+      <div class="signup-container">
+        <a routerLink="/login" class="back-link">Voltar para Login</a>
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -9,6 +9,8 @@ import { ProfileComponent } from './components/profile/profile.component';
 
 import { CadastroComponent } from './components/cadastro/cadastro.component';
 import { ConfirmEmailComponent } from './components/confirm-email/confirm-email.component';
+import { RecuperarSenhaComponent } from './components/recuperar-senha/recuperar-senha.component';
+import { NovaSenhaComponent } from './components/nova-senha/nova-senha.component';
 
 import { authGuard } from './config/auth.guard';
 import { loginGuard } from './config/login.guard';
@@ -35,10 +37,20 @@ export const routes: Routes = [
     canActivate: [loginGuard]
   },
 
-  // *** CONFIRMAR EMAIL (rota livre) ***
+  // Confirmação de email
   {
     path: 'confirm-email',
     component: ConfirmEmailComponent
+  },
+  // Recuperar senha
+  {
+    path: 'recuperar-senha',
+    component: RecuperarSenhaComponent
+  },
+  // Nova senha a partir do email
+  {
+    path: 'reset-password',
+    component: NovaSenhaComponent
   },
 
   // Perfil
