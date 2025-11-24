@@ -9,10 +9,12 @@ import { Observable, tap } from 'rxjs';
 })
 export class AuthService {
   private readonly TOKEN_KEY = 'TK';
+  private readonly API_URL = 'http://localhost:8090/auth'; // Constante para facilitar
+
   isLoggedIn = signal<boolean>(false);
 
   constructor(
-    private authApi: AuthenticationControllerService,
+    private authApi: AuthenticationControllerService, // Mantemos para o login/getProfile antigos
     private router: Router,
     private http: HttpClient
   ) {
@@ -62,5 +64,13 @@ export class AuthService {
   }
   resetPassword(token: string, password: string) {
     return this.http.post('http://localhost:8090/auth/reset-password', { token, password }, { responseType: 'text' });
+  }
+  updateProfile(data: any): Observable<UserProfileDTO> {
+    // Retornamos UserProfileDTO para o componente poder atualizar o nome na tela
+    return this.http.put<UserProfileDTO>(`${this.API_URL}/profile`, data);
+  }
+
+  deleteAccount(): Observable<void> {
+    return this.http.delete<void>(`${this.API_URL}/profile`);
   }
 }

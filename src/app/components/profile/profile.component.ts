@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -10,6 +10,8 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../../services/auth.service';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { EditProfileDialogComponent } from '../edit-profile-dialog/edit-profile-dialog.component';
+import { UserProfileDTO } from '../../api'; // 1. Importação da tipagem
 
 @Component({
   selector: 'app-profile',
@@ -23,6 +25,7 @@ import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.compone
     MatChipsModule,
     MatDialogModule
   ],
+  providers: [DatePipe],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
@@ -30,7 +33,7 @@ export class ProfileComponent implements OnInit {
   userName: string = 'Usuário';
   userEmail: string = '';
   skillRating: number = 5.00;
-  memberSince: string = '';
+  memberSince: string = 'Carregando...';
   totalEvents: number = 0;
   eventsWon: number = 0;
 
@@ -47,37 +50,65 @@ export class ProfileComponent implements OnInit {
 
   loadUserData(): void {
     this.authService.getProfile().subscribe({
-      next: (profile) => {
-        console.log('Profile data:', profile);
+      next: (profile: UserProfileDTO) => {
+        // Garante que não será undefined
         this.userName = profile.nome || 'Usuário';
         this.userEmail = profile.email || '';
+
+        // Cast para 'any' pois o campo pode não existir na definição antiga do Swagger
+        const dataCriacao = (profile as any).dataCriacao;
+
+        if (dataCriacao) {
+          const date = new Date(dataCriacao);
+          const dateStr = date.toLocaleDateString('pt-BR', { day: 'numeric' , month: 'long', year: 'numeric' });
+          this.memberSince = dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
+        } else {
+          this.memberSince = 'Data não disponível';
+        }
       },
       error: (error) => {
-        console.error('Erro ao buscar perfil:', error);
-        const token = this.authService.getToken();
-        if (token) {
-          try {
-            const payload = JSON.parse(atob(token.split('.')[1]));
-            this.userEmail = payload.email || payload.sub || '';
-            this.userName = payload.nome || 'Usuário';
-          } catch (e) {
-            console.error('Erro ao decodificar token:', e);
-            this.userName = 'Usuário';
-          }
-        }
+        console.error('Erro ao buscar perfil', error);
       }
     });
-
-    this.memberSince = 'Janeiro 2025';
   }
 
   editProfile(): void {
-    console.log('Editar perfil');
-  }
+    const dialogRef = this.dialog.open(EditProfileDialogComponent, {
+      width: '500px',
+      data: { nome: this.userName }
+    });
 
-  logout(): void {
-    this.authService.logout();
-    this.router.navigate(['/login']);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // Remove campos vazios de senha
+        const updateData = { ...result };
+        if (!updateData.senha) {
+          delete updateData.senha;
+          delete updateData.confirmarSenha;
+        }
+
+        this.authService.updateProfile(updateData).subscribe({
+          next: (newProfile: UserProfileDTO) => {
+            // CORREÇÃO CRÍTICA AQUI:
+            // O operador || garante que se o backend não devolver o nome, mantém o atual.
+            // Isso resolve o erro TS2322.
+            this.userName = newProfile.nome || this.userName;
+
+            this.snackBar.open('Perfil atualizado com sucesso!', 'OK', {
+              duration: 3000,
+              panelClass: ['success-snackbar']
+            });
+          },
+          error: (err) => {
+            const msg = err.error || 'Erro ao atualizar perfil.';
+            this.snackBar.open(msg, 'Fechar', {
+              duration: 3000,
+              panelClass: ['error-snackbar']
+            });
+          }
+        });
+      }
+    });
   }
 
   deleteAccount(): void {
@@ -85,7 +116,7 @@ export class ProfileComponent implements OnInit {
       width: '450px',
       data: {
         title: 'Deletar Conta',
-        message: 'Tem certeza que deseja deletar sua conta? Esta ação é permanente e não pode ser desfeita. Todos os seus dados serão perdidos.'
+        message: 'Tem certeza que deseja deletar sua conta? Esta ação é permanente.'
       }
     });
 
@@ -101,7 +132,7 @@ export class ProfileComponent implements OnInit {
       width: '450px',
       data: {
         title: 'Confirmação Final',
-        message: 'Esta é a última confirmação. Após clicar em confirmar, sua conta será deletada permanentemente. Deseja continuar?'
+        message: 'Deseja realmente continuar? Sua conta será apagada agora.'
       }
     });
 
@@ -113,17 +144,20 @@ export class ProfileComponent implements OnInit {
   }
 
   private performAccountDeletion(): void {
-    this.snackBar.open('Conta deletada com sucesso', 'Fechar', {
-      duration: 4000,
-      horizontalPosition: 'center',
-      verticalPosition: 'top',
-      panelClass: ['success-snackbar']
+    this.authService.deleteAccount().subscribe({
+      next: () => {
+        this.snackBar.open('Conta deletada com sucesso.', 'Fechar', { duration: 3000 });
+        this.authService.logout();
+        this.router.navigate(['/login']);
+      },
+      error: (err) => {
+        this.snackBar.open('Erro ao deletar conta.', 'Fechar', { duration: 3000 });
+      }
     });
+  }
 
-    setTimeout(() => {
-      this.authService.logout();
-      this.router.navigate(['/login']);
-    }, 1500);
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }
-
