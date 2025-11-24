@@ -126,6 +126,18 @@ button[mat-flat-button]:hover {
   font-size: 0.9rem;
 }
 
+/* Link de recuperação */
+.recover-link {
+  color: #283040;
+  font-weight: bold;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.recover-link:hover {
+  color: #3E5922;
+}
+/* ---------------------------------------------- */
+
 /* Responsividade (MODO RETRATO / ALTURA > LARGURA)*/
 @media (orientation: portrait) {
   .login-page {
@@ -182,7 +194,7 @@ button[mat-flat-button]:hover {
   }
 
   form {
-    gap: 2.6vh;
+    gap: 2.0vh;
   }
 
   button[mat-flat-button] {

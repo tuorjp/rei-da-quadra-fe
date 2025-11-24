@@ -1,5 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 import { AuthenticationControllerService, AuthenticationDTO, LoginResponseDTO, UserProfileDTO } from '../api';
 import { Observable, tap } from 'rxjs';
 
@@ -8,11 +9,14 @@ import { Observable, tap } from 'rxjs';
 })
 export class AuthService {
   private readonly TOKEN_KEY = 'TK';
+  private readonly API_URL = 'http://localhost:8090/auth'; // Constante para facilitar
+
   isLoggedIn = signal<boolean>(false);
 
   constructor(
-    private authApi: AuthenticationControllerService,
-    private router: Router
+    private authApi: AuthenticationControllerService, // Mantemos para o login/getProfile antigos
+    private router: Router,
+    private http: HttpClient
   ) {
     const token = this.getToken();
     if (token) {
@@ -51,5 +55,22 @@ export class AuthService {
 
   private saveToken(token: string): void {
     localStorage.setItem(this.TOKEN_KEY, token);
+  }
+
+  recoverPassword(email: string) {
+    // Envia um objeto JSON { "email": "..." } para o backend
+    // responseType: 'text' é necessário porque o backend retorna uma String simples, não um JSON
+    return this.http.post(`http://localhost:8090/auth/recover-password`, { email }, { responseType: 'text' });
+  }
+  resetPassword(token: string, password: string) {
+    return this.http.post('http://localhost:8090/auth/reset-password', { token, password }, { responseType: 'text' });
+  }
+  updateProfile(data: any): Observable<UserProfileDTO> {
+    // Retornamos UserProfileDTO para o componente poder atualizar o nome na tela
+    return this.http.put<UserProfileDTO>(`${this.API_URL}/profile`, data);
+  }
+
+  deleteAccount(): Observable<void> {
+    return this.http.delete<void>(`${this.API_URL}/profile`);
   }
 }

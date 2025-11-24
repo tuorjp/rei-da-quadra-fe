@@ -32,7 +32,11 @@ import { finalize } from 'rxjs';
 export class LoginComponent implements OnInit, OnDestroy {
   loginForm: FormGroup;
   isLoading = false;
-  errorMessage: string | null = null;
+
+  // Controle de erros
+  errorMessage: string | null = null; // Para erros genéricos
+  showLoginError = false; // Para erro de credenciais (com link)
+
   hidePassword = true;
 
   private fb = inject(FormBuilder);
@@ -63,6 +67,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     this.isLoading = true;
     this.errorMessage = null;
+    this.showLoginError = false; // Reseta o estado do erro específico
 
     const credentials = {
       email: this.loginForm.value.email,
@@ -77,7 +82,14 @@ export class LoginComponent implements OnInit, OnDestroy {
         },
         error: (err) => {
           console.error('Falha no login', err);
-          this.errorMessage = 'Usuário ou senha inválidos. Tente novamente.';
+
+          // Se for erro 401 (Unauthorized) ou 403 (Forbidden), mostra a mensagem com link
+          if (err.status === 401 || err.status === 403) {
+            this.showLoginError = true;
+          } else {
+            // Outros erros (ex: servidor fora do ar)
+            this.errorMessage = 'Ocorreu um erro inesperado. Tente novamente.';
+          }
         }
       });
   }

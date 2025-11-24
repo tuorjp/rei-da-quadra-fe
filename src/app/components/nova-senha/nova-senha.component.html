@@ -1,0 +1,72 @@
+<div class="login-page">
+  <div class="image-section">
+    <img src="/Logo.png" alt="Logo Rei da Quadra Club">
+  </div>
+
+  <div class="form-section">
+    <div class="login-form-container">
+
+      <div class="login-header">
+        <p class="welcome-text">Bem vindo ao</p>
+        <h1 class="app-name">Rei da Quadra Club</h1>
+        <p class="app-subtitle">Gerenciador de partidas</p>
+      </div>
+
+      <h2 class="page-context-title">Definir Nova Senha</h2>
+
+      <p class="instruction-text" *ngIf="!isSuccess && !message">
+        Crie uma senha forte e segura com no mínimo 6 caracteres.
+      </p>
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="!isSuccess">
+
+        <mat-form-field appearance="outline">
+          <mat-label>Nova Senha</mat-label>
+          <mat-icon matPrefix>lock</mat-icon>
+          <input
+            matInput
+            formControlName="password"
+            [type]="hidePassword ? 'password' : 'text'"
+          />
+          <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" type="button">
+            <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          <mat-error *ngIf="form.get('password')?.hasError('required')">Senha obrigatória</mat-error>
+          <mat-error *ngIf="form.get('password')?.hasError('minlength')">Mínimo 6 caracteres</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Confirmar Senha</mat-label>
+          <mat-icon matPrefix>lock</mat-icon>
+          <input
+            matInput
+            formControlName="confirmPassword"
+            [type]="hideConfirmPassword ? 'password' : 'text'"
+          />
+          <button mat-icon-button matSuffix (click)="hideConfirmPassword = !hideConfirmPassword" type="button">
+            <mat-icon>{{ hideConfirmPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          <mat-error *ngIf="form.get('confirmPassword')?.hasError('required')">Confirmação obrigatória</mat-error>
+          <mat-error *ngIf="form.get('confirmPassword')?.hasError('passwordMismatch')">As senhas não coincidem</mat-error>
+        </mat-form-field>
+
+        <div class="login-actions">
+          <button mat-flat-button color="primary" type="submit" [disabled]="isLoading || !token">
+            <span *ngIf="!isLoading">Redefinir Senha</span>
+            <mat-spinner *ngIf="isLoading" diameter="24"></mat-spinner>
+          </button>
+        </div>
+      </form>
+
+      <div *ngIf="message" [class.success-box]="isSuccess" [class.error-message]="!isSuccess" [style.margin-top]="'20px'">
+        <mat-icon *ngIf="isSuccess" class="success-icon">check_circle</mat-icon>
+        <p [class.success-text]="isSuccess">{{ message }}</p>
+      </div>
+
+      <div class="signup-container">
+        <a routerLink="/login" class="back-link">Voltar para Login</a>
+      </div>
+
+    </div>
+  </div>
+</div>
