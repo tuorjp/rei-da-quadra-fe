@@ -1,0 +1,53 @@
+<h2 mat-dialog-title>Editar Perfil</h2>
+
+<mat-dialog-content>
+
+  <div class="edit-header">
+    <div class="avatar-container">
+      <img *ngIf="previewPhoto" [src]="previewPhoto" class="avatar-img" alt="Avatar Preview">
+
+      <div *ngIf="!previewPhoto" class="avatar-placeholder">
+        <mat-icon class="avatar-icon">account_circle</mat-icon>
+      </div>
+
+      <button mat-mini-fab color="primary" class="camera-btn" (click)="fileInput.click()">
+        <mat-icon>photo_camera</mat-icon>
+      </button>
+
+      <input #fileInput type="file" hidden (change)="onFileSelected($event)" accept="image/*">
+    </div>
+
+    <button *ngIf="previewPhoto" class="remove-link" (click)="removePhoto()">
+      Remover foto atual
+    </button>
+  </div>
+
+  <form [formGroup]="form" class="edit-form">
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Nome Completo</mat-label>
+      <input matInput formControlName="nome">
+      <mat-error *ngIf="checkError('nome', 'required')">Nome é obrigatório</mat-error>
+    </mat-form-field>
+
+    <h3 class="section-title">Alterar Senha (Opcional)</h3>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Nova Senha</mat-label>
+      <input matInput formControlName="senha" type="password">
+      <mat-error *ngIf="checkError('senha', 'minlength')">Mínimo 6 caracteres</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Confirmar Nova Senha</mat-label>
+      <input matInput formControlName="confirmarSenha" type="password">
+      <mat-error *ngIf="form.errors?.['passwordMismatch']">As senhas não coincidem</mat-error>
+    </mat-form-field>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancelar</button>
+  <button mat-flat-button color="primary" [disabled]="form.invalid" (click)="onSave()">Salvar</button>
+</mat-dialog-actions>

@@ -13,6 +13,7 @@ import { MAT_DIALOG_DATA, MatDialogRef, MatDialogModule } from '@angular/materia
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-edit-profile-dialog',
@@ -23,63 +24,31 @@ import { MatButtonModule } from '@angular/material/button';
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    MatIconModule
   ],
-  template: `
-    <h2 mat-dialog-title>Editar Perfil</h2>
-
-    <mat-dialog-content>
-      <form [formGroup]="form" class="edit-form" style="display: flex; flex-direction: column; gap: 10px; min-width: 300px;">
-
-        <mat-form-field appearance="outline">
-          <mat-label>Nome Completo</mat-label>
-          <input matInput formControlName="nome">
-          <mat-error *ngIf="checkError('nome', 'required')">Nome é obrigatório</mat-error>
-        </mat-form-field>
-
-        <h3 style="font-size: 1rem; color: #666; margin: 10px 0;">Alterar Senha (Opcional)</h3>
-
-        <mat-form-field appearance="outline">
-          <mat-label>Nova Senha</mat-label>
-          <input matInput formControlName="senha" type="password">
-          <mat-error *ngIf="checkError('senha', 'minlength')">Mínimo 6 caracteres</mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline">
-          <mat-label>Confirmar Nova Senha</mat-label>
-          <input matInput formControlName="confirmarSenha" type="password">
-          <mat-error *ngIf="form.errors?.['passwordMismatch']">As senhas não coincidem</mat-error>
-        </mat-form-field>
-
-      </form>
-    </mat-dialog-content>
-
-    <mat-dialog-actions align="end">
-      <button mat-button (click)="onCancel()">Cancelar</button>
-      <button mat-flat-button color="primary" [disabled]="form.invalid" (click)="onSave()">Salvar</button>
-    </mat-dialog-actions>
-  `
+  templateUrl: './edit-profile-dialog.component.html',
+  styleUrls: ['./edit-profile-dialog.component.css']
 })
 export class EditProfileDialogComponent {
   form: FormGroup;
+  previewPhoto: string | null = null; // Armazena a prévia da foto selecionada
+  photoChanged = false; // Indica se a foto foi alterada
 
-  // Validador de senha
   passwordMatchValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
     const senha = control.get('senha')?.value;
     const confirmarSenha = control.get('confirmarSenha')?.value;
-
-    if (!senha || !confirmarSenha) {
-      return null;
-    }
-
+    if (!senha || !confirmarSenha) return null;
     return senha === confirmarSenha ? null : { passwordMismatch: true };
   }
 
   constructor(
     public dialogRef: MatDialogRef<EditProfileDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { nome: string }
+    @Inject(MAT_DIALOG_DATA) public data: { nome: string, currentPhoto: string | null }
   ) {
-    // Inicialização manual do FormGroup (Resolve erro de depreciação do FormBuilder)
+    // Inicializa a prévia com a foto atual vinda do perfil
+    this.previewPhoto = data.currentPhoto;
+
     this.form = new FormGroup({
       nome: new FormControl(data.nome || '', [Validators.required]),
       senha: new FormControl('', [Validators.minLength(6)]),
@@ -89,8 +58,33 @@ export class EditProfileDialogComponent {
 
   checkError(controlName: string, errorName: string): boolean {
     const control = this.form.get(controlName);
-    // Verifica se o controle existe e tem o erro especificado
     return control ? control.hasError(errorName) : false;
+  }
+
+  // LÓGICA DE FOTO
+
+  onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      // Validação simples de tamanho (opcional)
+      if (file.size > 2 * 1024 * 1024) {
+        alert('A imagem deve ter no máximo 2MB.');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        // Converte para Base64 para exibição e envio
+        this.previewPhoto = reader.result as string;
+        this.photoChanged = true;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  removePhoto(): void {
+    this.previewPhoto = null;
+    this.photoChanged = true;
   }
 
   onCancel(): void {
@@ -99,7 +93,14 @@ export class EditProfileDialogComponent {
 
   onSave(): void {
     if (this.form.valid) {
-      this.dialogRef.close(this.form.value);
+      const result = {
+        ...this.form.value,
+        // Se a foto mudou, envia a nova string (ou "" se foi removida).
+        // Se não mudou, manda undefined para o ProfileComponent ignorar este campo.
+        fotoPerfil: this.photoChanged ? (this.previewPhoto || "") : undefined
+      };
+
+      this.dialogRef.close(result);
     }
   }
 }

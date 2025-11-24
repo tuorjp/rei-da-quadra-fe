@@ -11,7 +11,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../../services/auth.service';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { EditProfileDialogComponent } from '../edit-profile-dialog/edit-profile-dialog.component';
-import { UserProfileDTO } from '../../api'; // 1. Importação da tipagem
+import { UserProfileDTO } from '../../api';
 
 @Component({
   selector: 'app-profile',
@@ -32,6 +32,7 @@ import { UserProfileDTO } from '../../api'; // 1. Importação da tipagem
 export class ProfileComponent implements OnInit {
   userName: string = 'Usuário';
   userEmail: string = '';
+  userPhoto: string | null = null;
   skillRating: number = 5.00;
   memberSince: string = 'Carregando...';
   totalEvents: number = 0;
@@ -51,16 +52,17 @@ export class ProfileComponent implements OnInit {
   loadUserData(): void {
     this.authService.getProfile().subscribe({
       next: (profile: UserProfileDTO) => {
-        // Garante que não será undefined
         this.userName = profile.nome || 'Usuário';
         this.userEmail = profile.email || '';
 
-        // Cast para 'any' pois o campo pode não existir na definição antiga do Swagger
-        const dataCriacao = (profile as any).dataCriacao;
+        // Carrega a foto do backend
+        this.userPhoto = (profile as any).fotoPerfil || null;
 
+        // Formata a data
+        const dataCriacao = (profile as any).dataCriacao;
         if (dataCriacao) {
           const date = new Date(dataCriacao);
-          const dateStr = date.toLocaleDateString('pt-BR', { day: 'numeric' , month: 'long', year: 'numeric' });
+          const dateStr = date.toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' });
           this.memberSince = dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
         } else {
           this.memberSince = 'Data não disponível';
@@ -75,24 +77,38 @@ export class ProfileComponent implements OnInit {
   editProfile(): void {
     const dialogRef = this.dialog.open(EditProfileDialogComponent, {
       width: '500px',
-      data: { nome: this.userName }
+      // Passa o nome e a foto atual para o modal de edição
+      data: {
+        nome: this.userName,
+        currentPhoto: this.userPhoto
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        // Remove campos vazios de senha
+        // Prepara o objeto de atualização
         const updateData = { ...result };
+
+        // Remove campos de senha se estiverem vazios
         if (!updateData.senha) {
           delete updateData.senha;
           delete updateData.confirmarSenha;
         }
 
+        // Se a foto não foi alterada (undefined), remove do payload para não enviar null
+        if (updateData.fotoPerfil === undefined) {
+          delete updateData.fotoPerfil;
+        }
+
         this.authService.updateProfile(updateData).subscribe({
           next: (newProfile: UserProfileDTO) => {
-            // CORREÇÃO CRÍTICA AQUI:
-            // O operador || garante que se o backend não devolver o nome, mantém o atual.
-            // Isso resolve o erro TS2322.
+            // Atualiza os dados na tela com a resposta do backend
             this.userName = newProfile.nome || this.userName;
+
+            // Atualiza a foto se ela veio na resposta
+            if ((newProfile as any).fotoPerfil !== undefined) {
+              this.userPhoto = (newProfile as any).fotoPerfil;
+            }
 
             this.snackBar.open('Perfil atualizado com sucesso!', 'OK', {
               duration: 3000,
