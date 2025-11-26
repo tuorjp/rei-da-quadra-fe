@@ -7,7 +7,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { HistoricoPontuacao } from './historicoPontuacao';
+import { HistoricoTransferencia } from './historicoTransferencia';
 import { GrantedAuthority } from './grantedAuthority';
+import { Inscricao } from './inscricao';
+import { ParticipacaoDesempenho } from './participacaoDesempenho';
 
 
 export interface User { 
@@ -17,10 +21,27 @@ export interface User {
     password?: string;
     role?: string;
     enabled?: boolean;
-    username?: string;
+    dataCriacao?: string;
+    fotoPerfil?: string;
+    pontosHabilidade?: number;
+    nivelHabilidade?: User.NivelHabilidadeEnum;
+    inscricoes?: Array<Inscricao>;
+    desempenhos?: Array<ParticipacaoDesempenho>;
+    historicoPontuacao?: Array<HistoricoPontuacao>;
+    historicoTransferencia?: Array<HistoricoTransferencia>;
     authorities?: Array<GrantedAuthority>;
+    username?: string;
+    accountNonLocked?: boolean;
     accountNonExpired?: boolean;
     credentialsNonExpired?: boolean;
-    accountNonLocked?: boolean;
 }
+export namespace User {
+    export const NivelHabilidadeEnum = {
+        Craque: 'CRAQUE',
+        Mediano: 'MEDIANO',
+        PernaDePau: 'PERNA_DE_PAU'
+    } as const;
+    export type NivelHabilidadeEnum = typeof NivelHabilidadeEnum[keyof typeof NivelHabilidadeEnum];
+}
+
 

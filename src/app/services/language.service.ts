@@ -303,6 +303,121 @@ export class LanguageService {
       pt: 'Tem certeza que deseja deletar este evento? Esta ação não pode ser desfeita.',
       en: 'Are you sure you want to delete this event? This action cannot be undone.',
       es: '¿Estás seguro de que deseas eliminar este evento? Esta acción no se puede deshacer.'
+    },
+    'inscriptions': {
+      pt: 'Inscrições',
+      en: 'Inscriptions',
+      es: 'Inscripciones'
+    },
+    'inscriptions.manage': {
+      pt: 'Gerenciar Inscrições',
+      en: 'Manage Inscriptions',
+      es: 'Administrar Inscripciones'
+    },
+    'inscriptions.add': {
+      pt: 'Adicionar Jogador',
+      en: 'Add Player',
+      es: 'Agregar Jugador'
+    },
+    'inscriptions.list': {
+      pt: 'Lista de Inscritos',
+      en: 'Registered Players',
+      es: 'Lista de Inscritos'
+    },
+    'inscriptions.none': {
+      pt: 'Nenhum jogador inscrito ainda',
+      en: 'No players registered yet',
+      es: 'Ningún jugador inscrito aún'
+    },
+    'inscriptions.total': {
+      pt: 'Total de Inscritos',
+      en: 'Total Registered',
+      es: 'Total de Inscritos'
+    },
+    'player.name': {
+      pt: 'Nome do Jogador',
+      en: 'Player Name',
+      es: 'Nombre del Jugador'
+    },
+    'player.email': {
+      pt: 'Email',
+      en: 'Email',
+      es: 'Correo'
+    },
+    'player.remove': {
+      pt: 'Remover Jogador',
+      en: 'Remove Player',
+      es: 'Eliminar Jugador'
+    },
+    'player.remove.confirm': {
+      pt: 'Tem certeza que deseja remover este jogador?',
+      en: 'Are you sure you want to remove this player?',
+      es: '¿Estás seguro de que deseas eliminar este jugador?'
+    },
+    'teams': {
+      pt: 'Times',
+      en: 'Teams',
+      es: 'Equipos'
+    },
+    'teams.manage': {
+      pt: 'Gerenciar Times',
+      en: 'Manage Teams',
+      es: 'Administrar Equipos'
+    },
+    'teams.create': {
+      pt: 'Criar Time',
+      en: 'Create Team',
+      es: 'Crear Equipo'
+    },
+    'teams.none': {
+      pt: 'Nenhum time criado ainda',
+      en: 'No teams created yet',
+      es: 'Ningún equipo creado aún'
+    },
+    'team.name': {
+      pt: 'Nome do Time',
+      en: 'Team Name',
+      es: 'Nombre del Equipo'
+    },
+    'team.color': {
+      pt: 'Cor do Time',
+      en: 'Team Color',
+      es: 'Color del Equipo'
+    },
+    'matches': {
+      pt: 'Partidas',
+      en: 'Matches',
+      es: 'Partidos'
+    },
+    'matches.manage': {
+      pt: 'Gerenciar Partidas',
+      en: 'Manage Matches',
+      es: 'Administrar Partidos'
+    },
+    'matches.create': {
+      pt: 'Criar Partida',
+      en: 'Create Match',
+      es: 'Crear Partido'
+    },
+    'matches.none': {
+      pt: 'Nenhuma partida criada ainda',
+      en: 'No matches created yet',
+      es: 'Ningún partido creado aún'
+    },
+    'dashboard': {
+      pt: 'Painel',
+      en: 'Dashboard',
+      es: 'Panel'
+    },
+    'statistics': {
+      pt: 'Estatísticas',
+      en: 'Statistics',
+      es: 'Estadísticas'
+    },
+    'status': {
+      pt: 'Status',
+      en: 'Status',
+      es: 'Estado'
     }
   };
 

@@ -1,0 +1,111 @@
+<div class="inscriptions-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>group</mat-icon>
+        {{ langService.translate('inscriptions.manage') }}
+      </mat-card-title>
+      <div class="header-actions">
+        <button 
+          mat-raised-button 
+          color="primary"
+          (click)="toggleAddForm()"
+          [disabled]="isLoading()"
+        >
+          <mat-icon>{{ showAddForm() ? 'close' : 'person_add' }}</mat-icon>
+          {{ showAddForm() ? langService.translate('button.cancel') : langService.translate('inscriptions.add') }}
+        </button>
+      </div>
+    </mat-card-header>
+
+    <mat-card-content>
+      <!-- Formulário de Adicionar Jogador -->
+      <div class="add-player-form" *ngIf="showAddForm()">
+        <form [formGroup]="playerForm" (ngSubmit)="onAddPlayer()">
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="flex-1">
+              <mat-label>{{ langService.translate('player.name') }}</mat-label>
+              <input matInput formControlName="nome">
+              <mat-icon matPrefix>person</mat-icon>
+              <mat-error *ngIf="playerForm.get('nome')?.hasError('required')">
+                {{ langService.translate('field.required') }}
+              </mat-error>
+              <mat-error *ngIf="playerForm.get('nome')?.hasError('minlength')">
+                {{ langService.translate('field.minlength') }}
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="flex-1">
+              <mat-label>{{ langService.translate('player.email') }}</mat-label>
+              <input matInput type="email" formControlName="email">
+              <mat-icon matPrefix>email</mat-icon>
+              <mat-error *ngIf="playerForm.get('email')?.hasError('required')">
+                {{ langService.translate('field.required') }}
+              </mat-error>
+              <mat-error *ngIf="playerForm.get('email')?.hasError('email')">
+                Email inválido
+              </mat-error>
+            </mat-form-field>
+
+            <button
+              mat-raised-button
+              color="primary"
+              type="submit"
+              [disabled]="isAddingPlayer() || playerForm.invalid"
+              class="submit-btn"
+            >
+              <mat-spinner diameter="20" *ngIf="isAddingPlayer()"></mat-spinner>
+              <mat-icon *ngIf="!isAddingPlayer()">check</mat-icon>
+              {{ langService.translate('inscriptions.add') }}
+            </button>
+          </div>
+        </form>
+        <mat-divider></mat-divider>
+      </div>
+
+      <!-- Loading -->
+      <div class="loading-container" *ngIf="isLoading()">
+        <mat-spinner></mat-spinner>
+        <p>{{ langService.translate('loading') }}</p>
+      </div>
+
+      <!-- Lista de Inscrições -->
+      <div class="inscriptions-list" *ngIf="!isLoading()">
+        <div class="inscriptions-header">
+          <h3>{{ langService.translate('inscriptions.list') }}</h3>
+          <mat-chip>
+            {{ langService.translate('inscriptions.total') }}: {{ inscricoes().length }}
+          </mat-chip>
+        </div>
+
+        <div class="empty-state" *ngIf="inscricoes().length === 0">
+          <mat-icon>group_off</mat-icon>
+          <p>{{ langService.translate('inscriptions.none') }}</p>
+        </div>
+
+        <mat-list *ngIf="inscricoes().length > 0">
+          <mat-list-item *ngFor="let inscricao of inscricoes()">
+            <mat-icon matListItemIcon>person</mat-icon>
+            <div matListItemTitle>{{ inscricao.jogadorNome }}</div>
+            <div matListItemLine>
+              <span class="email">{{ inscricao.jogadorEmail }}</span>
+              <span class="separator">•</span>
+              <span class="matches">{{ inscricao.partidasJogadas }} partidas</span>
+              <span class="separator" *ngIf="inscricao.timeAtual">•</span>
+              <span class="team" *ngIf="inscricao.timeAtual">{{ inscricao.timeAtual }}</span>
+            </div>
+            <button 
+              mat-icon-button 
+              color="warn"
+              matListItemMeta
+              (click)="onRemovePlayer(inscricao)"
+              [attr.aria-label]="langService.translate('player.remove')"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
