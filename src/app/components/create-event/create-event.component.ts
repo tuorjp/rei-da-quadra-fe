@@ -18,7 +18,7 @@ import { LanguageService } from '../../services/language.service';
 
 import { finalize } from 'rxjs';
 
-import { LocationPickerDialogComponent } from '../map/location-picker-dialog/location-picker-dialog.component';
+import { LocationPickerDialogComponent } from '../location-picker-dialog/location-picker-dialog.component';
 
 @Component({
   selector: 'app-create-event',
@@ -130,7 +130,7 @@ export class CreateEventComponent {
           );
           this.router.navigate(['/my-events']);
         },
-        error: (error) => {
+        error: () => {
           this.snackBar.open(
             this.langService.translate('event.created.error'),
             'OK',
