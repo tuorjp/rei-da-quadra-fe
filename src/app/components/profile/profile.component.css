@@ -196,6 +196,41 @@
   font-size: 2.5rem;
 }
 
+/* ---- BADGE DE HABILIDADE ---- */
+
+.skill-badge {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: white;
+  text-transform: uppercase;
+  width: fit-content;
+}
+
+/* NÍVEL: CRAQUE (ouro) */
+.skill-badge.craque {
+  background: linear-gradient(135deg, #d4af37, #b8860b);
+  color: #fff;
+  border: 1px solid #b8860b;
+}
+
+/* NÍVEL: MEDIANO (azul intermediário) */
+.skill-badge.mediano {
+  background: linear-gradient(135deg, #2196F3, #1976D2);
+  border: 1px solid #1565C0;
+}
+
+/* NÍVEL: PERNA_DE_PAU (vermelho) */
+.skill-badge.perna-de-pau {
+  background: linear-gradient(135deg, #E53935, #C62828);
+  border: 1px solid #B71C1C;
+}
+
+
 .actions-section {
   padding: 2rem;
   display: flex;

@@ -21,6 +21,9 @@
             <mat-icon>event</mat-icon>
             <span>Membro desde {{ memberSince }}</span>
           </div>
+          <div class="skill-badge" [ngClass]="nivelHabilidade.toLowerCase().replaceAll('_', '-')">
+            {{ nivelHabilidade.replaceAll('_', ' ') }}
+          </div>
         </div>
       </div>
 
@@ -35,9 +38,14 @@
             </div>
             <div class="stat-content">
               <span class="stat-label">Pontuação de Habilidade</span>
-              <span class="stat-value skill-value">{{ skillRating.toFixed(2) }}</span>
+              <span class="stat-value skill-value">{{ skillRating }}</span>
+
+              <span class="stat-label">Nível: {{ nivelHabilidade.replaceAll('_', ' ') }}</span>
             </div>
+
+
           </div>
+
 
           <div class="stat-card">
             <div class="stat-icon">

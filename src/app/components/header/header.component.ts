@@ -27,7 +27,8 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
-  userSkillPoints = 1250;
+  userSkillPoints: number = 0;
+  nivelHabilidade: string = '';
   userAvatar: any;
 
   constructor(
@@ -42,6 +43,12 @@ export class HeaderComponent {
     // Atualiza automaticamente quando o usuário alterar a foto
     effect(() => {
       this.userAvatar = this.authService.userPhoto();
+    });
+
+    // Carrega os pontos de habilidade do usuário
+    this.authService.getProfile().subscribe(profile => {
+      this.userSkillPoints = (profile as any).pontosHabilidade ?? 0;
+      this.nivelHabilidade = (profile as any).nivelHabilidade ?? 'MEDIANO';
     });
   }
 

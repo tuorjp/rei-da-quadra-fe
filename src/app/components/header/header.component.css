@@ -90,7 +90,6 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  color: #497320;
 }
 
 .skill-icon {
@@ -153,4 +152,22 @@
   .toolbar-button {
     margin-left: 2px; /* Espaçamento mínimo */
   }
+}
+
+/* CRAQUE */
+.skill-points.craque .skill-icon,
+.skill-points.craque .points-text {
+  color: #d4af37 !important; /* ouro */
+}
+
+/* MEDIANO */
+.skill-points.mediano .skill-icon,
+.skill-points.mediano .points-text {
+  color: #2196F3 !important; /* azul */
+}
+
+/* PERNA DE PAU */
+.skill-points.perna-de-pau .skill-icon,
+.skill-points.perna-de-pau .points-text {
+  color: #E53935 !important; /* vermelho */
 }

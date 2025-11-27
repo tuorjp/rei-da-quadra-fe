@@ -37,6 +37,7 @@ export class ProfileComponent implements OnInit {
   memberSince: string = 'Carregando...';
   totalEvents: number = 0;
   eventsWon: number = 0;
+  nivelHabilidade: string = '';
 
   private authService = inject(AuthService);
   private router = inject(Router);
@@ -57,6 +58,9 @@ export class ProfileComponent implements OnInit {
 
         // Carrega a foto do backend
         this.userPhoto = (profile as any).fotoPerfil || null;
+
+        this.skillRating = (profile as any).pontosHabilidade ?? 1000;
+        this.nivelHabilidade = (profile as any).nivelHabilidade ?? 'MEDIANO';
 
         // Formata a data
         const dataCriacao = (profile as any).dataCriacao;

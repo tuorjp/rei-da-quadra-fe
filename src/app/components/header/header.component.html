@@ -16,10 +16,11 @@
 
 
     </div>
-    <div class="skill-points">
+    <div class="skill-points" [ngClass]="nivelHabilidade.toLowerCase().replaceAll('_','-')">
       <mat-icon class="skill-icon">star</mat-icon>
       <span class="points-text">{{ userSkillPoints }}</span>
     </div>
+
   </div>
 
   <button mat-icon-button [matMenuTriggerFor]="languageMenu" class="toolbar-button">
