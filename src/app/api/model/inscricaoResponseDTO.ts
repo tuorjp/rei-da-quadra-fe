@@ -7,17 +7,16 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { User } from './user';
-import { Evento } from './evento';
-import { Time } from './time';
 
 
-export interface Inscricao { 
+export interface InscricaoResponseDTO { 
     id?: number;
+    jogadorId?: number;
+    jogadorNome?: string;
+    jogadorEmail?: string;
     partidasJogadas?: number;
-    evento?: Evento;
-    jogador?: User;
-    timeAtual?: Time;
+    timeAtualId?: number;
+    timeAtualNome?: string;
     dataInscricao?: string;
 }
 

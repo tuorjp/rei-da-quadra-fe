@@ -29,8 +29,8 @@ export interface User {
     desempenhos?: Array<ParticipacaoDesempenho>;
     historicoPontuacao?: Array<HistoricoPontuacao>;
     historicoTransferencia?: Array<HistoricoTransferencia>;
-    authorities?: Array<GrantedAuthority>;
     username?: string;
+    authorities?: Array<GrantedAuthority>;
     accountNonLocked?: boolean;
     accountNonExpired?: boolean;
     credentialsNonExpired?: boolean;

@@ -6,8 +6,8 @@
         {{ langService.translate('inscriptions.manage') }}
       </mat-card-title>
       <div class="header-actions">
-        <button 
-          mat-raised-button 
+        <button
+          mat-raised-button
           color="primary"
           (click)="toggleAddForm()"
           [disabled]="isLoading()"
@@ -23,18 +23,6 @@
       <div class="add-player-form" *ngIf="showAddForm()">
         <form [formGroup]="playerForm" (ngSubmit)="onAddPlayer()">
           <div class="form-row">
-            <mat-form-field appearance="outline" class="flex-1">
-              <mat-label>{{ langService.translate('player.name') }}</mat-label>
-              <input matInput formControlName="nome">
-              <mat-icon matPrefix>person</mat-icon>
-              <mat-error *ngIf="playerForm.get('nome')?.hasError('required')">
-                {{ langService.translate('field.required') }}
-              </mat-error>
-              <mat-error *ngIf="playerForm.get('nome')?.hasError('minlength')">
-                {{ langService.translate('field.minlength') }}
-              </mat-error>
-            </mat-form-field>
-
             <mat-form-field appearance="outline" class="flex-1">
               <mat-label>{{ langService.translate('player.email') }}</mat-label>
               <input matInput type="email" formControlName="email">
@@ -94,8 +82,8 @@
               <span class="separator" *ngIf="inscricao.timeAtual">•</span>
               <span class="team" *ngIf="inscricao.timeAtual">{{ inscricao.timeAtual }}</span>
             </div>
-            <button 
-              mat-icon-button 
+            <button
+              mat-icon-button
               color="warn"
               matListItemMeta
               (click)="onRemovePlayer(inscricao)"

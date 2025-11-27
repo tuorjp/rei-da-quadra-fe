@@ -17,6 +17,7 @@ import { LanguageService } from '../../services/language.service';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { InscricaoService, InscricaoRequestDTO } from '../../services/inscricao.service';
 import { API_CONFIG } from '../../config/api.config';
+import {ActivatedRoute} from '@angular/router';
 
 interface Inscricao {
   id: number;
@@ -55,85 +56,36 @@ export class EventInscriptionsComponent implements OnInit {
   private dialog = inject(MatDialog);
   private inscricaoService = inject(InscricaoService);
   public langService = inject(LanguageService);
+  public eventId: string | null;
 
   inscricoes = signal<Inscricao[]>([]);
   isLoading = signal<boolean>(false);
   isAddingPlayer = signal<boolean>(false);
   showAddForm = signal<boolean>(false);
-  useMockData = signal<boolean>(API_CONFIG.USE_MOCK_INSCRICOES);
 
   playerForm: FormGroup;
 
-  constructor() {
+  constructor(private route: ActivatedRoute) {
+    this.eventId = this.route.snapshot.paramMap.get('id');
     this.playerForm = this.fb.group({
-      nome: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]]
     });
   }
 
   ngOnInit(): void {
-    this.loadInscricoes();
+    this.carregarLista();
   }
 
-  loadInscricoes(): void {
-    this.isLoading.set(true);
-    
-    if (this.useMockData()) {
-      // Dados mockados para desenvolvimento
-      setTimeout(() => {
-        this.inscricoes.set([
-          {
-            id: 1,
-            jogadorNome: 'João Silva',
-            jogadorEmail: 'joao@email.com',
-            partidasJogadas: 5,
-            timeAtual: 'Time A'
-          },
-          {
-            id: 2,
-            jogadorNome: 'Maria Santos',
-            jogadorEmail: 'maria@email.com',
-            partidasJogadas: 3,
-            timeAtual: 'Time B'
-          },
-          {
-            id: 3,
-            jogadorNome: 'Pedro Oliveira',
-            jogadorEmail: 'pedro@email.com',
-            partidasJogadas: 7,
-            timeAtual: 'Time A'
-          }
-        ]);
-        this.isLoading.set(false);
-      }, 500);
-      return;
-    }
-
-    // Chamada real à API
-    this.inscricaoService.listarInscricoes(this.eventoId)
-      .pipe(
-        finalize(() => this.isLoading.set(false)),
-        catchError((error) => {
-          console.error('Erro ao carregar inscrições:', error);
-          this.snackBar.open(
-            this.langService.translate('event.load.error'),
-            'OK',
-            { duration: 5000 }
-          );
-          return of([]);
-        })
-      )
-      .subscribe({
-        next: (inscricoes) => {
-          this.inscricoes.set(inscricoes.map(i => ({
-            id: i.id,
-            jogadorNome: i.jogadorNome,
-            jogadorEmail: i.jogadorEmail,
-            partidasJogadas: i.partidasJogadas,
-            timeAtual: i.timeAtualNome
-          })));
-        }
-      });
+  carregarLista() {
+    this.inscricaoService.listarInscricoes(this.eventoId).subscribe({
+      next: (response) => {
+        console.log(response);
+        this.inscricoes.set(response);
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
   }
 
   toggleAddForm(): void {
@@ -144,74 +96,8 @@ export class EventInscriptionsComponent implements OnInit {
   }
 
   onAddPlayer(): void {
-    if (this.playerForm.invalid || this.isAddingPlayer()) {
-      this.playerForm.markAllAsTouched();
-      return;
-    }
+    const email = this.playerForm.get('email');
 
-    this.isAddingPlayer.set(true);
-
-    if (this.useMockData()) {
-      // Simulação para desenvolvimento
-      setTimeout(() => {
-        const newPlayer: Inscricao = {
-          id: this.inscricoes().length + 1,
-          jogadorNome: this.playerForm.value.nome,
-          jogadorEmail: this.playerForm.value.email,
-          partidasJogadas: 0
-        };
-
-        this.inscricoes.update(list => [...list, newPlayer]);
-        this.playerForm.reset();
-        this.showAddForm.set(false);
-        this.isAddingPlayer.set(false);
-
-        this.snackBar.open(
-          'Jogador adicionado com sucesso!',
-          'OK',
-          { duration: 3000 }
-        );
-      }, 500);
-      return;
-    }
-
-    // Chamada real à API
-    const request: InscricaoRequestDTO = {
-      jogadorEmail: this.playerForm.value.email
-    };
-
-    this.inscricaoService.adicionarInscricao(this.eventoId, request)
-      .pipe(
-        finalize(() => this.isAddingPlayer.set(false)),
-        catchError((error) => {
-          console.error('Erro ao adicionar jogador:', error);
-          const errorMessage = error.error?.message || 'Erro ao adicionar jogador. Tente novamente.';
-          this.snackBar.open(errorMessage, 'OK', { duration: 5000 });
-          return of(null);
-        })
-      )
-      .subscribe({
-        next: (inscricao) => {
-          if (inscricao) {
-            this.inscricoes.update(list => [...list, {
-              id: inscricao.id,
-              jogadorNome: inscricao.jogadorNome,
-              jogadorEmail: inscricao.jogadorEmail,
-              partidasJogadas: inscricao.partidasJogadas,
-              timeAtual: inscricao.timeAtualNome
-            }]);
-            
-            this.playerForm.reset();
-            this.showAddForm.set(false);
-            
-            this.snackBar.open(
-              'Jogador adicionado com sucesso!',
-              'OK',
-              { duration: 3000 }
-            );
-          }
-        }
-      });
   }
 
   onRemovePlayer(inscricao: Inscricao): void {
@@ -222,47 +108,24 @@ export class EventInscriptionsComponent implements OnInit {
       }
     });
 
+    console.log("Entrou modal")
+
     dialogRef.afterClosed().subscribe((confirmed: boolean) => {
       if (confirmed) {
+        console.log("CONFIRMADO", confirmed)
         this.removePlayer(inscricao.id);
       }
     });
   }
 
   removePlayer(id: number): void {
-    if (this.useMockData()) {
-      // Simulação para desenvolvimento
-      this.inscricoes.update(list => list.filter(i => i.id !== id));
-      this.snackBar.open(
-        'Jogador removido com sucesso!',
-        'OK',
-        { duration: 3000 }
-      );
-      return;
-    }
-
-    // Chamada real à API
-    this.inscricaoService.removerInscricao(this.eventoId, id)
-      .pipe(
-        catchError((error) => {
-          console.error('Erro ao remover jogador:', error);
-          this.snackBar.open(
-            'Erro ao remover jogador. Tente novamente.',
-            'OK',
-            { duration: 5000 }
-          );
-          return of(null);
-        })
-      )
-      .subscribe({
-        next: () => {
-          this.inscricoes.update(list => list.filter(i => i.id !== id));
-          this.snackBar.open(
-            'Jogador removido com sucesso!',
-            'OK',
-            { duration: 3000 }
-          );
-        }
-      });
+    this.inscricaoService.removerInscricao(this.eventoId, id).subscribe({
+      next: () => {
+        this.carregarLista();
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
   }
 }

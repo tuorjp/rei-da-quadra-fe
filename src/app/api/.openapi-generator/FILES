@@ -6,6 +6,7 @@ api/administraoDeTimes.service.ts
 api/api.ts
 api/authenticationController.service.ts
 api/eventoController.service.ts
+api/inscricaoController.service.ts
 api/partidas.service.ts
 api/times.service.ts
 configuration.ts
@@ -21,6 +22,8 @@ model/grantedAuthority.ts
 model/historicoPontuacao.ts
 model/historicoTransferencia.ts
 model/inscricao.ts
+model/inscricaoRequestDTO.ts
+model/inscricaoResponseDTO.ts
 model/jogadorResumoDTO.ts
 model/loginResponseDTO.ts
 model/models.ts
