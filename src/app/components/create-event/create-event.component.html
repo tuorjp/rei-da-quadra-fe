@@ -23,14 +23,16 @@
           </mat-error>
         </mat-form-field>
 
-        <!-- Local -->
-        <mat-form-field appearance="outline" class="full-width">
+        <!-- Local com mapa-->
+        <mat-form-field appearance="outline" class="full-width" (click)="openLocationPicker()">
           <mat-label>{{ langService.translate('event.location') }}</mat-label>
-          <input matInput formControlName="local" [placeholder]="langService.translate('event.location.placeholder')">
+          <input
+            matInput
+            formControlName="local"
+            readonly
+            [placeholder]="langService.translate('event.location.placeholder')"
+          >
           <mat-icon matPrefix>location_on</mat-icon>
-          <mat-error *ngIf="eventForm.get('local')?.hasError('required')">
-            {{ langService.translate('field.required') }}
-          </mat-error>
         </mat-form-field>
 
         <!-- Data e Hora -->

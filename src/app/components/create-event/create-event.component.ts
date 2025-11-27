@@ -1,7 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, Inject, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -9,10 +10,15 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+
 import { EventoControllerService } from '../../api/api/eventoController.service';
 import { EventoRequestDTO } from '../../api/model/eventoRequestDTO';
 import { LanguageService } from '../../services/language.service';
+
 import { finalize } from 'rxjs';
+
+import { LocationPickerDialogComponent } from '../map/location-picker-dialog/location-picker-dialog.component';
 
 @Component({
   selector: 'app-create-event',
@@ -26,28 +32,76 @@ import { finalize } from 'rxjs';
     MatButtonModule,
     MatProgressSpinnerModule,
     MatIconModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatDialogModule
   ],
   templateUrl: './create-event.component.html',
-  styleUrl: './create-event.component.css'
+  styleUrls: ['./create-event.component.css']
 })
 export class CreateEventComponent {
   private fb = inject(FormBuilder);
   private eventoService = inject(EventoControllerService);
   private router = inject(Router);
   private snackBar = inject(MatSnackBar);
+  private dialog = inject(MatDialog);
+
   public langService = inject(LanguageService);
 
   eventForm: FormGroup;
   isSubmitting = false;
 
-  constructor() {
+  constructor(@Inject('MAPBOX_TOKEN') private mapboxToken: string) {
     this.eventForm = this.fb.group({
       nome: ['', [Validators.required, Validators.minLength(3)]],
-      local: ['', Validators.required],
+      local: ['', Validators.required],          // endereço selecionado
+      latitude: ['', Validators.required],       // lat retornada do mapa
+      longitude: ['', Validators.required],      // lng retornada do mapa
       dataHorario: ['', Validators.required]
     });
   }
+
+  // ======================================================
+  // 👉 ABRIR MAPA — inclui geolocalização automática
+  // ======================================================
+  openLocationPicker(): void {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        this.openMapDialog(position.coords.latitude, position.coords.longitude);
+      },
+      (error) => {
+        console.warn("Não foi possível pegar geolocalização:", error);
+
+        // fallback padrão
+        this.openMapDialog(-23.55052, -46.633308);
+      }
+    );
+  }
+
+  private openMapDialog(lat: number, lng: number): void {
+    const dialogRef = this.dialog.open(LocationPickerDialogComponent, {
+      width: '90%',
+      maxWidth: '600px',
+      disableClose: false,
+      data: {
+        lat,
+        lng,
+        mapboxToken: this.mapboxToken,
+        styleId: 'mapbox/streets-v11'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result) return;
+
+      // result contém: lat, lng, address
+      this.eventForm.patchValue({
+        local: result.address ?? `${result.lat}, ${result.lng}`,
+        latitude: result.lat,
+        longitude: result.lng
+      });
+    });
+  }
+
 
   onSubmit(): void {
     if (this.eventForm.invalid || this.isSubmitting) {
@@ -58,15 +112,17 @@ export class CreateEventComponent {
     this.isSubmitting = true;
 
     const eventoRequest: EventoRequestDTO = {
-      ...this.eventForm.value,
+      nome: this.eventForm.value.nome,
+      local: this.eventForm.value.local,
+      //latitude: this.eventForm.value.latitude,
+      //longitude: this.eventForm.value.longitude,
       dataHorario: new Date(this.eventForm.value.dataHorario).toISOString()
     };
 
     this.eventoService.criarEvento(eventoRequest)
       .pipe(finalize(() => this.isSubmitting = false))
       .subscribe({
-        next: (response) => {
-          console.log('Evento criado com sucesso:', response);
+        next: () => {
           this.snackBar.open(
             this.langService.translate('event.created.success'),
             'OK',
@@ -75,7 +131,6 @@ export class CreateEventComponent {
           this.router.navigate(['/my-events']);
         },
         error: (error) => {
-          console.error('Erro ao criar evento:', error);
           this.snackBar.open(
             this.langService.translate('event.created.error'),
             'OK',
@@ -89,4 +144,3 @@ export class CreateEventComponent {
     this.router.navigate(['/']);
   }
 }
-
