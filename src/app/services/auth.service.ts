@@ -13,6 +13,8 @@ export class AuthService {
 
   isLoggedIn = signal<boolean>(false);
 
+  userPhoto = signal<string | null>(null);
+
   constructor(
     private authApi: AuthenticationControllerService, // Mantemos para o login/getProfile antigos
     private router: Router,
@@ -21,7 +23,19 @@ export class AuthService {
     const token = this.getToken();
     if (token) {
       this.isLoggedIn.set(true);
+      this.loadProfilePhoto();
     }
+  }
+
+  private loadProfilePhoto(): void {
+    this.getProfile().subscribe({
+      next: (profile: any) => {
+        this.userPhoto.set(profile.fotoPerfil || null);
+      },
+      error: () => {
+        this.userPhoto.set(null);
+      }
+    });
   }
 
   login(credentials: AuthenticationDTO): Observable<LoginResponseDTO> {
@@ -32,6 +46,7 @@ export class AuthService {
           console.log('RESPONSE', response)
           this.saveToken(response.token);
           this.isLoggedIn.set(true);
+          this.loadProfilePhoto(); // Atualiza a foto do perfil após o login
           this.router.navigate(['/']); // Redireciona para a home após o login
         }
       })
@@ -45,7 +60,7 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem(this.TOKEN_KEY);
     this.isLoggedIn.set(false);
-    // Navega para o login explicitamente no logout
+    this.userPhoto.set(null);
     this.router.navigate(['/login']);
   }
 
@@ -66,8 +81,13 @@ export class AuthService {
     return this.http.post('http://localhost:8090/auth/reset-password', { token, password }, { responseType: 'text' });
   }
   updateProfile(data: any): Observable<UserProfileDTO> {
-    // Retornamos UserProfileDTO para o componente poder atualizar o nome na tela
-    return this.http.put<UserProfileDTO>(`${this.API_URL}/profile`, data);
+    return this.http.put<UserProfileDTO>(`${this.API_URL}/profile`, data).pipe(
+      tap((updated: any) => {
+        if (updated.fotoPerfil !== undefined) {
+          this.userPhoto.set(updated.fotoPerfil);
+        }
+      })
+    );
   }
 
   deleteAccount(): Observable<void> {

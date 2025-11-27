@@ -53,6 +53,26 @@
   justify-content: center;
 }
 
+.header-user-photo {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ffffff;
+  cursor: pointer;
+}
+
+.default-user-photo {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.25);
+}
+
+
 .avatar-image {
   width: 100%;
   height: 100%;

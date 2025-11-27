@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, effect} from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -28,13 +28,23 @@ import { AuthService } from '../../services/auth.service';
 })
 export class HeaderComponent {
   userSkillPoints = 1250;
-  userAvatar: string | null = null;
+  userAvatar: any;
 
   constructor(
     public languageService: LanguageService,
     private authService: AuthService,
     private router: Router
-  ) { }
+  ) {
+
+    // Inicializa com a foto existente
+    this.userAvatar = this.authService.userPhoto();
+
+    // Atualiza automaticamente quando o usuário alterar a foto
+    effect(() => {
+      this.userAvatar = this.authService.userPhoto();
+    });
+  }
+
 
   setLanguage(language: Language) {
     this.languageService.setLanguage(language);
