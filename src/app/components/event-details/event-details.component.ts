@@ -15,6 +15,8 @@ import { EventoResponseDTO } from '../../api/model/eventoResponseDTO';
 import { LanguageService } from '../../services/language.service';
 import { finalize } from 'rxjs';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
 
 @Component({
   selector: 'app-event-details',
@@ -88,10 +90,10 @@ export class EventDetailsComponent implements OnInit {
   }
 
   populateForm(evento: EventoResponseDTO): void {
-    // Converter ISO string para formato datetime-local
     let dateTimeValue = '';
+    const userZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     if (evento.dataHorario) {
-      dateTimeValue = evento.dataHorario.slice(0,16);
+      dateTimeValue = dayjs.utc(evento.dataHorario).tz(userZone).format("YYYY-MM-DDHH:mm");
     }
 
     this.eventForm.patchValue({
@@ -119,7 +121,6 @@ export class EventDetailsComponent implements OnInit {
 
     const updates: { [key: string]: any } = {};
 
-    // Apenas incluir campos que foram modificados
     if (this.eventForm.value.nome !== this.evento()?.nome) {
       updates['nome'] = this.eventForm.value.nome;
     }
@@ -127,9 +128,16 @@ export class EventDetailsComponent implements OnInit {
       updates['local'] = this.eventForm.value.local;
     }
 
-    const newDate = this.eventForm.value.dataHorario;
-    if (newDate !== this.evento()?.dataHorario) {
-      updates['dataHorario'] = newDate;
+    const localDateTime = this.eventForm.value.dataHorario;
+    if (localDateTime) {
+      const userZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+      const parsed = dayjs.tz(localDateTime, "YYYY-MM-DDTHH:mm", userZone);
+      const utcIso = parsed.utc().toISOString();
+
+      if(utcIso!== this.evento()?.dataHorario){
+        updates['dataHorario'] = utcIso;
+      }
     }
 
     if (Object.keys(updates).length === 0) {

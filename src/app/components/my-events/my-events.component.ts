@@ -10,6 +10,7 @@ import { EventoControllerService } from '../../api/api/eventoController.service'
 import { EventoResponseDTO } from '../../api/model/eventoResponseDTO';
 import { LanguageService } from '../../services/language.service';
 import { finalize } from 'rxjs';
+import dayjs from 'dayjs';
 
 @Component({
   selector: 'app-my-events',
@@ -47,7 +48,7 @@ export class MyEventsComponent implements OnInit {
       .subscribe({
         next: async (eventos) => {
           console.log(eventos)
-          
+
           if(eventos instanceof Blob) {
             const blobText = await eventos.text()
             const eventosJson = JSON.parse(blobText)
@@ -55,7 +56,7 @@ export class MyEventsComponent implements OnInit {
             this.eventos.set(eventosJson)
             return
           }
-          
+
           this.eventos.set(eventos);
         },
         error: (error) => {
@@ -77,8 +78,8 @@ export class MyEventsComponent implements OnInit {
 
   formatDate(dateString: string | undefined): string {
     if (!dateString) return '';
-    const date = new Date(dateString);
-    return date.toLocaleString(this.langService.currentLanguage());
+    const userZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    return dayjs.utc(dateString).tz(userZone).format("DD/MM/YYYY HH:mm");
   }
 }
 

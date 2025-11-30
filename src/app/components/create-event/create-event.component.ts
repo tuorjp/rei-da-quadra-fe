@@ -14,6 +14,13 @@ import { EventoRequestDTO } from '../../api/model/eventoRequestDTO';
 import { LanguageService } from '../../services/language.service';
 import { finalize } from 'rxjs';
 
+import dayjs from 'dayjs';
+import utc from "dayjs/plugin/utc";        // ← CORRETO
+import timezone from 'dayjs/plugin/timezone';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
 @Component({
   selector: 'app-create-event',
   standalone: true,
@@ -57,9 +64,24 @@ export class CreateEventComponent {
 
     this.isSubmitting = true;
 
+    const localDateTimeValue: string = this.eventForm.value.dataHorario;
+
+    if (!localDateTimeValue) {
+      this.isSubmitting = false;
+      return;
+    }
+
+    const userZone = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
+
+    const parsed = dayjs.tz(localDateTimeValue, "YYYY-MM-DDTHH:mm", userZone);
+
+    const utcIsoString = parsed.utc().toISOString();
+
+    // CORREÇÃO: Criar o objeto antes de enviar
     const eventoRequest: EventoRequestDTO = {
-      ...this.eventForm.value,
-      dataHorario:this.eventForm.value.dataHorario
+      nome: this.eventForm.value.nome,
+      local: this.eventForm.value.local,
+      dataHorario: utcIsoString
     };
 
     this.eventoService.criarEvento(eventoRequest)
@@ -89,4 +111,3 @@ export class CreateEventComponent {
     this.router.navigate(['/']);
   }
 }
-
