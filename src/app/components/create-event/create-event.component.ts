@@ -59,7 +59,7 @@ export class CreateEventComponent {
 
     const eventoRequest: EventoRequestDTO = {
       ...this.eventForm.value,
-      dataHorario: new Date(this.eventForm.value.dataHorario).toISOString()
+      dataHorario:this.eventForm.value.dataHorario
     };
 
     this.eventoService.criarEvento(eventoRequest)

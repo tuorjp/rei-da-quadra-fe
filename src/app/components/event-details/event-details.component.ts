@@ -91,9 +91,7 @@ export class EventDetailsComponent implements OnInit {
     // Converter ISO string para formato datetime-local
     let dateTimeValue = '';
     if (evento.dataHorario) {
-      const date = new Date(evento.dataHorario);
-      // Format: yyyy-MM-ddTHH:mm
-      dateTimeValue = date.toISOString().slice(0, 16);
+      dateTimeValue = evento.dataHorario.slice(0,16);
     }
 
     this.eventForm.patchValue({
@@ -129,7 +127,7 @@ export class EventDetailsComponent implements OnInit {
       updates['local'] = this.eventForm.value.local;
     }
 
-    const newDate = new Date(this.eventForm.value.dataHorario).toISOString();
+    const newDate = this.eventForm.value.dataHorario;
     if (newDate !== this.evento()?.dataHorario) {
       updates['dataHorario'] = newDate;
     }
