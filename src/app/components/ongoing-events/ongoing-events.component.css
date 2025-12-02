@@ -11,7 +11,6 @@
   color: #757575;
 }
 
-/* --- GRID DE CARDS --- */
 .events-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -48,19 +47,22 @@
   color: #3E5922;
 }
 
-
 .event-card mat-card-content {
   flex-grow: 1;
-  padding: 0 24px 24px 24px;
+  padding: 24px;
   display: flex;
   flex-direction: column;
 }
 
 mat-card-header {
-  padding: 24px 24px 16px 24px;
+  padding: 20px 24px;
   display: flex;
   align-items: center;
   gap: 16px;
+  background-color: rgba(208, 211, 217, 0.3);
+  border-bottom: 1px solid #EEEEEE;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
 }
 
 .event-avatar {
@@ -106,9 +108,9 @@ mat-card-header {
 
 .organizer-crown {
   color: #FBC02D;
-  font-size: 24px;
-  width: 24px;
-  height: 24px;
+  font-size: 30px;
+  width: 30px;
+  height: 30px;
   flex-shrink: 0;
 }
 
@@ -116,9 +118,6 @@ mat-card-header {
   display: flex;
   flex-direction: column;
   gap: 14px;
-  margin-top: 8px;
-  padding-top: 16px;
-  border-top: 1px solid #EEEEEE;
 }
 
 .detail-row {
@@ -148,7 +147,6 @@ mat-card-header {
   font-weight: 600;
 }
 
-/* Data e Hora */
 .date-row-container {
   align-items: center;
 }
@@ -159,7 +157,6 @@ mat-card-header {
   color: #283040;
 }
 
-/* Status Pill */
 .status-pill {
   font-size: 0.75rem;
   font-weight: 700;
@@ -187,7 +184,7 @@ mat-card-actions {
   justify-content: space-between;
   align-items: center;
   padding: 16px 24px;
-  background-color: #FAFAFA;
+  background-color: rgba(208, 211, 217, 0.3);
   border-top: 1px solid #EEEEEE;
   border-bottom-left-radius: 16px;
   border-bottom-right-radius: 16px;
@@ -197,12 +194,12 @@ mat-card-actions {
   color: #616161 !important;
   font-weight: 500;
 }
+
 .btn-details:hover {
   color: #497320 !important;
   background-color: rgba(73, 115, 32, 0.05);
 }
 
-/* Botão Principal (Participar/Editar) */
 .btn-join {
   background-color: #283040 !important;
   color: white !important;
@@ -222,6 +219,7 @@ mat-card-actions {
   padding: 64px 24px;
   color: #757575;
 }
+
 .no-events-icon {
   font-size: 64px;
   width: 64px;
@@ -230,12 +228,12 @@ mat-card-actions {
   opacity: 0.3;
   color: #283040;
 }
+
 .no-events-text {
   font-size: 1.2rem;
   font-weight: 300;
 }
 
-/* --- RESPONSIVIDADE --- */
 @media (max-width: 600px) {
   .events-grid {
     grid-template-columns: 1fr;
@@ -245,7 +243,7 @@ mat-card-actions {
     flex-direction: column;
     align-items: center;
     text-align: center;
-    padding-bottom: 0;
+    padding-bottom: 20px;
   }
   .header-text {
     margin-top: 16px;
