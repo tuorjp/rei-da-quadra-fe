@@ -418,6 +418,16 @@ export class LanguageService {
       pt: 'Status',
       en: 'Status',
       es: 'Estado'
+    },
+    'request.sent': {
+      pt: 'Solicitação enviada com sucesso!',
+      en: 'Request sent successfully!',
+      es: '¡Solicitud enviada con éxito!'
+    },
+    'button.join': {
+      pt: 'Participar',
+      en: 'Join',
+      es: 'Participar'
     }
   };
 

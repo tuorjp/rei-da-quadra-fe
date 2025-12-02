@@ -1,21 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatButtonModule } from '@angular/material/button';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { LanguageService } from '../../services/language.service';
-
-export interface Event {
-  id: string;
-  name: string;
-  location: string;
-  date: Date;
-  isOrganizer: boolean;
-  participantCount: number;
-  maxParticipants: number;
-  status: 'ongoing' | 'upcoming' | 'finished';
-}
+import { EventoControllerService } from '../../api/api/eventoController.service';
+import { EventoResponseDTO } from '../../api/model/eventoResponseDTO';
 
 @Component({
   selector: 'app-ongoing-events',
@@ -25,72 +19,131 @@ export interface Event {
     MatCardModule,
     MatIconModule,
     MatChipsModule,
-    MatButtonModule
+    MatButtonModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './ongoing-events.component.html',
   styleUrl: './ongoing-events.component.css'
 })
-export class OngoingEventsComponent {
-  // Mock data - replace with actual service
-  events: Event[] = [
-    {
-      id: '1',
-      name: 'Torneio de Verão 2024',
-      location: 'Quadra Central',
-      date: new Date('2024-12-15T14:00:00'),
-      isOrganizer: true,
-      participantCount: 12,
-      maxParticipants: 16,
-      status: 'ongoing'
-    },
-    {
-      id: '2',
-      name: 'Liga dos Amigos',
-      location: 'Campo do Bairro',
-      date: new Date('2024-12-16T16:00:00'),
-      isOrganizer: false,
-      participantCount: 8,
-      maxParticipants: 12,
-      status: 'upcoming'
-    },
-    {
-      id: '3',
-      name: 'Copa Relâmpago',
-      location: 'Arena Sports',
-      date: new Date('2024-12-14T10:00:00'),
-      isOrganizer: true,
-      participantCount: 16,
-      maxParticipants: 16,
-      status: 'ongoing'
-    }
-  ];
+export class OngoingEventsComponent implements OnInit {
+  private router = inject(Router);
+  private eventoService = inject(EventoControllerService);
+  private snackBar = inject(MatSnackBar);
+  public languageService = inject(LanguageService);
 
-  constructor(public languageService: LanguageService) {}
+  events: EventoResponseDTO[] = [];
+  isLoading = true;
+
+  ngOnInit() {
+    this.getUserLocation();
+  }
+
+  // --- LÓGICA DE CÁLCULO DA QUANTIDADE DE EVENTOS ---
+  private calculateLimit(): number {
+    const width = window.innerWidth;
+
+    // Mobile: se a tela for menor que 768px, retorna 10 eventos
+    if (width < 768) {
+      return 10;
+    }
+
+    // Lógica para Desktop baseada no Grid CSS:
+    // grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    // Container máximo: 1200px. Padding lateral: 24px + 24px = 48px.
+    // Largura mínima da coluna: 350px. Gap: 32px.
+
+    // Largura útil aproximada do container
+    const containerWidth = Math.min(width, 1200) - 48;
+
+    // Largura que cada item ocupa no cálculo do auto-fill (Item + Gap)
+    const columnWidth = 350 + 32;
+
+    // Quantas colunas cabem?
+    const columns = Math.floor(containerWidth / columnWidth);
+
+
+    if (columns >= 3) {
+      return 15;
+    } else if (columns === 2) {
+      return 14;
+    } else {
+      return 10;
+    }
+  }
+
+  getUserLocation() {
+    // Calcula o limite dinâmico antes de fazer a chamada
+    const limit = this.calculateLimit();
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+          this.loadNearbyEvents(lat, lon, limit);
+        },
+        (error) => {
+          console.error('Erro ao obter localização:', error);
+          this.isLoading = false;
+        }
+      );
+    } else {
+      this.isLoading = false;
+      console.error('Geolocalização não suportada');
+    }
+  }
+
+  loadNearbyEvents(lat: number, lon: number, limit: number) {
+    // Chama o serviço passando o limite calculado
+    (this.eventoService as any).listarEventosProximos(lat, lon, limit).subscribe({
+      next: (data: EventoResponseDTO[]) => {
+        this.events = data;
+        this.isLoading = false;
+      },
+      error: (err: any) => {
+        console.error('Erro ao carregar eventos próximos', err);
+        this.isLoading = false;
+      }
+    });
+  }
+
+  onEventClick(event: EventoResponseDTO) {
+    if (event.id) {
+      this.router.navigate(['/event-details', event.id]);
+    }
+  }
+
+  onRequestJoin(event: EventoResponseDTO, evt: MouseEvent) {
+    evt.stopPropagation();
+    this.snackBar.open(this.translate('request.sent'), 'OK', { duration: 3000 });
+  }
+
+  onEditEvent(event: EventoResponseDTO, evt: MouseEvent) {
+    evt.stopPropagation();
+    this.router.navigate(['/event-details', event.id]);
+  }
 
   translate(key: string): string {
     return this.languageService.translate(key);
   }
 
-  onEventClick(event: Event) {
-    console.log('Navigate to event:', event.id);
-  }
-
   getStatusColor(status: string): string {
-    switch (status) {
-      case 'ongoing': return 'primary';
-      case 'upcoming': return 'accent';
-      case 'finished': return 'warn';
-      default: return 'primary';
-    }
+    return status === 'ATIVO' ? 'primary' : 'warn';
   }
 
-  formatDate(date: Date): string {
-    return date.toLocaleDateString(this.languageService.currentLanguage(), {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
+  formatDate(dateStr?: string): string {
+    if (!dateStr) return '';
+    const date = new Date(dateStr);
+
+    // Formato: dd/MM/yyyy
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+
+    // Formato: HH:mm
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+
+    return `${day}/${month}/${year}, às ${hours}:${minutes}`;
   }
 }

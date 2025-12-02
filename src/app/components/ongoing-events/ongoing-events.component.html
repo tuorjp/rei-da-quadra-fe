@@ -1,79 +1,87 @@
 <div class="ongoing-events-section">
   <h2 class="section-title">{{ translate('events.ongoing') }}</h2>
 
-  <div class="events-grid" *ngIf="events.length > 0; else noEvents">
+  <div *ngIf="isLoading" style="display:flex; flex-direction:column; align-items:center; justify-content:center; padding: 3rem;">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
+
+  <div class="events-grid" *ngIf="!isLoading && events.length > 0; else noEvents">
     <mat-card
       *ngFor="let event of events"
       class="event-card"
       (click)="onEventClick(event)">
 
       <mat-card-header>
-        <div mat-card-avatar class="event-avatar">
-          <mat-icon *ngIf="event.isOrganizer" class="crown-icon">workspace_premium</mat-icon>
-          <mat-icon *ngIf="!event.isOrganizer">sports_soccer</mat-icon>
+        <div class="event-avatar">
+          <mat-icon *ngIf="event.isOrganizer">emoji_events</mat-icon>
+          <mat-icon *ngIf="!event.isOrganizer">group_add</mat-icon>
         </div>
 
-        <mat-card-title class="event-title">
-          {{ event.name }}
-          <mat-icon *ngIf="event.isOrganizer" class="organizer-crown">workspace_premium</mat-icon>
-        </mat-card-title>
-
-        <mat-card-subtitle>
-          <div class="event-location">
-            <mat-icon class="location-icon">location_on</mat-icon>
-            {{ event.location }}
-          </div>
-        </mat-card-subtitle>
+        <div class="header-text">
+          <h3 class="event-title">
+            {{ event.nome }}
+            <mat-icon *ngIf="event.isOrganizer" class="organizer-crown" title="Organizador">workspace_premium</mat-icon>
+          </h3>
+        </div>
       </mat-card-header>
 
       <mat-card-content>
         <div class="event-details">
-          <div class="event-date">
-            <mat-icon>schedule</mat-icon>
-            {{ formatDate(event.date) }}
+
+          <div class="detail-row">
+            <mat-icon class="detail-icon">location_on</mat-icon>
+            <span class="detail-text">{{ event.local }}</span>
           </div>
 
-          <div class="participants-info">
-            <mat-icon>group</mat-icon>
-            {{ event.participantCount }}/{{ event.maxParticipants }}
+          <div class="detail-row date-row-container">
+            <mat-icon class="detail-icon">schedule</mat-icon>
+            <div style="display:flex; align-items:center; justify-content:space-between; flex:1; gap:8px;">
+              <span class="date-text">{{ formatDate(event.dataHorario) }}</span>
+
+              <div class="status-pill"
+                   [ngClass]="{'status-active': (event.status === 'ATIVO' || !event.status), 'status-other': event.status !== 'ATIVO'}">
+                {{ event.status === 'ATIVO' ? 'Em Aberto' : event.status }}
+              </div>
+            </div>
           </div>
-        </div>
 
-        <div class="event-chips">
-          <mat-chip [color]="getStatusColor(event.status)" selected>
-            {{ event.status === 'ongoing' ? 'Em Andamento' :
-               event.status === 'upcoming' ? 'Próximo' : 'Finalizado' }}
-          </mat-chip>
+          <div class="detail-row">
+            <mat-icon class="detail-icon">person</mat-icon>
+            <span class="detail-text">
+              Organizador: <span class="organizer-name">{{ event.usuarioNome || 'Desconhecido' }}</span>
+            </span>
+          </div>
 
-          <mat-chip *ngIf="event.isOrganizer" color="accent" selected>
-            <mat-icon class="chip-icon">workspace_premium</mat-icon>
-            {{ translate('events.organizer') }}
-          </mat-chip>
-
-          <mat-chip *ngIf="!event.isOrganizer" color="primary" selected>
-            <mat-icon class="chip-icon">person</mat-icon>
-            {{ translate('events.participant') }}
-          </mat-chip>
         </div>
       </mat-card-content>
 
       <mat-card-actions>
-        <button mat-button color="primary">
+        <button mat-button class="btn-details">
           <mat-icon>visibility</mat-icon>
           {{ translate('events.details')}}
         </button>
-        <button mat-button *ngIf="event.isOrganizer" color="accent">
-          <mat-icon>settings</mat-icon>
-          {{ translate('events.manage')}}
-        </button>
+
+        <div style="display:flex; gap:8px;">
+          <!-- Editar (Dono) -->
+          <button mat-flat-button class="btn-join" *ngIf="event.isOrganizer" (click)="onEditEvent(event, $event)">
+            <mat-icon>edit</mat-icon>
+            {{ translate('button.edit') }}
+          </button>
+
+          <!-- Participar (Visitante) -->
+          <button mat-flat-button class="btn-join" *ngIf="!event.isOrganizer" (click)="onRequestJoin(event, $event)">
+            <mat-icon>person_add</mat-icon>
+            Participar
+          </button>
+        </div>
       </mat-card-actions>
     </mat-card>
   </div>
 
   <ng-template #noEvents>
-    <div class="no-events">
+    <div class="no-events" *ngIf="!isLoading">
       <mat-icon class="no-events-icon">event_busy</mat-icon>
-      <p class="no-events-text">Nenhum evento em andamento no momento</p>
+      <p class="no-events-text">Nenhum evento próximo encontrado.</p>
     </div>
   </ng-template>
 </div>
