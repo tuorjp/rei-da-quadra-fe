@@ -1,0 +1,40 @@
+.dialog-content {
+  height: 480px;
+  width: 100%;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#locationMap {
+  width: 100%;
+  height: calc(100% - 120px);
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.search-results {
+  max-height: 120px;
+  overflow-y: auto;
+  background: #fff;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  border: 1px solid rgba(0,0,0,0.15);
+}
+
+.result-item {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  cursor: pointer;
+}
+
+.result-item:hover {
+  background: #eeeeee;
+}
+
+.result-item mat-icon {
+  margin-right: 8px;
+}
