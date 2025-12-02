@@ -9,15 +9,18 @@
   <div class="profile-section" (click)="onProfileClick()">
     <div class="profile-avatar">
       @if (userAvatar) {
-        <img [src]="userAvatar" alt="Profile" class="avatar-image">
+        <img [src]="userAvatar" class="avatar-image" />
       } @else {
         <mat-icon class="default-avatar-icon">account_circle</mat-icon>
       }
+
+
     </div>
-    <div class="skill-points">
+    <div class="skill-points" [ngClass]="nivelHabilidade.toLowerCase().replaceAll('_','-')">
       <mat-icon class="skill-icon">star</mat-icon>
       <span class="points-text">{{ userSkillPoints }}</span>
     </div>
+
   </div>
 
   <button mat-icon-button [matMenuTriggerFor]="languageMenu" class="toolbar-button">

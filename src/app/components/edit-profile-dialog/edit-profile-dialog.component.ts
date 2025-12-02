@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormGroup,
@@ -14,6 +14,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { ImageCropperComponent, ImageCroppedEvent, LoadedImage } from 'ngx-image-cropper';
 
 @Component({
   selector: 'app-edit-profile-dialog',
@@ -25,15 +26,23 @@ import { MatIconModule } from '@angular/material/icon';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    ImageCropperComponent
   ],
   templateUrl: './edit-profile-dialog.component.html',
   styleUrls: ['./edit-profile-dialog.component.css']
 })
 export class EditProfileDialogComponent {
   form: FormGroup;
-  previewPhoto: string | null = null; // Armazena a prévia da foto selecionada
-  photoChanged = false; // Indica se a foto foi alterada
+  previewPhoto: string | null = null;
+  photoChanged = false;
+
+  //Variáveis para controle do crop
+  imageChangedEvent: any = '';
+  croppedImage: string | null = null;
+  isCropping = false;
+
+  @ViewChild('fileInput') fileInput!: ElementRef;
 
   passwordMatchValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
     const senha = control.get('senha')?.value;
@@ -46,7 +55,6 @@ export class EditProfileDialogComponent {
     public dialogRef: MatDialogRef<EditProfileDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { nome: string, currentPhoto: string | null }
   ) {
-    // Inicializa a prévia com a foto atual vinda do perfil
     this.previewPhoto = data.currentPhoto;
 
     this.form = new FormGroup({
@@ -61,31 +69,68 @@ export class EditProfileDialogComponent {
     return control ? control.hasError(errorName) : false;
   }
 
-  // LÓGICA DE FOTO
+  //LÓGICA DE FOTO E CROP
 
   onFileSelected(event: any): void {
-    const file = event.target.files[0];
-    if (file) {
-      // Validação simples de tamanho (opcional)
-      if (file.size > 2 * 1024 * 1024) {
-        alert('A imagem deve ter no máximo 2MB.');
-        return;
-      }
+    if (event.target.files && event.target.files.length > 0) {
+      // Ativa o modo de corte e passa o evento para o cropper
+      this.imageChangedEvent = event;
+      this.isCropping = true;
+    }
+  }
 
-      const reader = new FileReader();
-      reader.onload = () => {
-        // Converte para Base64 para exibição e envio
-        this.previewPhoto = reader.result as string;
-        this.photoChanged = true;
-      };
-      reader.readAsDataURL(file);
+  // Chamado automaticamente pelo componente image-cropper a cada movimento
+  imageCropped(event: ImageCroppedEvent) {
+    if (event.objectUrl || event.base64) {
+      // Salva o resultado temporário
+      this.croppedImage = event.base64 || event.objectUrl || null;
+    }
+  }
+
+  imageLoaded(image: LoadedImage) {
+    // Imagem carregada no cropper
+  }
+
+  cropperReady() {
+    // Cropper pronto para uso
+  }
+
+  loadImageFailed() {
+    alert('Falha ao carregar imagem.');
+    this.cancelCrop();
+  }
+
+  confirmCrop(): void {
+    if (this.croppedImage) {
+      // Aplica a imagem cortada ao preview principal
+      this.previewPhoto = this.croppedImage;
+      this.photoChanged = true;
+    }
+    // Sai do modo de corte e limpa evento para permitir re-seleção se necessário
+    this.isCropping = false;
+    this.imageChangedEvent = '';
+  }
+
+  cancelCrop(): void {
+    this.isCropping = false;
+    this.imageChangedEvent = '';
+    this.croppedImage = null;
+    // Reseta o input file para permitir selecionar o mesmo arquivo novamente se quiser
+    if (this.fileInput) {
+      this.fileInput.nativeElement.value = '';
     }
   }
 
   removePhoto(): void {
     this.previewPhoto = null;
     this.photoChanged = true;
+    // Garante que o input file seja limpo
+    if (this.fileInput) {
+      this.fileInput.nativeElement.value = '';
+    }
   }
+
+  //AÇÕES DO DIALOG
 
   onCancel(): void {
     this.dialogRef.close();
@@ -95,8 +140,6 @@ export class EditProfileDialogComponent {
     if (this.form.valid) {
       const result = {
         ...this.form.value,
-        // Se a foto mudou, envia a nova string (ou "" se foi removida).
-        // Se não mudou, manda undefined para o ProfileComponent ignorar este campo.
         fotoPerfil: this.photoChanged ? (this.previewPhoto || "") : undefined
       };
 

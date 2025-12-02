@@ -53,6 +53,26 @@
   justify-content: center;
 }
 
+.header-user-photo {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ffffff;
+  cursor: pointer;
+}
+
+.default-user-photo {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.25);
+}
+
+
 .avatar-image {
   width: 100%;
   height: 100%;
@@ -70,7 +90,6 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  color: #497320;
 }
 
 .skill-icon {
@@ -134,3 +153,22 @@
     margin-left: 2px; /* Espaçamento mínimo */
   }
 }
+
+/*CRAQUE (OURO)*/
+.skill-points.craque .skill-icon,
+.skill-points.craque .points-text {
+  color: #D4AF37 !important;
+}
+
+/*MEDIANO (PRATA)*/
+.skill-points.mediano .skill-icon,
+.skill-points.mediano .points-text {
+  color: #6c6b6b !important;
+}
+
+/*PERNA DE PAU (BRONZE)*/
+.skill-points.perna-de-pau .skill-icon,
+.skill-points.perna-de-pau .points-text {
+  color: #CD7F32 !important;
+}
+
