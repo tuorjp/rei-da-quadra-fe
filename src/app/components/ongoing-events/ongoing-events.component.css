@@ -1,169 +1,259 @@
 .ongoing-events-section {
-  margin-top: 0px;
+  width: 100%;
+  margin-top: 40px;
 }
 
 .section-title {
-  font-size: 1.75rem;
-  font-weight: 500;
-  margin-bottom: 32px;
+  font-size: 2.5rem;
+  font-weight: 300;
+  margin-bottom: 48px;
   text-align: center;
-  color: var(--mat-app-on-surface);
+  color: #757575;
 }
 
+/* --- GRID DE CARDS --- */
 .events-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 24px;
+  gap: 32px;
   max-width: 1200px;
   margin: 0 auto;
+  padding: 0 24px 40px 24px;
 }
 
 .event-card {
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(208, 211, 217, 0.3);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, border-color 0.2s;
   cursor: pointer;
-  position: relative;
+  overflow: hidden;
 }
 
 .event-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+  border-color: #5B8C2A;
+}
+
+.event-card:hover .event-avatar {
+  color: #3E5922;
+}
+
+.event-card:hover .event-title {
+  color: #3E5922;
+}
+
+
+.event-card mat-card-content {
+  flex-grow: 1;
+  padding: 0 24px 24px 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+mat-card-header {
+  padding: 24px 24px 16px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
 .event-avatar {
-  background-color: var(--mat-app-primary);
-  color: var(--mat-app-on-primary);
+  background-color: transparent;
+  color: #283040;
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 64px;
+  height: 64px;
+  min-width: 64px;
+  flex-shrink: 0;
+  transition: color 0.2s ease-in-out;
 }
 
-.crown-icon {
-  color: #ffd700 !important;
+.event-avatar mat-icon {
+  font-size: 64px;
+  width: 64px;
+  height: 64px;
+}
+
+.header-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+  min-width: 0;
 }
 
 .event-title {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #283040;
+  margin: 0;
+  line-height: 1.2;
+  white-space: normal;
+  word-wrap: break-word;
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 1.1rem;
-  font-weight: 500;
+  transition: color 0.2s ease-in-out;
 }
 
 .organizer-crown {
-  color: #ffd700;
-  font-size: 18px;
-  width: 18px;
-  height: 18px;
-}
-
-.event-location {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  color: var(--mat-app-on-surface-variant);
-}
-
-.location-icon {
-  font-size: 16px;
-  width: 16px;
-  height: 16px;
+  color: #FBC02D;
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
 }
 
 .event-details {
   display: flex;
   flex-direction: column;
+  gap: 14px;
+  margin-top: 8px;
+  padding-top: 16px;
+  border-top: 1px solid #EEEEEE;
+}
+
+.detail-row {
+  display: flex;
+  align-items: flex-start;
   gap: 12px;
-  margin-bottom: 16px;
+  color: #616161;
 }
 
-.event-date,
-.participants-info {
-  display: flex;
+.detail-icon {
+  font-size: 22px;
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.detail-text {
+  font-size: 1rem;
+  line-height: 1.4;
+  font-weight: 400;
+  color: #424242;
+  word-wrap: break-word;
+}
+
+.organizer-name {
+  font-weight: 600;
+}
+
+/* Data e Hora */
+.date-row-container {
   align-items: center;
-  gap: 8px;
-  color: var(--mat-app-on-surface-variant);
-  font-size: 0.9rem;
 }
 
-.event-date mat-icon,
-.participants-info mat-icon {
-  font-size: 18px;
-  width: 18px;
-  height: 18px;
+.date-text {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #283040;
 }
 
-.event-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 8px;
+/* Status Pill */
+.status-pill {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 6px;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
 }
 
-.chip-icon {
-  font-size: 16px;
-  width: 16px;
-  height: 16px;
-  margin-right: 4px;
+.status-active {
+  background-color: rgba(91, 140, 42, 0.15);
+  color: #3E5922;
+  border: 1px solid rgba(91, 140, 42, 0.3);
+}
+
+.status-other {
+  background-color: #ffebee;
+  color: #c62828;
+  border: 1px solid #ffcdd2;
 }
 
 mat-card-actions {
   display: flex;
-  gap: 8px;
-  padding: 16px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  background-color: #FAFAFA;
+  border-top: 1px solid #EEEEEE;
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
 }
 
-mat-card-actions button {
-  display: flex;
-  align-items: center;
-  gap: 4px;
+.btn-details {
+  color: #616161 !important;
+  font-weight: 500;
+}
+.btn-details:hover {
+  color: #497320 !important;
+  background-color: rgba(73, 115, 32, 0.05);
+}
+
+/* Botão Principal (Participar/Editar) */
+.btn-join {
+  background-color: #283040 !important;
+  color: white !important;
+  font-weight: 500;
+  padding: 0 24px !important;
+  border-radius: 8px !important;
+  transition: background-color 0.2s ease;
+  height: 40px;
+}
+
+.btn-join:hover {
+  background-color: #3E5922 !important;
 }
 
 .no-events {
   text-align: center;
   padding: 64px 24px;
-  color: var(--mat-app-on-surface-variant);
+  color: #757575;
 }
-
 .no-events-icon {
   font-size: 64px;
   width: 64px;
   height: 64px;
   margin-bottom: 16px;
-  opacity: 0.5;
+  opacity: 0.3;
+  color: #283040;
 }
-
 .no-events-text {
-  font-size: 1.1rem;
-  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 300;
 }
 
-/* Responsive design */
-@media (max-width: 768px) {
+/* --- RESPONSIVIDADE --- */
+@media (max-width: 600px) {
   .events-grid {
     grid-template-columns: 1fr;
-    gap: 16px;
+    padding: 0 16px;
   }
-
-  .section-title {
-    font-size: 1.5rem;
-    margin-bottom: 24px;
-  }
-
-  .event-card {
-    margin: 0 8px;
-  }
-
-  .event-chips {
+  mat-card-header {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    text-align: center;
+    padding-bottom: 0;
   }
-
-  mat-card-actions {
-    flex-direction: column;
+  .header-text {
+    margin-top: 16px;
   }
-
-  mat-card-actions button {
-    width: 100%;
+  .event-title {
     justify-content: center;
+  }
+  .date-row-container div {
+    flex-wrap: wrap;
   }
 }

@@ -8,12 +8,10 @@
  * Do not edit the class manually.
  */
 
-
 export interface EventoRequestDTO {
-    nome?: string;
-    local?: string;
-    dataHorario?: string;
-    latitude?: number;
-    longitude?: number;
+  nome?: string;
+  local?: string;
+  dataHorario?: string;
+  latitude?: number;
+  longitude?: number;
 }
-
