@@ -18,6 +18,12 @@ import { LanguageService } from '../../services/language.service';
 
 import { finalize } from 'rxjs';
 
+import dayjs from 'dayjs';
+import utc from "dayjs/plugin/utc";        // ← CORRETO
+import timezone from 'dayjs/plugin/timezone';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 import { LocationPickerDialogComponent } from '../location-picker-dialog/location-picker-dialog.component';
 
 @Component({
@@ -111,9 +117,24 @@ export class CreateEventComponent {
 
     this.isSubmitting = true;
 
+    const localDateTimeValue: string = this.eventForm.value.dataHorario;
+
+    if (!localDateTimeValue) {
+      this.isSubmitting = false;
+      return;
+    }
+
+    const userZone = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
+
+    const parsed = dayjs.tz(localDateTimeValue, "YYYY-MM-DDTHH:mm", userZone);
+
+    const utcIsoString = parsed.utc().toISOString();
+
+    // CORREÇÃO: Criar o objeto antes de enviar
     const eventoRequest: EventoRequestDTO = {
       nome: this.eventForm.value.nome,
       local: this.eventForm.value.local,
+      dataHorario: utcIsoString
       //latitude: this.eventForm.value.latitude,
       //longitude: this.eventForm.value.longitude,
       dataHorario: new Date(this.eventForm.value.dataHorario).toISOString()
