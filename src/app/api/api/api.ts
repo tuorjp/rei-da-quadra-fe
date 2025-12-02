@@ -1,5 +1,13 @@
+export * from './administraoDeTimes.service';
+import { AdministraoDeTimesService } from './administraoDeTimes.service';
 export * from './authenticationController.service';
 import { AuthenticationControllerService } from './authenticationController.service';
 export * from './eventoController.service';
 import { EventoControllerService } from './eventoController.service';
-export const APIS = [AuthenticationControllerService, EventoControllerService];
+export * from './inscricaoController.service';
+import { InscricaoControllerService } from './inscricaoController.service';
+export * from './partidas.service';
+import { PartidasService } from './partidas.service';
+export * from './times.service';
+import { TimesService } from './times.service';
+export const APIS = [AdministraoDeTimesService, AuthenticationControllerService, EventoControllerService, InscricaoControllerService, PartidasService, TimesService];

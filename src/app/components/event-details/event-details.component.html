@@ -16,8 +16,15 @@
     </mat-card-header>
 
     <mat-card-content>
-      <!-- View Mode -->
-      <div class="view-mode" *ngIf="!isEditing()">
+      <mat-tab-group animationDuration="300ms">
+        <!-- Aba de Informações -->
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="tab-icon">info</mat-icon>
+            Informações
+          </ng-template>
+          <!-- View Mode -->
+          <div class="view-mode" *ngIf="!isEditing()">
         <div class="detail-item">
           <mat-icon>location_on</mat-icon>
           <div class="detail-content">
@@ -42,47 +49,93 @@
           </div>
         </div>
 
-        <div class="detail-item">
-          <mat-icon>fingerprint</mat-icon>
-          <div class="detail-content">
-            <span class="label">ID</span>
-            <span class="value">{{ evento()?.id }}</span>
+            <div class="detail-item">
+              <mat-icon>fingerprint</mat-icon>
+              <div class="detail-content">
+                <span class="label">ID</span>
+                <span class="value">{{ evento()?.id }}</span>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
 
-      <!-- Edit Mode -->
-      <form [formGroup]="eventForm" *ngIf="isEditing()" class="edit-form">
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>{{ langService.translate('event.name') }}</mat-label>
-          <input matInput formControlName="nome">
-          <mat-icon matPrefix>sports_soccer</mat-icon>
-          <mat-error *ngIf="eventForm.get('nome')?.hasError('required')">
-            {{ langService.translate('field.required') }}
-          </mat-error>
-          <mat-error *ngIf="eventForm.get('nome')?.hasError('minlength')">
-            {{ langService.translate('field.minlength') }}
-          </mat-error>
-        </mat-form-field>
+          <!-- Edit Mode -->
+          <form [formGroup]="eventForm" *ngIf="isEditing()" class="edit-form">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>{{ langService.translate('event.name') }}</mat-label>
+              <input matInput formControlName="nome">
+              <mat-icon matPrefix>sports_soccer</mat-icon>
+              <mat-error *ngIf="eventForm.get('nome')?.hasError('required')">
+                {{ langService.translate('field.required') }}
+              </mat-error>
+              <mat-error *ngIf="eventForm.get('nome')?.hasError('minlength')">
+                {{ langService.translate('field.minlength') }}
+              </mat-error>
+            </mat-form-field>
 
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>{{ langService.translate('event.location') }}</mat-label>
-          <input matInput formControlName="local">
-          <mat-icon matPrefix>location_on</mat-icon>
-          <mat-error *ngIf="eventForm.get('local')?.hasError('required')">
-            {{ langService.translate('field.required') }}
-          </mat-error>
-        </mat-form-field>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>{{ langService.translate('event.location') }}</mat-label>
+              <input matInput formControlName="local">
+              <mat-icon matPrefix>location_on</mat-icon>
+              <mat-error *ngIf="eventForm.get('local')?.hasError('required')">
+                {{ langService.translate('field.required') }}
+              </mat-error>
+            </mat-form-field>
 
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>{{ langService.translate('event.datetime') }}</mat-label>
-          <input matInput type="datetime-local" formControlName="dataHorario">
-          <mat-icon matPrefix>schedule</mat-icon>
-          <mat-error *ngIf="eventForm.get('dataHorario')?.hasError('required')">
-            {{ langService.translate('field.required') }}
-          </mat-error>
-        </mat-form-field>
-      </form>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>{{ langService.translate('event.datetime') }}</mat-label>
+              <input matInput type="datetime-local" formControlName="dataHorario">
+              <mat-icon matPrefix>schedule</mat-icon>
+              <mat-error *ngIf="eventForm.get('dataHorario')?.hasError('required')">
+                {{ langService.translate('field.required') }}
+              </mat-error>
+            </mat-form-field>
+          </form>
+        </mat-tab>
+
+        <!-- Aba de Inscrições -->
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="tab-icon">group</mat-icon>
+            {{ langService.translate('inscriptions') }}
+          </ng-template>
+          <div class="tab-content">
+            <app-event-inscriptions [eventoId]="evento()!.id!"></app-event-inscriptions>
+          </div>
+        </mat-tab>
+
+        <!-- Aba de Times -->
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="tab-icon">groups</mat-icon>
+            {{ langService.translate('teams') }}
+          </ng-template>
+          <div class="tab-content">
+            <p class="coming-soon">{{ langService.translate('teams.manage') }} - Em breve</p>
+          </div>
+        </mat-tab>
+
+        <!-- Aba de Partidas -->
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="tab-icon">sports_soccer</mat-icon>
+            {{ langService.translate('matches') }}
+          </ng-template>
+          <div class="tab-content">
+            <p class="coming-soon">{{ langService.translate('matches.manage') }} - Em breve</p>
+          </div>
+        </mat-tab>
+
+        <!-- Aba de Dashboard -->
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="tab-icon">dashboard</mat-icon>
+            {{ langService.translate('dashboard') }}
+          </ng-template>
+          <div class="tab-content">
+            <p class="coming-soon">{{ langService.translate('dashboard') }} - Em breve</p>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
     </mat-card-content>
 
     <mat-card-actions>

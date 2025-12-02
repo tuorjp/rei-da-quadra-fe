@@ -1,0 +1,171 @@
+.inscriptions-container {
+  padding: 20px;
+}
+
+mat-card {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+mat-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+mat-card-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 24px;
+}
+
+.header-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.add-player-form {
+  margin-bottom: 20px;
+}
+
+.form-row {
+  display: flex;
+  gap: 15px;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.submit-btn {
+  margin-top: 8px;
+  min-width: 180px;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  gap: 20px;
+}
+
+.inscriptions-list {
+  margin-top: 20px;
+}
+
+.inscriptions-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.inscriptions-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  color: rgba(0, 0, 0, 0.54);
+}
+
+.empty-state mat-icon {
+  font-size: 64px;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.empty-state p {
+  font-size: 16px;
+  margin: 0;
+}
+
+mat-list {
+  padding: 0;
+}
+
+mat-list-item {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  height: auto !important;
+  min-height: 72px;
+  padding: 12px 0;
+}
+
+mat-list-item:last-child {
+  border-bottom: none;
+}
+
+.email {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.separator {
+  margin: 0 8px;
+  color: rgba(0, 0, 0, 0.38);
+}
+
+.matches {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 14px;
+}
+
+.team {
+  color: #1976d2;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+mat-divider {
+  margin: 20px 0;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .inscriptions-container {
+    padding: 10px;
+  }
+
+  mat-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .header-actions {
+    width: 100%;
+  }
+
+  .header-actions button {
+    width: 100%;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .submit-btn {
+    width: 100%;
+    margin-top: 0;
+  }
+
+  .inscriptions-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+}

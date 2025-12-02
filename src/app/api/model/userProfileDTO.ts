@@ -14,6 +14,8 @@ export interface UserProfileDTO {
     nome?: string;
     email?: string;
     role?: UserProfileDTO.RoleEnum;
+    dataCriacao?: string;
+    fotoPerfil?: string;
 }
 export namespace UserProfileDTO {
     export const RoleEnum = {
