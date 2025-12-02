@@ -1,0 +1,28 @@
+<h2 mat-dialog-title>Selecione a Localização</h2>
+
+<mat-dialog-content class="dialog-content">
+
+  <!-- Campo de busca -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Buscar endereço ou lugar</mat-label>
+    <input matInput [(ngModel)]="searchQuery" (input)="onSearchInput()" />
+    <button mat-icon-button matSuffix (click)="performSearch()">
+      <mat-icon>search</mat-icon>
+    </button>
+  </mat-form-field>
+
+  <!-- Lista de resultados -->
+  <div class="search-results" *ngIf="searchResults.length > 0">
+    <div class="result-item" *ngFor="let result of searchResults" (click)="selectSearchResult(result)">
+      <mat-icon>place</mat-icon>
+      <span>{{ result.place_name }}</span>
+    </div>
+  </div>
+
+  <div id="locationMap"></div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancel()">Cancelar</button>
+  <button mat-raised-button color="primary" (click)="confirmSelection()">Confirmar</button>
+</mat-dialog-actions>

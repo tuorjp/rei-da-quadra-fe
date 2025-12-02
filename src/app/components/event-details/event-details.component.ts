@@ -10,6 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatTabsModule } from '@angular/material/tabs';
 import { EventoControllerService } from '../../api/api/eventoController.service';
 import { EventoResponseDTO } from '../../api/model/eventoResponseDTO';
 import { LanguageService } from '../../services/language.service';
@@ -17,6 +18,7 @@ import { finalize } from 'rxjs';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
+import { EventInscriptionsComponent } from '../event-inscriptions/event-inscriptions.component';
 
 @Component({
   selector: 'app-event-details',
@@ -31,7 +33,9 @@ import utc from 'dayjs/plugin/utc';
     MatFormFieldModule,
     MatInputModule,
     MatSnackBarModule,
-    MatDialogModule
+    MatDialogModule,
+    MatTabsModule,
+    EventInscriptionsComponent
   ],
   templateUrl: './event-details.component.html',
   styleUrl: './event-details.component.css'

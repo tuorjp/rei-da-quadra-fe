@@ -35,8 +35,8 @@ export class ProfileComponent implements OnInit {
   userPhoto: string | null = null;
   skillRating: number = 5.00;
   memberSince: string = 'Carregando...';
-  totalEvents: number = 0;
-  eventsWon: number = 0;
+  totalMatches: number = 0;
+  matchesWon: number = 0;
   nivelHabilidade: string = '';
 
   private authService = inject(AuthService);
@@ -61,6 +61,9 @@ export class ProfileComponent implements OnInit {
 
         this.skillRating = (profile as any).pontosHabilidade ?? 1000;
         this.nivelHabilidade = (profile as any).nivelHabilidade ?? 'MEDIANO';
+
+        this.totalMatches = (profile as any).partidasJogadas || 0;
+        this.matchesWon = (profile as any).partidasVencidas || 0;
 
         // Formata a data
         const dataCriacao = (profile as any).dataCriacao;
