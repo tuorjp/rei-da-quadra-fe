@@ -38,13 +38,49 @@ export class OngoingEventsComponent implements OnInit {
     this.getUserLocation();
   }
 
+  // --- LÓGICA DE CÁLCULO DA QUANTIDADE DE EVENTOS ---
+  private calculateLimit(): number {
+    const width = window.innerWidth;
+
+    // Mobile: se a tela for menor que 768px, retorna 10 eventos
+    if (width < 768) {
+      return 10;
+    }
+
+    // Lógica para Desktop baseada no Grid CSS:
+    // grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    // Container máximo: 1200px. Padding lateral: 24px + 24px = 48px.
+    // Largura mínima da coluna: 350px. Gap: 32px.
+
+    // Largura útil aproximada do container
+    const containerWidth = Math.min(width, 1200) - 48;
+
+    // Largura que cada item ocupa no cálculo do auto-fill (Item + Gap)
+    const columnWidth = 350 + 32;
+
+    // Quantas colunas cabem?
+    const columns = Math.floor(containerWidth / columnWidth);
+
+
+    if (columns >= 3) {
+      return 15;
+    } else if (columns === 2) {
+      return 14;
+    } else {
+      return 10;
+    }
+  }
+
   getUserLocation() {
+    // Calcula o limite dinâmico antes de fazer a chamada
+    const limit = this.calculateLimit();
+
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const lat = position.coords.latitude;
           const lon = position.coords.longitude;
-          this.loadNearbyEvents(lat, lon);
+          this.loadNearbyEvents(lat, lon, limit);
         },
         (error) => {
           console.error('Erro ao obter localização:', error);
@@ -57,8 +93,9 @@ export class OngoingEventsComponent implements OnInit {
     }
   }
 
-  loadNearbyEvents(lat: number, lon: number) {
-    (this.eventoService as any).listarEventosProximos(lat, lon).subscribe({
+  loadNearbyEvents(lat: number, lon: number, limit: number) {
+    // Chama o serviço passando o limite calculado
+    (this.eventoService as any).listarEventosProximos(lat, lon, limit).subscribe({
       next: (data: EventoResponseDTO[]) => {
         this.events = data;
         this.isLoading = false;
