@@ -135,9 +135,6 @@ export class CreateEventComponent {
       nome: this.eventForm.value.nome,
       local: this.eventForm.value.local,
       dataHorario: utcIsoString
-      //latitude: this.eventForm.value.latitude,
-      //longitude: this.eventForm.value.longitude,
-      dataHorario: new Date(this.eventForm.value.dataHorario).toISOString()
     };
 
     this.eventoService.criarEvento(eventoRequest)
