@@ -79,7 +79,7 @@ export class EditProfileDialogComponent {
     this.previewPhoto = data.currentPhoto;
 
     this.form = new FormGroup({
-      nome: new FormControl(data.nome || '', [Validators.required]),
+      nome: new FormControl(data.nome || '', [Validators.required, Validators.maxLength(30)]),
       senha: new FormControl('', [Validators.minLength(6)]),
       confirmarSenha: new FormControl('')
     }, { validators: this.passwordMatchValidator });
