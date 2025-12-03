@@ -1,24 +1,28 @@
-<h2 mat-dialog-title>{{ isCropping ? 'Ajustar Imagem' : 'Editar Perfil' }}</h2>
+<div mat-dialog-title class="custom-dialog-header">
+  <h2>{{ isCropping ? 'Ajustar Imagem' : 'Editar Perfil' }}</h2>
+  <p class="dialog-subtitle" *ngIf="!isCropping">Atualize suas informações pessoais</p>
+</div>
 
-<mat-dialog-content>
+<mat-dialog-content class="custom-dialog-content">
 
-  <div *ngIf="isCropping" class="cropper-container">
-    <image-cropper
-      [imageChangedEvent]="imageChangedEvent"
-      [maintainAspectRatio]="true"
-      [aspectRatio]="1 / 1"
-      format="png"
-      [resizeToWidth]="256"
-      (imageCropped)="imageCropped($event)"
-      (imageLoaded)="imageLoaded($event)"
-      (cropperReady)="cropperReady()"
-      (loadImageFailed)="loadImageFailed()"
-      style="max-height: 400px;"
-    ></image-cropper>
+  <div *ngIf="isCropping" class="cropper-wrapper">
+    <div class="cropper-box">
+      <image-cropper
+        [imageChangedEvent]="imageChangedEvent"
+        [maintainAspectRatio]="true"
+        [aspectRatio]="1 / 1"
+        format="png"
+        [resizeToWidth]="256"
+        (imageCropped)="imageCropped($event)"
+        (imageLoaded)="imageLoaded($event)"
+        (cropperReady)="cropperReady()"
+        (loadImageFailed)="loadImageFailed()"
+      ></image-cropper>
+    </div>
 
-    <div class="crop-actions">
-      <button mat-button (click)="cancelCrop()">Cancelar Corte</button>
-      <button mat-raised-button color="primary" (click)="confirmCrop()">
+    <div style="display: flex; gap: 10px; width: 100%; justify-content: flex-end;">
+      <button mat-button (click)="cancelCrop()" class="cancel-btn">Cancelar</button>
+      <button mat-flat-button color="primary" (click)="confirmCrop()">
         <mat-icon>check</mat-icon> Confirmar
       </button>
     </div>
@@ -26,54 +30,75 @@
 
   <div *ngIf="!isCropping">
 
-    <div class="edit-header">
-      <div class="avatar-container">
-        <img *ngIf="previewPhoto" [src]="previewPhoto" class="avatar-img" alt="Avatar Preview">
+    <div class="section-profile">
+      <div class="avatar-wrapper">
+        <div class="avatar-container">
+          <img *ngIf="previewPhoto" [src]="previewPhoto" class="avatar-img" alt="Avatar Preview">
+          <div *ngIf="!previewPhoto" class="avatar-placeholder">
+            <mat-icon class="avatar-icon">person</mat-icon>
+          </div>
 
-        <div *ngIf="!previewPhoto" class="avatar-placeholder">
-          <mat-icon class="avatar-icon">account_circle</mat-icon>
+          <button mat-mini-fab color="primary" class="camera-btn" (click)="fileInput.click()" matTooltip="Alterar foto">
+            <mat-icon>photo_camera</mat-icon>
+          </button>
+          <input #fileInput type="file" hidden (change)="onFileSelected($event)" accept="image/*">
         </div>
 
-        <button mat-mini-fab color="primary" class="camera-btn" (click)="fileInput.click()">
-          <mat-icon>photo_camera</mat-icon>
+        <button *ngIf="previewPhoto" class="remove-btn" (click)="removePhoto()">
+          <mat-icon>delete_outline</mat-icon>
+          Remover foto
         </button>
-
-        <input #fileInput type="file" hidden (change)="onFileSelected($event)" accept="image/*">
       </div>
 
-      <button *ngIf="previewPhoto" class="remove-link" (click)="removePhoto()">
-        Remover foto atual
-      </button>
+      <form [formGroup]="form" class="edit-form" style="width: 100%;">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Nome Completo</mat-label>
+          <mat-icon matPrefix class="input-icon">badge</mat-icon>
+          <input matInput formControlName="nome" placeholder="Seu nome">
+          <mat-error *ngIf="checkError('nome', 'required')">Nome é obrigatório</mat-error>
+        </mat-form-field>
+      </form>
     </div>
 
-    <form [formGroup]="form" class="edit-form">
+    <div class="section-security">
+      <div class="section-header-text">
+        <mat-icon>lock</mat-icon>
+        <h3>Segurança</h3>
+      </div>
+      <p class="section-desc">Preencha apenas se desejar alterar sua senha atual.</p>
 
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Nome Completo</mat-label>
-        <input matInput formControlName="nome">
-        <mat-error *ngIf="checkError('nome', 'required')">Nome é obrigatório</mat-error>
-      </mat-form-field>
+      <form [formGroup]="form" class="edit-form">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Nova Senha</mat-label>
+          <mat-icon matPrefix class="input-icon">lock_open</mat-icon>
+          <input matInput formControlName="senha" [type]="hidePassword ? 'password' : 'text'">
+          <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" type="button">
+            <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          <mat-error *ngIf="checkError('senha', 'minlength')">Mínimo 6 caracteres</mat-error>
+        </mat-form-field>
 
-      <h3 class="section-title">Alterar Senha (Opcional)</h3>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Confirmar Nova Senha</mat-label>
+          <mat-icon matPrefix class="input-icon">lock</mat-icon>
+          <input matInput formControlName="confirmarSenha" [type]="hideConfirmPassword ? 'password' : 'text'">
+          <button mat-icon-button matSuffix (click)="hideConfirmPassword = !hideConfirmPassword" type="button">
+            <mat-icon>{{ hideConfirmPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          <mat-error *ngIf="form.get('confirmarSenha')?.hasError('passwordMismatch')">
+            As senhas não coincidem
+          </mat-error>
+        </mat-form-field>
+      </form>
+    </div>
 
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Nova Senha</mat-label>
-        <input matInput formControlName="senha" type="password">
-        <mat-error *ngIf="checkError('senha', 'minlength')">Mínimo 6 caracteres</mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Confirmar Nova Senha</mat-label>
-        <input matInput formControlName="confirmarSenha" type="password">
-        <mat-error *ngIf="form.errors?.['passwordMismatch']">As senhas não coincidem</mat-error>
-      </mat-form-field>
-
-    </form>
   </div>
 
 </mat-dialog-content>
 
-<mat-dialog-actions align="end" *ngIf="!isCropping">
-  <button mat-button (click)="onCancel()">Cancelar</button>
-  <button mat-flat-button color="primary" [disabled]="form.invalid" (click)="onSave()">Salvar</button>
+<mat-dialog-actions align="end" class="custom-dialog-actions" *ngIf="!isCropping">
+  <button mat-button (click)="onCancel()" class="cancel-btn">Cancelar</button>
+  <button mat-flat-button color="primary" [disabled]="form.invalid" (click)="onSave()">
+    Salvar Alterações
+  </button>
 </mat-dialog-actions>
