@@ -97,7 +97,7 @@ export class EventDetailsComponent implements OnInit {
     let dateTimeValue = '';
     const userZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     if (evento.dataHorario) {
-      dateTimeValue = dayjs.utc(evento.dataHorario).tz(userZone).format("YYYY-MM-DDHH:mm");
+      dateTimeValue = dayjs.utc(evento.dataHorario).tz(userZone).format("YYYY-MM-DDTHH:mm");
     }
 
     this.eventForm.patchValue({
