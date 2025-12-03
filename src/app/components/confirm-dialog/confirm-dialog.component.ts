@@ -19,42 +19,18 @@ export interface ConfirmDialogData {
     MatButtonModule,
     MatIconModule
   ],
-  template: `
-    <h2 mat-dialog-title>
-      <mat-icon color="warn">warning</mat-icon>
-      {{ data.title }}
-    </h2>
-    <mat-dialog-content>
-      <p>{{ data.message }}</p>
-    </mat-dialog-content>
-    <mat-dialog-actions align="end">
-      <button mat-button [mat-dialog-close]="false">
-        {{ langService.translate('button.cancel') }}
-      </button>
-      <button mat-raised-button color="warn" [mat-dialog-close]="true">
-        {{ langService.translate('button.confirm') }}
-      </button>
-    </mat-dialog-actions>
-  `,
-  styles: [`
-    h2 {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    mat-dialog-content {
-      padding: 1rem 0;
-    }
-
-    mat-dialog-actions {
-      padding: 1rem 0 0;
-    }
-  `]
+  templateUrl: './confirm-dialog.component.html',
+  styleUrls: ['./confirm-dialog.component.css']
 })
+// Em confirm-dialog.component.ts, adicione no final da classe:
 export class ConfirmDialogComponent {
   public data = inject<ConfirmDialogData>(MAT_DIALOG_DATA);
   public dialogRef = inject(MatDialogRef<ConfirmDialogComponent>);
   public langService = inject(LanguageService);
-}
 
+  calculateMaxHeight(): string {
+    const viewportHeight = window.innerHeight;
+    const maxDialogHeight = viewportHeight * 0.9; // 90% da viewport
+    return `${maxDialogHeight}px`;
+  }
+}

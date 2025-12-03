@@ -61,7 +61,7 @@ export class CadastroComponent implements OnInit, OnDestroy {
 
   constructor() {
     this.registerForm = this.fb.group({
-      nome: ['', [Validators.required]],
+      nome: ['', [Validators.required, Validators.maxLength(30)]],
       email: ['', [Validators.required, Validators.email]],
       senha: ['', [Validators.required, Validators.minLength(6)]],
       confirmarSenha: ['', [Validators.required]]

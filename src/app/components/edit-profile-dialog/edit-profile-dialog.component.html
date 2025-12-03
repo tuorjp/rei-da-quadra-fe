@@ -54,8 +54,9 @@
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Nome Completo</mat-label>
           <mat-icon matPrefix class="input-icon">badge</mat-icon>
-          <input matInput formControlName="nome" placeholder="Seu nome">
+          <input matInput formControlName="nome" placeholder="Seu nome" maxlength="30">
           <mat-error *ngIf="checkError('nome', 'required')">Nome é obrigatório</mat-error>
+          <mat-error *ngIf="checkError('nome', 'maxlength')">Máximo de 30 caracteres</mat-error>
         </mat-form-field>
       </form>
     </div>
