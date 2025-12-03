@@ -1,70 +1,143 @@
-.create-event-container {
+:host {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: calc(100vh - 120px);
-  padding: 2rem;
-}
-
-.create-event-card {
-  max-width: 600px;
+  height: 100%;
   width: 100%;
+  box-sizing: border-box;
 }
 
-mat-card-header {
-  margin-bottom: 1.5rem;
-}
-
-mat-card-title {
+/* --- Container Principal (Fundo com Logo) --- */
+.create-event-page {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 1.75rem;
-  font-weight: 600;
+  justify-content: center;
+  width: 100%;
+  min-height: 100vh;
+  padding: 1rem;
+  box-sizing: border-box;
+
+  /* PADRÃO DE LOGO (Idêntico ao cadastro) */
+  background-color: rgba(208, 211, 217, 0.37);
+  background-image: url('/Logo.png'), url('/Logo.png');
+  background-size: 280px;
+  background-position: 0 0, 140px 140px;
 }
 
+/* --- CARD BRANCO --- */
+.create-event-form-container {
+  width: 100%;
+  max-width: 500px; /* Largura controlada igual ao cadastro */
+  padding: 3rem;
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+  position: relative;
+}
+
+/* --- CABEÇALHO --- */
+.create-event-header {
+  margin-bottom: 32px;
+  text-align: left;
+}
+
+.welcome-text {
+  font-size: 1.2rem; /* Um pouco menor pois o título "Novo Evento" já explica */
+  font-weight: 300;
+  margin: 0;
+  color: #757575;
+}
+
+.app-name {
+  font-size: 2.5rem; /* Tamanho ajustado para caber bem */
+  font-weight: bold;
+  margin: 0 0 8px 0;
+  color: #283040;
+}
+
+.app-subtitle {
+  font-size: 1.0rem;
+  font-weight: 300;
+  margin: 0;
+  color: #616161;
+}
+
+/* --- FORMULÁRIO --- */
 .event-form {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 16px;
+}
+
+/* Estilo do Input (Fundo Cinza Claro) */
+:host ::ng-deep .mat-mdc-text-field-wrapper {
+  background-color: #F5F5F5 !important;
 }
 
 .full-width {
   width: 100%;
 }
 
-.form-actions {
+/* --- BOTÕES --- */
+.actions-container {
+  margin-top: 16px;
   display: flex;
-  gap: 1rem;
-  margin-top: 1.5rem;
-  justify-content: flex-end;
+  flex-direction: column;
+  gap: 12px;
 }
 
-.form-actions button {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  min-width: 140px;
-  padding: 0.5rem 1.5rem;
+/* Botão Criar (Principal) */
+.btn-submit {
+  width: 100%;
+  height: 52px;
+  font-size: 1rem;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+  background-color: #283040 !important;
+  color: white !important;
 }
 
+.btn-submit:hover {
+  background-color: #3E5922 !important;
+}
+
+/* Botão Cancelar (Estilo Texto/Link) */
+.btn-cancel {
+  width: 100%;
+  height: 40px;
+  background: none;
+  border: none;
+  color: #757575;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  font-size: 0.95rem;
+}
+
+.btn-cancel:hover {
+  color: #d32f2f; /* Vermelho ao passar o mouse para indicar cancelamento */
+  background-color: transparent;
+}
+
+/* Spinner dentro do botão */
 mat-spinner {
   display: inline-block;
-  margin-right: 0.5rem;
+  vertical-align: middle;
 }
 
-/* Responsividade */
-@media (max-width: 768px) {
-  .create-event-container {
+/* --- RESPONSIVIDADE --- */
+@media (max-width: 600px) {
+  .create-event-page {
     padding: 1rem;
   }
 
-  .form-actions {
-    flex-direction: column-reverse;
+  .create-event-form-container {
+    padding: 2rem;
   }
 
-  .form-actions button {
-    width: 100%;
+  .app-name {
+    font-size: 2rem;
   }
 }
-
