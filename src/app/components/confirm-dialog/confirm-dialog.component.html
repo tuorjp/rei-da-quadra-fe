@@ -1,0 +1,22 @@
+<div class="custom-dialog-header">
+  <h2>
+    <mat-icon class="header-icon">warning</mat-icon>
+    {{ data.title }}
+  </h2>
+</div>
+
+<mat-dialog-content
+  class="custom-dialog-content"
+  [style.max-height]="calculateMaxHeight()">
+  <p class="dialog-message">{{ data.message }}</p>
+</mat-dialog-content>
+
+<div class="custom-dialog-actions">
+  <button mat-button class="cancel-btn" [mat-dialog-close]="false">
+    {{ langService.translate('button.cancel') }}
+  </button>
+
+  <button mat-flat-button color="warn" [mat-dialog-close]="true" class="confirm-btn">
+    {{ langService.translate('button.confirm') }}
+  </button>
+</div>
