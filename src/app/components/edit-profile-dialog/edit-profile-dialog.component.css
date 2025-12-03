@@ -9,16 +9,23 @@
   --divider-color: #EEEEEE;
 }
 
+/* --- CONTAINER PRINCIPAL (remover scrolls) --- */
+:host ::ng-deep .mat-mdc-dialog-container {
+  overflow: hidden !important;
+}
+
+:host ::ng-deep .mat-mdc-dialog-surface {
+  overflow: hidden !important;
+}
+
 /* --- HEADER (Estilo Card Full-Width) --- */
-/* O padding padrão do dialog é 24px. Usamos margens negativas para encostar na borda. */
 .custom-dialog-header {
   background-color: var(--card-section-bg);
-  padding: 20px 24px;
+  padding: 10px;
   border-bottom: 1px solid var(--divider-color);
 
-  /* Truque para ignorar o padding do dialog pai */
-  margin: -24px -24px 0 -24px;
-  width: calc(100% + 48px);
+  width: 100%;
+  box-sizing: border-box;
 
   text-align: center;
   display: block; /* Garante comportamento de bloco */
@@ -26,22 +33,20 @@
 
 .custom-dialog-header h2 {
   margin: 0;
-  font-size: 1.6rem;
+  font-size: 2.3rem;
   font-weight: 500;
   color: var(--text-main);
 }
 
 .dialog-subtitle {
-  margin: 5px 0 0 0;
+  margin: 5px;
   color: var(--text-muted);
-  font-size: 0.9rem;
+  font-size: 1.0rem;
   font-weight: 300;
 }
 
-/* --- CONTENT (Scroll apenas aqui) --- */
-/* Mat-dialog-content já lida com scroll e max-height automaticamente */
 .custom-dialog-content {
-  padding-top: 24px !important; /* Espaço entre o header e o conteúdo */
+  padding-top: 20px !important; /* Espaço entre o header e o conteúdo */
   width: 100%;
   box-sizing: border-box;
 }
@@ -51,7 +56,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 25px;
   margin-bottom: 25px;
 }
 
@@ -131,7 +136,7 @@
 
 /* --- SEÇÃO SEGURANÇA --- */
 .section-security {
-  background-color: #fff;
+
   border-top: 1px solid var(--divider-color);
   padding-top: 20px;
   margin-top: 10px;
@@ -160,7 +165,7 @@
 /* --- INPUTS (Estilo Login) --- */
 .full-width {
   width: 100%;
-  margin-bottom: 2px;
+  margin-bottom: 8px;
 }
 
 .input-icon {
@@ -179,9 +184,9 @@
   border-top: 1px solid var(--divider-color);
   padding: 16px 24px;
 
-  /* Margens negativas para encostar nas bordas */
-  margin: 0 -24px -24px -24px;
-  width: calc(100% + 48px);
+  margin: 0;
+  width: 100%;
+  box-sizing: border-box;
 
   display: flex;
   justify-content: flex-end; /* Alinha o botão salvar à direita */
@@ -203,6 +208,10 @@ button[mat-flat-button]:hover {
 
 .cancel-btn {
   color: #616161 !important;
+  border-radius: 8px;
+  height: 45px;
+  padding: 0 24px;
+  font-weight: 500;
 }
 
 /* --- CROPPER --- */
