@@ -69,6 +69,12 @@ export class EventDetailsComponent implements OnInit {
     if (id) {
       this.loadEvent(+id);
     }
+
+    this.route.queryParams.subscribe(params => {
+      if (params['edit'] === 'true') {
+        this.isEditing.set(true); // <--- Ativa o modo de edição automaticamente
+      }
+    });
   }
 
   loadEvent(id: number): void {
@@ -97,7 +103,7 @@ export class EventDetailsComponent implements OnInit {
     let dateTimeValue = '';
     const userZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     if (evento.dataHorario) {
-      dateTimeValue = dayjs.utc(evento.dataHorario).tz(userZone).format("YYYY-MM-DDHH:mm");
+      dateTimeValue = dayjs.utc(evento.dataHorario).tz(userZone).format("YYYY-MM-DDTHH:mm");
     }
 
     this.eventForm.patchValue({
