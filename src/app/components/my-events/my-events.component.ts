@@ -76,6 +76,16 @@ export class MyEventsComponent implements OnInit {
     }
   }
 
+  onEditEvent(evento: any): void { // Pode receber o objeto evento ou o ID
+    const id = evento.id || evento; // Garante que temos o ID
+
+    if (id) {
+      this.router.navigate(['/event-details', id], {
+        queryParams: { edit: 'true' } // <--- ADICIONE ISSO
+      });
+    }
+  }
+
   formatDate(dateString: string | undefined): string {
     if (!dateString) return '';
     const userZone = Intl.DateTimeFormat().resolvedOptions().timeZone;

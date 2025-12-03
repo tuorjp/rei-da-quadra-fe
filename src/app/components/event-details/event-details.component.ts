@@ -69,6 +69,12 @@ export class EventDetailsComponent implements OnInit {
     if (id) {
       this.loadEvent(+id);
     }
+
+    this.route.queryParams.subscribe(params => {
+      if (params['edit'] === 'true') {
+        this.isEditing.set(true); // <--- Ativa o modo de edição automaticamente
+      }
+    });
   }
 
   loadEvent(id: number): void {
