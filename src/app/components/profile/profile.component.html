@@ -4,48 +4,61 @@
 
       <div class="profile-header">
 
-        <div class="avatar-section">
-
-          <img *ngIf="userPhoto" [src]="userPhoto" alt="Foto de Perfil" class="profile-image">
-
-          <div *ngIf="!userPhoto" class="large-avatar">
-            <mat-icon class="avatar-icon">account_circle</mat-icon>
+        <div class="header-main">
+          <div class="avatar-section">
+            <img *ngIf="userPhoto" [src]="userPhoto" alt="Foto de Perfil" class="profile-image">
+            <div *ngIf="!userPhoto" class="large-avatar">
+              <mat-icon class="avatar-icon">account_circle</mat-icon>
+            </div>
           </div>
 
+          <div class="user-info">
+            <h1 class="user-name">{{ userName }}</h1>
+            <p class="user-email">{{ userEmail }}</p>
+
+            <div class="user-details-block">
+              <div class="member-since">
+                <mat-icon>event</mat-icon>
+                <span>Membro desde {{ memberSince }}</span>
+              </div>
+
+              <div class="skill-badge" [ngClass]="nivelHabilidade.toLowerCase().replaceAll('_', '-')">
+                {{ nivelHabilidade.replaceAll('_', ' ') }}
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="user-info">
-          <h1 class="user-name">{{ userName }}</h1>
-          <p class="user-email">{{ userEmail }}</p>
-          <div class="member-since">
-            <mat-icon>event</mat-icon>
-            <span>Membro desde {{ memberSince }}</span>
-          </div>
-          <div class="skill-badge" [ngClass]="nivelHabilidade.toLowerCase().replaceAll('_', '-')">
-            {{ nivelHabilidade.replaceAll('_', ' ') }}
-          </div>
+        <div class="header-actions">
+          <button mat-flat-button class="header-btn edit-btn-login-style" (click)="editProfile()">
+            <mat-icon>edit</mat-icon>
+            Editar
+          </button>
+
+          <button mat-flat-button class="header-btn logout-btn-solid" (click)="logout()">
+            <mat-icon>logout</mat-icon>
+            Sair
+          </button>
         </div>
+
       </div>
-
-      <mat-divider></mat-divider>
 
       <div class="stats-section">
         <h2 class="section-title">Estatísticas</h2>
         <div class="stats-grid">
+
           <div class="stat-card skill-card">
-            <div class="stat-icon">
+            <div class="stat-icon transparent-icon">
               <mat-icon>star</mat-icon>
             </div>
             <div class="stat-content">
               <span class="stat-label">Pontuação de Habilidade</span>
               <span class="stat-value skill-value">{{ skillRating }}</span>
-
-              <span class="stat-label">Nível: {{ nivelHabilidade.replaceAll('_', ' ') }}</span>
+              <span class="stat-label" style="margin-top: 4px; color: rgba(255,255,255,0.9);">
+                Nível: {{ nivelHabilidade.replaceAll('_', ' ') }}
+              </span>
             </div>
-
-
           </div>
-
 
           <div class="stat-card">
             <div class="stat-icon">
@@ -71,32 +84,20 @@
 
       <mat-divider></mat-divider>
 
-      <div class="actions-section">
-        <button mat-raised-button color="primary" class="action-btn" (click)="editProfile()">
-          <mat-icon>edit</mat-icon>
-          Editar Perfil
-        </button>
-
-        <button mat-stroked-button class="action-btn logout-btn" (click)="logout()">
-          <mat-icon>logout</mat-icon>
-          Sair
-        </button>
-      </div>
-
-      <mat-divider></mat-divider>
-
-      <div class="danger-zone">
-        <h3 class="danger-title">
-          <mat-icon>warning</mat-icon>
-          Zona de Perigo
-        </h3>
-        <p class="danger-description">
-          Ao deletar sua conta, todos os seus dados serão permanentemente removidos e não poderão ser recuperados.
-        </p>
-        <button mat-stroked-button color="warn" class="delete-btn" (click)="deleteAccount()">
-          <mat-icon>delete_forever</mat-icon>
-          Deletar Conta Permanentemente
-        </button>
+      <div class="danger-zone-wrapper">
+        <div class="danger-zone">
+          <h3 class="danger-title">
+            <mat-icon>warning</mat-icon>
+            Zona de Perigo
+          </h3>
+          <p class="danger-description">
+            Ao deletar sua conta, todos os seus dados serão permanentemente removidos.
+          </p>
+          <button mat-stroked-button color="warn" class="delete-btn" (click)="deleteAccount()">
+            <mat-icon>delete_forever</mat-icon>
+            Deletar Conta Permanentemente
+          </button>
+        </div>
       </div>
 
     </mat-card>

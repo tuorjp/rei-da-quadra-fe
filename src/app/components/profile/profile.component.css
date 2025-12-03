@@ -15,15 +15,24 @@
 .profile-card {
   padding: 0;
   overflow: hidden;
+  border-radius: 16px;
 }
 
 .profile-header {
   background: linear-gradient(135deg, #283040 0%, #3E5922 100%);
-  padding: 3rem 2rem;
+  padding: 2.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+  color: white;
+}
+
+.header-main {
   display: flex;
   align-items: center;
   gap: 2rem;
-  color: white;
+  flex: 1;
 }
 
 .avatar-section {
@@ -31,29 +40,22 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 1rem;
 }
 
-/* Estilo da imagem real carregada */
-.profile-image {
+.profile-image, .large-avatar {
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  object-fit: cover; /* Garante que a imagem não deforme */
-  border: 4px solid var(--mat-app-background-color);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  object-fit: cover;
+  border: 4px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
-/* Mantém o estilo do ícone padrão */
 .large-avatar {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
   background-color: #e0e0e0;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 0;
 }
 
 .avatar-icon {
@@ -63,21 +65,10 @@
   color: #757575;
 }
 
-.edit-avatar-btn {
-  position: absolute;
-  bottom: 0;
-  right: 0; /* Ajuste conforme necessário, ou right: 10px */
-  transform: translate(10%, 10%); /* Pequeno ajuste de posição */
-}
-
-.remove-photo-btn {
-  font-size: 0.8rem;
-  margin-top: 5px;
-  line-height: 24px;
-}
-
 .user-info {
-  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .user-name {
@@ -93,6 +84,12 @@
   color: rgba(255, 255, 255, 0.8);
 }
 
+.user-details-block {
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* Espaço entre membro e badge */
+}
+
 .member-since {
   display: flex;
   align-items: center;
@@ -100,24 +97,88 @@
   color: rgba(255, 255, 255, 0.9);
   font-size: 0.95rem;
 }
-
 .member-since mat-icon {
   font-size: 20px;
   width: 20px;
   height: 20px;
 }
 
+.skill-badge {
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: white;
+  text-transform: uppercase;
+  width: fit-content;
+}
+
+.skill-badge.craque {
+  background: linear-gradient(135deg, #D4AF37, #C19A2A);
+  color: #ffffff;
+  border: 1px solid #A8841C;
+}
+.skill-badge.mediano {
+  background: linear-gradient(135deg, #E6E7E8, #C0C0C0, #A8A8A8);
+  color: #283040;
+  border: 1px solid #8F8F8F;
+}
+.skill-badge.perna-de-pau {
+  background: linear-gradient(135deg, #CD7F32, #B06C2E);
+  color: #ffffff;
+  border: 1px solid #8C5323;
+}
+
+.header-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 140px;
+}
+
+.header-btn {
+  width: 100%;
+  height: 52px !important;
+  border-radius: 8px !important;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.header-btn mat-icon {
+  margin-right: 8px;
+}
+
+.edit-btn-login-style {
+  background-color: #283040 !important;
+  color: white !important;
+}
+
+.edit-btn-login-style:hover {
+  background-color: #5B8C2A !important;
+  border-color: #5B8C2A !important;
+}
+
+.logout-btn-solid {
+  background-color: #c32323 !important;
+  color: white !important;
+  border: none;
+}
+.logout-btn-solid:hover {
+  background-color: #f44336 !important;
+}
+
+/* Estatísticas */
 .stats-section {
   padding: 2rem;
 }
-
 .section-title {
   font-size: 1.5rem;
   font-weight: 500;
   margin: 0 0 1.5rem 0;
-  color: var(--mat-app-on-surface);
+  color: #283040;
 }
-
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -133,28 +194,29 @@
   gap: 1rem;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-
 .stat-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
 }
 
+/* Card de Habilidade */
 .skill-card {
   background: linear-gradient(135deg, #FFC107 0%, #FF9800 100%);
   color: white;
 }
-
 .skill-card .stat-label,
 .skill-card .stat-value {
   color: white;
 }
-
 .skill-card .stat-icon {
   background-color: rgba(255, 255, 255, 0.2);
 }
-
 .skill-card mat-icon {
   color: white;
+}
+
+.transparent-icon {
+  background-color: rgba(255, 255, 255, 0.2) !important;
 }
 
 .stat-icon {
@@ -166,7 +228,6 @@
   align-items: center;
   justify-content: center;
 }
-
 .stat-icon mat-icon {
   font-size: 32px;
   width: 32px;
@@ -179,186 +240,82 @@
   flex-direction: column;
   gap: 0.25rem;
 }
+.stat-label { font-size: 0.9rem; color: #757575; font-weight: 400; }
+.stat-value { font-size: 2rem; font-weight: 600; color: #283040; }
+.skill-value { font-size: 2.5rem; }
 
-.stat-label {
-  font-size: 0.9rem;
-  color: var(--mat-app-on-surface-variant);
-  font-weight: 400;
+.danger-zone-wrapper {
+  padding: 0 2rem 2rem 2rem;
 }
-
-.stat-value {
-  font-size: 2rem;
-  font-weight: 600;
-  color: var(--mat-app-on-surface);
-}
-
-.skill-value {
-  font-size: 2.5rem;
-}
-
-/* ---- BADGE DE HABILIDADE ---- */
-
-.skill-badge {
-  display: inline-block;
-  margin-top: 1rem;
-  padding: 6px 16px;
-  border-radius: 20px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  color: white;
-  text-transform: uppercase;
-  width: fit-content;
-}
-
-/*CRAQUE (OURO)*/
-.skill-badge.craque {
-  background: linear-gradient(135deg, #D4AF37, #C19A2A);
-  color: #ffffff;
-  border: 1px solid #A8841C;
-}
-
-/*MEDIANO (PRATA)*/
-.skill-badge.mediano {
-  background: linear-gradient(135deg, #E6E7E8, #C0C0C0, #A8A8A8);
-  color: #283040;
-  border: 1px solid #8F8F8F;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
-}
-
-/*PERNA DE PAU (BRONZE)*/
-.skill-badge.perna-de-pau {
-  background: linear-gradient(135deg, #CD7F32, #B06C2E);
-  color: #ffffff;
-  border: 1px solid #8C5323;
-}
-
-.actions-section {
-  padding: 2rem;
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.action-btn {
-  flex: 1;
-  min-width: 200px;
-  height: 48px;
-  font-size: 1rem;
-}
-
-.action-btn mat-icon {
-  margin-right: 0.5rem;
-}
-
-.logout-btn {
-  color: #f44336;
-  border-color: #f44336;
-}
-
-.logout-btn:hover {
-  background-color: rgba(244, 67, 54, 0.05);
-}
-
 .danger-zone {
-  padding: 2rem;
-  background-color: #fff3f3;
-  border: 2px solid #ffebee;
+  padding: 1.5rem;
   border-radius: 8px;
-  margin: 0 2rem 2rem 2rem;
 }
-
 .danger-title {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #d32f2f;
+  color: #c32323;
   font-size: 1.25rem;
-  font-weight: 500;
-  margin: 0 0 1rem 0;
+  margin: 0 0 0.5rem 0;
 }
-
-.danger-title mat-icon {
-  font-size: 24px;
-  width: 24px;
-  height: 24px;
-}
-
-.danger-description {
-  color: #666;
-  font-size: 0.95rem;
-  line-height: 1.5;
-  margin: 0 0 1.5rem 0;
-}
+.danger-description { color: #666; margin-bottom: 1rem; }
 
 .delete-btn {
-  width: 100%;
-  height: 48px;
-  font-size: 1rem;
-  color: #d32f2f;
-  border-color: #d32f2f;
-  font-weight: 500;
+  width: 100%; height:
+  48px;
+  border-radius: 8px;
+  background-color: #283040 !important; /* Cor exata do login */
+  color: white !important;
 }
 
 .delete-btn:hover {
-  background-color: rgba(211, 47, 47, 0.08);
+  background-color: #c32323 !important;
+  border: none;
 }
 
-.delete-btn mat-icon {
-  margin-right: 0.5rem;
-}
-
-@media (max-width: 768px) {
-  .profile-container {
-    padding: 1rem;
-  }
-
+/* --- Responsividade --- */
+@media (max-width: 900px) {
   .profile-header {
     flex-direction: column;
+    align-items: center;
     text-align: center;
-    padding: 2rem 1rem;
+    gap: 1.5rem;
   }
 
-  .user-name {
-    font-size: 2rem;
-  }
-
-  .stats-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .actions-section {
+  .header-main {
     flex-direction: column;
-  }
-
-  .action-btn {
     width: 100%;
   }
 
-  .member-since {
+  .user-info {
+    align-items: center;
+  }
+
+  .user-details-block {
+    align-items: center;
+  }
+
+  .header-actions {
+    flex-direction: row;
+    width: 100%;
     justify-content: center;
+    gap: 1rem;
   }
 
-  .danger-zone {
-    margin: 0 1rem 1rem 1rem;
-    padding: 1.5rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .large-avatar {
-    width: 100px;
-    height: 100px;
-  }
-
-  .avatar-icon {
-    font-size: 70px;
-    width: 70px;
-    height: 70px;
-  }
-
-  .user-name {
-    font-size: 1.75rem;
+  .header-btn {
+    width: auto;
+    min-width: 140px;
+    padding-left: 20px;
+    padding-right: 20px;
   }
 }
 
+@media (max-width: 600px) {
+  .profile-container { padding: 1rem; }
+  .header-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+  .header-btn { width: 100%; }
+}
