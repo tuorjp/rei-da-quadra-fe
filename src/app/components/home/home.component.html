@@ -17,15 +17,15 @@
         </mat-card-content>
       </mat-card>
 
-      <mat-card class="feature-card" (click)="onJoinEvent()">
+      <mat-card class="feature-card" (click)="onViewEvents()">
         <mat-card-header>
           <div mat-card-avatar class="feature-avatar">
-            <mat-icon>group_add</mat-icon>
+            <mat-icon>event_note</mat-icon>
           </div>
-          <mat-card-title>{{ translate('join.event') }}</mat-card-title>
+          <mat-card-title>{{ translate('events') }}</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <p>{{ translate('join.event.description') }}</p>
+          <p>{{ translate('events.description') }}</p>
         </mat-card-content>
       </mat-card>
     </div>

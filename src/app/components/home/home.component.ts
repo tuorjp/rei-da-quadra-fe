@@ -28,7 +28,7 @@ export class HomeComponent {
     this.router.navigate(['/create-event']);
   }
 
-  onJoinEvent() {
+  onViewEvents() {
     this.router.navigate(['/my-events']);
   }
 }

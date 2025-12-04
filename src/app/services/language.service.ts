@@ -39,6 +39,18 @@ export class LanguageService {
       en: 'Football Events',
       es: 'Eventos de Fútbol'
     },
+    // --- NOVAS CHAVES ADICIONADAS ---
+    'events': {
+      pt: 'Eventos',
+      en: 'Events',
+      es: 'Eventos'
+    },
+    'events.description': {
+      pt: 'Visualize e gerencie todos os eventos',
+      en: 'View and manage all events',
+      es: 'Ver y administrar todos los eventos'
+    },
+    // --------------------------------
     'create.event': {
       pt: 'Criar Evento',
       en: 'Create Event',
@@ -95,9 +107,9 @@ export class LanguageService {
       es: 'Sistema'
     },
     'events.ongoing': {
-      pt: 'Eventos em Andamento',
-      en: 'Ongoing Events',
-      es: 'Eventos en Curso'
+      pt: 'Eventos Próximos',
+      en: 'Upcoming Events',
+      es: 'Próximos eventos'
     },
     'events.participant': {
       pt: 'Participante',
@@ -138,6 +150,11 @@ export class LanguageService {
       pt: 'Meus Eventos',
       en: 'My Events',
       es: 'Mis Eventos'
+    },
+    'my.events.description': {
+      pt: 'Visualize e gerencie seus eventos criados',
+      en: 'View and manage your created events',
+      es: 'Ver y administrar tus eventos creados'
     },
     'event.name': {
       pt: 'Nome do Evento',
@@ -203,6 +220,11 @@ export class LanguageService {
       pt: 'Salvando...',
       en: 'Saving...',
       es: 'Guardando...'
+    },
+    'edit': {
+      pt: 'Editar',
+      en: 'Edit',
+      es: 'Editar'
     },
     'button.edit': {
       pt: 'Editar',
