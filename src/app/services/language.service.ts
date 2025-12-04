@@ -139,6 +139,11 @@ export class LanguageService {
       en: 'My Events',
       es: 'Mis Eventos'
     },
+    'my.event.description':{
+      pt: 'Gerencie suas partidas e inscrições em um só lugar.',
+      en: 'Manage your matches and registrations in one place.',
+      es: 'Gestiona tus partidos y registros en un solo lugar.'
+    },
     'event.name': {
       pt: 'Nome do Evento',
       en: 'Event Name',
@@ -428,9 +433,13 @@ export class LanguageService {
       pt: 'Participar',
       en: 'Join',
       es: 'Participar'
+    },
+    'search.placeholder':{
+      pt: 'Pesquisar por nome, local ou organizador...',
+      en: 'Search by name, location, or organizer...',
+      es: 'Buscar por nombre, ubicación u organizador...'
     }
   };
-
   constructor() {
     this.loadLanguage();
   }

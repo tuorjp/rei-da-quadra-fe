@@ -1,87 +1,67 @@
 <div class="my-events-container">
 
-  <div class="header">
-    <h1>
-      <mat-icon>event_note</mat-icon>
-      {{ langService.translate('my.events') }}
-    </h1>
-    <button mat-raised-button class="create-event-btn" (click)="onCreateEvent()">
+  <div class="header-section">
+    <div class="header-content">
+      <h1>
+        <mat-icon class="header-icon">event_note</mat-icon>
+        {{ langService.translate('my.events') }}
+      </h1>
+      <p class="header-subtitle">{{ langService.translate('my.event.description') || 'Gerencie suas partidas e inscrições em um só lugar.' }}</p>
+    </div>
+
+    <button mat-flat-button class="create-event-btn" (click)="onCreateEvent()">
       <mat-icon>add</mat-icon>
       {{ langService.translate('create.event') }}
     </button>
   </div>
 
-  <div class="loading-container" *ngIf="isLoading()">
-    <mat-spinner diameter="50" color="accent"></mat-spinner>
+  <div class="search-wrapper">
+    <div class="search-glass">
+      <mat-icon class="search-icon">search</mat-icon>
+      <input
+        type="text"
+        [value]="searchTerm()"
+        (input)="onSearchChange($any($event.target).value)"
+        placeholder="{{ langService.translate('search.placeholder') || 'Pesquisar por nome, local ou organizador...' }}"
+      >
+      <button *ngIf="searchTerm()" (click)="clearSearch()" class="clear-search-btn">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <div class="loading-wrapper" *ngIf="isLoading()">
+    <mat-spinner diameter="40" color="accent"></mat-spinner>
     <p>{{ langService.translate('loading') }}</p>
   </div>
 
-  <div class="tabs-container" *ngIf="!isLoading()">
-    
-    <!-- Campo de Pesquisa -->
-    <div class="search-container">
-      <mat-form-field appearance="outline" class="search-field">
-        <mat-label>
-          <mat-icon class="search-icon">search</mat-icon>
-          Pesquisar eventos
-        </mat-label>
-        <input 
-          matInput 
-          [value]="searchTerm()"
-          (input)="onSearchChange($any($event.target).value)"
-          placeholder="Nome, local, organizador...">
-        <button 
-          *ngIf="searchTerm()" 
-          matSuffix 
-          mat-icon-button 
-          (click)="clearSearch()"
-          class="clear-btn">
-          <mat-icon>close</mat-icon>
-        </button>
-      </mat-form-field>
-    </div>
+  <div class="content-wrapper" *ngIf="!isLoading()">
+    <mat-tab-group
+      [(selectedIndex)]="selectedTabIndex"
+      animationDuration="300ms"
+      mat-stretch-tabs="false"
+      mat-align-tabs="center">
 
-    <mat-tab-group [(selectedIndex)]="selectedTabIndex" animationDuration="300ms">
-      
-      <!-- ABA 1: Meus Eventos Criados -->
       <mat-tab>
         <ng-template mat-tab-label>
-          <mat-icon class="tab-icon">create</mat-icon>
-          Meus Eventos
+          <span class="custom-label">{{ langService.translate('my.events') }}</span>
         </ng-template>
-        
-        <div class="tab-content">
-          <div class="empty-state" *ngIf="eventosUsuarioFiltrados().length === 0 && !searchTerm()">
-            <mat-icon>event_busy</mat-icon>
-            <h2>{{ langService.translate('no.events') }}</h2>
-            <p>{{ langService.translate('no.events.description') }}</p>
-            <button mat-raised-button class="create-event-btn" (click)="onCreateEvent()">
-              <mat-icon>add</mat-icon>
-              {{ langService.translate('create.first.event') }}
-            </button>
-          </div>
 
-          <div class="empty-state" *ngIf="eventosUsuarioFiltrados().length === 0 && searchTerm()">
-            <mat-icon>search_off</mat-icon>
-            <h2>Nenhum resultado encontrado</h2>
-            <p>Tente ajustar sua pesquisa</p>
-          </div>
-
-          <div class="events-grid" *ngIf="eventosUsuarioFiltrados().length > 0">
+        <div class="tab-body">
+          <div class="events-grid" *ngIf="eventosUsuarioFiltrados().length > 0; else noUserEvents">
             <mat-card
-              *ngFor="let evento of eventosUsuarioFiltrados()"
+              *ngFor="let event of eventosUsuarioFiltrados()"
               class="event-card"
-              (click)="onViewEvent(evento.id)">
+              (click)="onViewEvent(event.id)">
 
               <mat-card-header>
                 <div class="event-avatar">
                   <mat-icon>emoji_events</mat-icon>
                 </div>
-
                 <div class="header-text">
                   <h3 class="event-title">
-                    {{ evento.nome }}
-                    <mat-icon class="organizer-crown" title="Organizador">workspace_premium</mat-icon>
+                    {{ event.nome }}
+                    <mat-icon class="organizer-crown" title="{{ langService.translate('events.organizer') }}">workspace_premium</mat-icon>
                   </h3>
                 </div>
               </mat-card-header>
@@ -90,77 +70,91 @@
                 <div class="event-details">
                   <div class="detail-row">
                     <mat-icon class="detail-icon">location_on</mat-icon>
-                    <span class="detail-text">{{ evento.local }}</span>
+                    <span class="detail-text">{{ event.local }}</span>
                   </div>
-
                   <div class="detail-row date-row-container">
                     <mat-icon class="detail-icon">schedule</mat-icon>
                     <div style="display:flex; align-items:center; justify-content:space-between; flex:1; gap:8px;">
-                      <span class="date-text">{{ formatDate(evento.dataHorario) }}</span>
-                      <div class="status-pill status-active">
-                        {{ evento.status === 'ATIVO' ? 'Em Aberto' : evento.status }}
+                      <span class="date-text">{{ formatDate(event.dataHorario) }}</span>
+                      <div class="status-pill"
+                           [ngClass]="{'status-active': (event.status === 'ATIVO' || !event.status), 'status-other': event.status !== 'ATIVO'}">
+                        {{ event.status === 'ATIVO' ? 'Em Aberto' : (event.status || 'ATIVO') }}
                       </div>
                     </div>
                   </div>
-
                   <div class="detail-row">
                     <mat-icon class="detail-icon">person</mat-icon>
                     <span class="detail-text">
-                      Organizador: <span class="organizer-name">Você</span>
+                      {{ langService.translate('events.organizer') }}: <span class="organizer-name">{{ langService.translate('you') || 'Você' }}</span>
                     </span>
                   </div>
                 </div>
               </mat-card-content>
 
               <mat-card-actions>
-                <button mat-button class="btn-details" (click)="onViewEvent(evento.id); $event.stopPropagation()">
+                <button
+                  mat-icon-button
+                  class="btn-icon btn-details"
+                  (click)="$event.stopPropagation(); onViewEvent(event.id)"
+                  matTooltip="{{ langService.translate('view.details') }}"
+                >
                   <mat-icon>visibility</mat-icon>
-                  {{ langService.translate('view.details') }}
                 </button>
 
-                <button mat-flat-button class="btn-join" (click)="onEditEvent(evento.id); $event.stopPropagation()">
-                  <mat-icon>edit</mat-icon>
-                  {{ langService.translate('button.edit')}}
-                </button>
+                <div style="display:flex; gap:8px;">
+                  <button
+                    mat-icon-button
+                    class="btn-icon btn-delete"
+                    (click)="onDeleteEvent(event, $event)"
+                    matTooltip="{{ langService.translate('button.delete') }}"
+                  >
+                    <mat-icon>delete</mat-icon>
+                  </button>
+
+                  <button
+                    mat-icon-button
+                    class="btn-icon btn-edit"
+                    (click)="onEditEvent(event, $event)"
+                    matTooltip="{{ langService.translate('button.edit') }}"
+                  >
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                </div>
               </mat-card-actions>
             </mat-card>
           </div>
+
+          <ng-template #noUserEvents>
+            <div class="empty-state">
+              <mat-icon>{{ searchTerm() ? 'search_off' : 'event_available' }}</mat-icon>
+              <h3>{{ searchTerm() ? 'Nenhum resultado' : langService.translate('no.events') }}</h3>
+              <p>{{ searchTerm() ? 'Tente outro termo de pesquisa' : langService.translate('no.events.description') }}</p>
+              <button *ngIf="!searchTerm()" mat-stroked-button class="btn-outline-light" (click)="onCreateEvent()">
+                {{ langService.translate('create.first.event') }}
+              </button>
+            </div>
+          </ng-template>
         </div>
       </mat-tab>
 
-      <!-- ABA 2: Eventos Próximos -->
       <mat-tab>
         <ng-template mat-tab-label>
-          <mat-icon class="tab-icon">near_me</mat-icon>
-          Eventos Próximos
+          <span class="custom-label">{{ langService.translate('events.ongoing') || 'Próximos' }}</span>
         </ng-template>
-        
-        <div class="tab-content">
-          <div class="empty-state" *ngIf="eventosProximosFiltrados().length === 0 && !searchTerm()">
-            <mat-icon>location_off</mat-icon>
-            <h2>Nenhum evento próximo</h2>
-            <p>Não há eventos disponíveis na sua região no momento.</p>
-          </div>
 
-          <div class="empty-state" *ngIf="eventosProximosFiltrados().length === 0 && searchTerm()">
-            <mat-icon>search_off</mat-icon>
-            <h2>Nenhum resultado encontrado</h2>
-            <p>Tente ajustar sua pesquisa</p>
-          </div>
-
-          <div class="events-grid" *ngIf="eventosProximosFiltrados().length > 0">
+        <div class="tab-body">
+          <div class="events-grid" *ngIf="eventosProximosFiltrados().length > 0; else noNearbyEvents">
             <mat-card
-              *ngFor="let evento of eventosProximosFiltrados()"
+              *ngFor="let event of eventosProximosFiltrados()"
               class="event-card"
-              (click)="onViewEvent(evento.id)">
+              (click)="onViewEvent(event.id)">
 
               <mat-card-header>
                 <div class="event-avatar">
-                  <mat-icon>emoji_events</mat-icon>
+                  <mat-icon>group_add</mat-icon>
                 </div>
-
                 <div class="header-text">
-                  <h3 class="event-title">{{ evento.nome }}</h3>
+                  <h3 class="event-title">{{ event.nome }}</h3>
                 </div>
               </mat-card-header>
 
@@ -168,195 +162,173 @@
                 <div class="event-details">
                   <div class="detail-row">
                     <mat-icon class="detail-icon">location_on</mat-icon>
-                    <span class="detail-text">{{ evento.local }}</span>
+                    <span class="detail-text">{{ event.local }}</span>
                   </div>
-
                   <div class="detail-row date-row-container">
                     <mat-icon class="detail-icon">schedule</mat-icon>
                     <div style="display:flex; align-items:center; justify-content:space-between; flex:1; gap:8px;">
-                      <span class="date-text">{{ formatDate(evento.dataHorario) }}</span>
-                      <div class="status-pill status-active">
-                        {{ evento.status === 'ATIVO' ? 'Em Aberto' : evento.status }}
-                      </div>
+                      <span class="date-text">{{ formatDate(event.dataHorario) }}</span>
+                      <div class="status-pill status-active">Em Aberto</div>
                     </div>
                   </div>
-
                   <div class="detail-row">
                     <mat-icon class="detail-icon">person</mat-icon>
                     <span class="detail-text">
-                      Organizador: <span class="organizer-name">{{ evento.usuarioNome }}</span>
+                      {{ langService.translate('events.organizer') }}: <span class="organizer-name">{{ event.usuarioNome || 'Desconhecido' }}</span>
                     </span>
                   </div>
                 </div>
               </mat-card-content>
 
               <mat-card-actions>
-                <button mat-button class="btn-details" (click)="onViewEvent(evento.id); $event.stopPropagation()">
+                <button
+                  mat-icon-button
+                  class="btn-icon btn-details"
+                  (click)="$event.stopPropagation(); onViewEvent(event.id)"
+                  matTooltip="{{ langService.translate('view.details') }}"
+                >
                   <mat-icon>visibility</mat-icon>
-                  {{ langService.translate('view.details') }}
                 </button>
 
-                <button mat-flat-button class="btn-join" (click)="onViewEvent(evento.id); $event.stopPropagation()">
-                  <mat-icon>login</mat-icon>
-                  Participar
+                <button
+                  mat-icon-button
+                  class="btn-icon btn-join"
+                  (click)="onRequestJoin(event, $event)"
+                  matTooltip="{{ langService.translate('button.join') || 'Participar' }}"
+                >
+                  <mat-icon>person_add</mat-icon>
                 </button>
               </mat-card-actions>
             </mat-card>
           </div>
+
+          <ng-template #noNearbyEvents>
+            <div class="empty-state">
+              <mat-icon>location_off</mat-icon>
+              <h3>{{ langService.translate('no.events') }}</h3>
+              <p>Não encontramos eventos na sua região.</p>
+            </div>
+          </ng-template>
         </div>
       </mat-tab>
 
-      <!-- ABA 3: Eventos Inscritos -->
       <mat-tab>
         <ng-template mat-tab-label>
-          <mat-icon class="tab-icon">how_to_reg</mat-icon>
-          Minhas Inscrições
+          <span class="custom-label">{{ langService.translate('inscriptions') || 'Inscrições' }}</span>
         </ng-template>
-        
-        <div class="tab-content">
-          <div class="empty-state" *ngIf="eventosInscritosFiltrados().length === 0 && !searchTerm()">
-            <mat-icon>event_available</mat-icon>
-            <h2>Nenhuma inscrição</h2>
-            <p>Você ainda não está inscrito em nenhum evento.</p>
+
+        <div class="tab-body">
+          <div class="empty-state" *ngIf="eventosInscritosFiltrados().length === 0; else subscribedEventsGrid">
+            <mat-icon>how_to_reg</mat-icon>
+            <h3>{{ langService.translate('inscriptions.none') || 'Nenhuma inscrição' }}</h3>
+            <p>Você ainda não se inscreveu em partidas.</p>
           </div>
 
-          <div class="empty-state" *ngIf="eventosInscritosFiltrados().length === 0 && searchTerm()">
-            <mat-icon>search_off</mat-icon>
-            <h2>Nenhum resultado encontrado</h2>
-            <p>Tente ajustar sua pesquisa</p>
-          </div>
+          <ng-template #subscribedEventsGrid>
+            <div class="events-grid">
+              <mat-card
+                *ngFor="let event of eventosInscritosFiltrados()"
+                class="event-card"
+                (click)="onViewEvent(event.id)">
 
-          <div class="events-grid" *ngIf="eventosInscritosFiltrados().length > 0">
-            <mat-card
-              *ngFor="let evento of eventosInscritosFiltrados()"
-              class="event-card"
-              (click)="onViewEvent(evento.id)">
-
-              <mat-card-header>
-                <div class="event-avatar">
-                  <mat-icon>emoji_events</mat-icon>
-                </div>
-
-                <div class="header-text">
-                  <h3 class="event-title">
-                    {{ evento.nome }}
-                    <mat-icon class="inscrito-badge" title="Inscrito">check_circle</mat-icon>
-                  </h3>
-                </div>
-              </mat-card-header>
-
-              <mat-card-content>
-                <div class="event-details">
-                  <div class="detail-row">
-                    <mat-icon class="detail-icon">location_on</mat-icon>
-                    <span class="detail-text">{{ evento.local }}</span>
+                <mat-card-header>
+                  <div class="event-avatar">
+                    <mat-icon>check_circle</mat-icon>
                   </div>
+                  <div class="header-text">
+                    <h3 class="event-title">{{ event.nome }}</h3>
+                  </div>
+                </mat-card-header>
 
-                  <div class="detail-row date-row-container">
-                    <mat-icon class="detail-icon">schedule</mat-icon>
-                    <div style="display:flex; align-items:center; justify-content:space-between; flex:1; gap:8px;">
-                      <span class="date-text">{{ formatDate(evento.dataHorario) }}</span>
-                      <div class="status-pill status-active">
-                        {{ evento.status === 'ATIVO' ? 'Em Aberto' : evento.status }}
+                <mat-card-content>
+                  <div class="event-details">
+                    <div class="detail-row">
+                      <mat-icon class="detail-icon">location_on</mat-icon>
+                      <span class="detail-text">{{ event.local }}</span>
+                    </div>
+                    <div class="detail-row date-row-container">
+                      <mat-icon class="detail-icon">schedule</mat-icon>
+                      <div style="display:flex; align-items:center; justify-content:space-between; flex:1; gap:8px;">
+                        <span class="date-text">{{ formatDate(event.dataHorario) }}</span>
+                        <div class="status-pill status-active">Inscrito</div>
                       </div>
                     </div>
                   </div>
+                </mat-card-content>
 
-                  <div class="detail-row">
-                    <mat-icon class="detail-icon">person</mat-icon>
-                    <span class="detail-text">
-                      Organizador: <span class="organizer-name">{{ evento.usuarioNome }}</span>
-                    </span>
-                  </div>
-                </div>
-              </mat-card-content>
+                <mat-card-actions>
+                  <button
+                    mat-icon-button
+                    class="btn-icon btn-details"
+                    (click)="$event.stopPropagation(); onViewEvent(event.id)"
+                    matTooltip="{{ langService.translate('view.details') }}"
+                  >
+                    <mat-icon>visibility</mat-icon>
+                  </button>
 
-              <mat-card-actions>
-                <button mat-button class="btn-details" (click)="onViewEvent(evento.id); $event.stopPropagation()">
-                  <mat-icon>visibility</mat-icon>
-                  {{ langService.translate('view.details') }}
-                </button>
-
-                <button mat-flat-button class="btn-join" (click)="onViewEvent(evento.id); $event.stopPropagation()">
-                  <mat-icon>info</mat-icon>
-                  Ver Detalhes
-                </button>
-              </mat-card-actions>
-            </mat-card>
-          </div>
+                  <button
+                    mat-icon-button
+                    class="btn-icon btn-cancel"
+                    (click)="$event.stopPropagation()"
+                    matTooltip="Cancelar Inscrição"
+                  >
+                    <mat-icon>event_busy</mat-icon>
+                  </button>
+                </mat-card-actions>
+              </mat-card>
+            </div>
+          </ng-template>
         </div>
       </mat-tab>
 
-      <!-- ABA 4: Eventos Finalizados -->
       <mat-tab>
         <ng-template mat-tab-label>
-          <mat-icon class="tab-icon">history</mat-icon>
-          Finalizados
+          <span class="custom-label">{{ langService.translate('dashboard') || 'Histórico' }}</span>
         </ng-template>
-        
-        <div class="tab-content">
-          <div class="empty-state" *ngIf="eventosFinalizadosFiltrados().length === 0 && !searchTerm()">
-            <mat-icon>event_busy</mat-icon>
-            <h2>Nenhum evento finalizado</h2>
-            <p>Você ainda não participou de eventos finalizados.</p>
-          </div>
 
-          <div class="empty-state" *ngIf="eventosFinalizadosFiltrados().length === 0 && searchTerm()">
-            <mat-icon>search_off</mat-icon>
-            <h2>Nenhum resultado encontrado</h2>
-            <p>Tente ajustar sua pesquisa</p>
-          </div>
-
-          <div class="events-grid" *ngIf="eventosFinalizadosFiltrados().length > 0">
+        <div class="tab-body">
+          <div class="events-grid" *ngIf="eventosFinalizadosFiltrados().length > 0; else noHistoryEvents">
             <mat-card
-              *ngFor="let evento of eventosFinalizadosFiltrados()"
+              *ngFor="let event of eventosFinalizadosFiltrados()"
               class="event-card event-card-finished"
-              (click)="onViewEvent(evento.id)">
+              (click)="onViewEvent(event.id)">
 
               <mat-card-header>
-                <div class="event-avatar">
-                  <mat-icon>emoji_events</mat-icon>
-                </div>
-
                 <div class="header-text">
-                  <h3 class="event-title">{{ evento.nome }}</h3>
+                  <h3 class="event-title">{{ event.nome }}</h3>
                 </div>
               </mat-card-header>
 
               <mat-card-content>
                 <div class="event-details">
-                  <div class="detail-row">
-                    <mat-icon class="detail-icon">location_on</mat-icon>
-                    <span class="detail-text">{{ evento.local }}</span>
-                  </div>
-
                   <div class="detail-row date-row-container">
                     <mat-icon class="detail-icon">schedule</mat-icon>
-                    <div style="display:flex; align-items:center; justify-content:space-between; flex:1; gap:8px;">
-                      <span class="date-text">{{ formatDate(evento.dataHorario) }}</span>
-                      <div class="status-pill status-other">
-                        Finalizado
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="detail-row">
-                    <mat-icon class="detail-icon">person</mat-icon>
-                    <span class="detail-text">
-                      Organizador: <span class="organizer-name">{{ evento.usuarioNome || 'Você' }}</span>
-                    </span>
+                    <span class="date-text">{{ formatDate(event.dataHorario) }}</span>
                   </div>
                 </div>
               </mat-card-content>
 
               <mat-card-actions>
-                <button mat-button class="btn-details" (click)="onViewEvent(evento.id); $event.stopPropagation()">
+                <div class="status-pill status-other">FINALIZADO</div>
+                <button
+                  mat-icon-button
+                  class="btn-icon btn-details"
+                  (click)="$event.stopPropagation(); onViewEvent(event.id)"
+                  matTooltip="{{ langService.translate('view.details') }}"
+                >
                   <mat-icon>visibility</mat-icon>
-                  {{ langService.translate('view.details') }}
                 </button>
               </mat-card-actions>
             </mat-card>
           </div>
+
+          <ng-template #noHistoryEvents>
+            <div class="empty-state">
+              <mat-icon>history</mat-icon>
+              <h3>{{ langService.translate('no.events') }}</h3>
+              <p>Nenhum evento finalizado encontrado.</p>
+            </div>
+          </ng-template>
         </div>
       </mat-tab>
 
