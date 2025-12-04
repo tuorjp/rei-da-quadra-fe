@@ -15,7 +15,19 @@ export interface HistoricoPontuacao {
     pontosDepois?: number;
     variacao?: number;
     dataRegistro?: string;
+    acao?: HistoricoPontuacao.AcaoEnum;
     jogador?: any | null;
     partida?: any | null;
 }
+export namespace HistoricoPontuacao {
+    export const AcaoEnum = {
+        Gol: 'GOL',
+        Assistencia: 'ASSISTENCIA',
+        Defesa: 'DEFESA',
+        Falta: 'FALTA',
+        Impedimento: 'IMPEDIMENTO'
+    } as const;
+    export type AcaoEnum = typeof AcaoEnum[keyof typeof AcaoEnum];
+}
+
 

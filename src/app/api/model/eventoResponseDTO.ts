@@ -13,12 +13,12 @@ export interface EventoResponseDTO {
     id?: number;
     nome?: string;
     local?: string;
+    latitude?: number;
+    longitude?: number;
     dataHorario?: string;
     usuarioId?: number;
     usuarioLogin?: string;
     usuarioNome?: string;
-    latitude?: number;
-    longitude?: number;
     isOrganizer?: boolean;
     status?: string;
 }

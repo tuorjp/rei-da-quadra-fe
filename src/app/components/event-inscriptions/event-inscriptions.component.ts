@@ -79,11 +79,10 @@ export class EventInscriptionsComponent implements OnInit {
   carregarLista() {
     this.inscricaoService.listarInscricoes(this.eventoId).subscribe({
       next: (response) => {
-        console.log(response);
         this.inscricoes.set(response);
       },
       error: (err) => {
-        console.log(err);
+        console.error(err);
       }
     });
   }
@@ -108,11 +107,9 @@ export class EventInscriptionsComponent implements OnInit {
       }
     });
 
-    console.log("Entrou modal")
 
     dialogRef.afterClosed().subscribe((confirmed: boolean) => {
       if (confirmed) {
-        console.log("CONFIRMADO", confirmed)
         this.removePlayer(inscricao.id);
       }
     });
@@ -124,7 +121,7 @@ export class EventInscriptionsComponent implements OnInit {
         this.carregarLista();
       },
       error: (err) => {
-        console.log(err);
+        console.error(err);
       }
     });
   }

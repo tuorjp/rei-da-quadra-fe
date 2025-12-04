@@ -39,11 +39,9 @@ export class AuthService {
   }
 
   login(credentials: AuthenticationDTO): Observable<LoginResponseDTO> {
-    console.log(credentials)
     return this.authApi.login(credentials).pipe(
       tap(response => {
         if (response.token) {
-          console.log('RESPONSE', response)
           this.saveToken(response.token);
           this.isLoggedIn.set(true);
           this.loadProfilePhoto(); // Atualiza a foto do perfil após o login

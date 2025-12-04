@@ -125,9 +125,9 @@
             <mat-icon class="tab-icon">sports_soccer</mat-icon>
             {{ langService.translate('matches') }}
           </ng-template>
-          <div class="tab-content">
-            <p class="coming-soon">{{ langService.translate('matches.manage') }} - Em breve</p>
-          </div>
+          <ng-template matTabContent>
+            <app-event-matches [eventoId]="evento()?.id"></app-event-matches>
+          </ng-template>
         </mat-tab>
 
         <!-- Aba de Dashboard -->

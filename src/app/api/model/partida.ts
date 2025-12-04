@@ -9,6 +9,7 @@
  */
 import { HistoricoPontuacao } from './historicoPontuacao';
 import { HistoricoTransferencia } from './historicoTransferencia';
+import { Evento } from './evento';
 import { Time } from './time';
 import { ParticipacaoDesempenho } from './participacaoDesempenho';
 
@@ -19,7 +20,7 @@ export interface Partida {
     status?: Partida.StatusEnum;
     timeAPlacar?: number;
     timeBPlacar?: number;
-    evento?: any | null;
+    evento?: Evento;
     timeA?: Time;
     timeB?: Time;
     participacoes?: Array<ParticipacaoDesempenho>;

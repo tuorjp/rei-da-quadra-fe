@@ -15,8 +15,10 @@ export interface PartidaResponseDTO {
     status?: string;
     timeANome?: string;
     timeAPlacar?: number;
+    timeAId?: number;
     timeBNome?: string;
     timeBPlacar?: number;
+    timeBId?: number;
     eventoId?: number;
 }
 

@@ -1,26 +1,26 @@
 import {Component, Inject, inject, OnInit, signal} from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { MatTabsModule } from '@angular/material/tabs';
-import { EventoControllerService } from '../../api/api/eventoController.service';
-import { EventoResponseDTO } from '../../api/model/eventoResponseDTO';
-import { LanguageService } from '../../services/language.service';
-import { finalize } from 'rxjs';
-import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import {CommonModule} from '@angular/common';
+import {ActivatedRoute, Router} from '@angular/router';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {MatCardModule} from '@angular/material/card';
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+import {MatTabsModule} from '@angular/material/tabs';
+import {EventoControllerService} from '../../api/api/eventoController.service';
+import {EventoResponseDTO} from '../../api/model/eventoResponseDTO';
+import {LanguageService} from '../../services/language.service';
+import {finalize} from 'rxjs';
+import {ConfirmDialogComponent} from '../confirm-dialog/confirm-dialog.component';
 import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-import { EventInscriptionsComponent } from '../event-inscriptions/event-inscriptions.component';
+import {EventInscriptionsComponent} from '../event-inscriptions/event-inscriptions.component';
 import {LocationPickerDialogComponent} from '../location-picker-dialog/location-picker-dialog.component';
-import { EventTeamsComponent } from '../event-teams/event-teams.component';
+import {EventTeamsComponent} from '../event-teams/event-teams.component';
+import {EventMatchesComponent} from '../event-matches/event-matches.component';
 
 @Component({
   selector: 'app-event-details',
@@ -39,6 +39,7 @@ import { EventTeamsComponent } from '../event-teams/event-teams.component';
     MatTabsModule,
     EventInscriptionsComponent,
     EventTeamsComponent,
+    EventMatchesComponent,
   ],
   templateUrl: './event-details.component.html',
   styleUrl: './event-details.component.css'
@@ -95,7 +96,7 @@ export class EventDetailsComponent implements OnInit {
           this.snackBar.open(
             this.langService.translate('event.load.error'),
             'OK',
-            { duration: 5000 }
+            {duration: 5000}
           );
           this.router.navigate(['/my-events']);
         }
@@ -148,7 +149,7 @@ export class EventDetailsComponent implements OnInit {
       const parsed = dayjs.tz(localDateTime, "YYYY-MM-DDTHH:mm", userZone);
       const utcIso = parsed.utc().toISOString();
 
-      if(utcIso!== this.evento()?.dataHorario){
+      if (utcIso !== this.evento()?.dataHorario) {
         updates['dataHorario'] = utcIso;
       }
     }
@@ -168,7 +169,7 @@ export class EventDetailsComponent implements OnInit {
           this.snackBar.open(
             this.langService.translate('event.updated.success'),
             'OK',
-            { duration: 3000 }
+            {duration: 3000}
           );
         },
         error: (error) => {
@@ -176,7 +177,7 @@ export class EventDetailsComponent implements OnInit {
           this.snackBar.open(
             this.langService.translate('event.updated.error'),
             'OK',
-            { duration: 5000 }
+            {duration: 5000}
           );
         }
       });
@@ -204,7 +205,7 @@ export class EventDetailsComponent implements OnInit {
           this.snackBar.open(
             this.langService.translate('event.deleted.success'),
             'OK',
-            { duration: 3000 }
+            {duration: 3000}
           );
           this.router.navigate(['/my-events']);
         },
@@ -213,7 +214,7 @@ export class EventDetailsComponent implements OnInit {
           this.snackBar.open(
             this.langService.translate('event.deleted.error'),
             'OK',
-            { duration: 5000 }
+            {duration: 5000}
           );
         }
       });
@@ -270,7 +271,7 @@ export class EventDetailsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        const { lat, lng, address } = result;
+        const {lat, lng, address} = result;
 
         // Atualiza campo local
         this.eventForm.patchValue({

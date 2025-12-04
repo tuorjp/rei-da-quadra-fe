@@ -59,8 +59,6 @@ export class InscricaoService {
     let params: HttpParams = new HttpParams();
     params = params.set('i', inscricaoId);
 
-    console.log("ENTROU FUNÇÃO HTTP", eventoId + ' ' + inscricaoId)
-
     return this.http
       .delete<void>(
         `${this.baseUrl}/eventos/${eventoId}/inscricoes/delete`,

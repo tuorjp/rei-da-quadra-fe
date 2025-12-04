@@ -42,7 +42,6 @@ export class EventTeamsComponent implements OnInit{
     if(id) {
       this.admTimesService.distribuirTimes(id).subscribe({
         next: (response) => {
-          console.log(response);
           this.carregarTimesCriados();
         },
         error: (err) => {
@@ -63,7 +62,6 @@ export class EventTeamsComponent implements OnInit{
           } else {
             times = response;
           }
-          console.log(times);
           this.timesDoEvento.set(times);
         },
         error: (err) => {

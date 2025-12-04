@@ -5,6 +5,7 @@ export * from './eventoRequestDTO';
 export * from './eventoResponseDTO';
 export * from './grantedAuthority';
 export * from './historicoPontuacao';
+export * from './historicoPontuacaoDTO';
 export * from './historicoTransferencia';
 export * from './inscricao';
 export * from './inscricaoRequestDTO';
