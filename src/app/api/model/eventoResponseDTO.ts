@@ -21,5 +21,6 @@ export interface EventoResponseDTO {
     usuarioNome?: string;
     isOrganizer?: boolean;
     status?: string;
+    totalPartidasDefinidas?: number;
 }
 

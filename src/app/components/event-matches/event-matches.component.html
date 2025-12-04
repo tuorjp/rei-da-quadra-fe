@@ -1,11 +1,11 @@
 <div class="match-container">
 
   @if (!partidaAtual()) {
-    <div class="empty-state">
+      <div class="empty-state">
       <mat-icon class="large-icon">sports_soccer</mat-icon>
-      <h2>Nenhuma partida em andamento</h2>
+      <h2>{{limitePartidasAtingido() ? 'Partidas Encerradas' : 'Nenhuma partida em andamento'}}</h2>
 
-      <button mat-raised-button color="primary" (click)="iniciarPartidaInicial()" [disabled]="times().length < 2">
+      <button mat-raised-button color="primary" (click)="iniciarPartidaInicial()" [disabled]="times().length < 2 || limitePartidasAtingido()">
         INICIAR DESAFIO
       </button>
     </div>
@@ -93,4 +93,59 @@
       </mat-card-actions>
     </mat-card>
   }
+
+  <!-- Listas de partidas abaixo do placar -->
+  <div class="partidas-listas">
+    <mat-card class="list-card">
+      <mat-card-title>Partidas Não Iniciadas</mat-card-title>
+      <mat-card-content>
+        <table class="mat-elevation-z1 simple-table">
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Time A</th>
+              <th>Time B</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (p of partidasNaoIniciadas(); track p.id) {
+              <tr>
+                <td>{{ p.dataPartida ? (p.dataPartida | date: 'dd/MM/yyyy') : '-' }}</td>
+                <td>{{ p.timeANome }}</td>
+                <td>{{ p.timeBNome }}</td>
+                <td>{{ p.status }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="list-card">
+      <mat-card-title>Partidas Finalizadas</mat-card-title>
+      <mat-card-content>
+        <table class="mat-elevation-z1 simple-table">
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Time A</th>
+              <th>Time B</th>
+              <th>Placar</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (p of partidasFinalizadas(); track p.id) {
+              <tr>
+                <td>{{ p.dataPartida || '-' }}</td>
+                <td>{{ p.timeANome }}</td>
+                <td>{{ p.timeBNome }}</td>
+                <td>{{ p.timeAPlacar }} x {{ p.timeBPlacar }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </mat-card-content>
+    </mat-card>
+  </div>
 </div>

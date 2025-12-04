@@ -1,4 +1,4 @@
-import {Component, inject, Input, OnChanges, OnInit, signal, SimpleChanges} from '@angular/core';
+import {Component, computed, inject, Input, OnChanges, OnInit, signal, SimpleChanges} from '@angular/core';
 import {
   AcaoJogoDTO,
   JogadorDTO,
@@ -10,6 +10,7 @@ import {
 } from '../../api';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {MatIcon} from '@angular/material/icon';
+import {EventoControllerService} from '../../api';
 import {
   MatCard,
   MatCardActions,
@@ -20,10 +21,12 @@ import {
 } from '@angular/material/card';
 import {MatDivider} from '@angular/material/divider';
 import {MatButton} from '@angular/material/button';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-event-matches',
   imports: [
+    DatePipe,
     MatIcon,
     MatCard,
     MatCardHeader,
@@ -54,12 +57,28 @@ export class EventMatchesComponent implements OnInit, OnChanges {
   private partidaService = inject(PartidasService);
   private timeService = inject(TimesService);
   private snackbar = inject(MatSnackBar);
+  private eventoService = inject(EventoControllerService);
 
   partidaAtual = signal<PartidaResponseDTO | null>(null);
   times = signal<TimeResponseDTO[]>([]);
 
   jogadoresTimeA = signal<JogadorDTO[]>([]);
   jogadoresTimeB = signal<JogadorDTO[]>([]);
+
+  partidasNaoIniciadas = signal<PartidaResponseDTO[]>([]);
+  partidasFinalizadas = signal<PartidaResponseDTO[]>([]);
+
+  todasPartidas = signal<PartidaResponseDTO[]>([]);
+  totalPartidasDefinidas = signal<number | null>(null);
+  limitePartidasAtingido = computed(() => {
+    const total = this.totalPartidasDefinidas();
+    const atuais = this.todasPartidas().length;
+
+    if(total === null || total === undefined) return false;
+
+    return atuais >= total;
+  });
+
 
   carregarDadosIniciais() {
     if(!this.eventoId) return;
@@ -73,25 +92,37 @@ export class EventMatchesComponent implements OnInit, OnChanges {
     });
 
     this.carregarPartidasDoEvento();
+    
+    // buscar informações do evento para obter o limite de partidas
+    this.eventoService.buscarEvento(this.eventoId).subscribe({
+      next: (evento) => {
+        this.totalPartidasDefinidas.set(evento?.totalPartidasDefinidas ?? null);
+      },
+      error: err => console.error(err)
+    });
   }
 
   carregarPartidasDoEvento() {
     if (!this.eventoId) return;
     this.partidaService.listarPorEvento(this.eventoId).subscribe({
       next: (partidas) => {
-        if(partidas.length > 0) {
-          const partidaAtiva = partidas
-            .find(p => p.status === 'EM_ANDAMENTO' || p.status === 'AGUARDANDO_INICIO');
+        // separar listas por status
+        this.todasPartidas.set(partidas);
+        const naoIniciadas = partidas.filter(p => p.status === 'AGUARDANDO_INICIO');
+        const emAndamento = partidas.find(p => p.status === 'EM_ANDAMENTO');
+        const finalizadas = partidas.filter(p => p.status === 'JOGADA');
 
-          if (partidaAtiva) {
-            this.configurarPartidaAtiva(partidaAtiva);
-          } else {
-            this.partidaAtual.set(null);
-          }
+        this.partidasNaoIniciadas.set(naoIniciadas);
+        this.partidasFinalizadas.set(finalizadas);
+
+        if (emAndamento) {
+          this.configurarPartidaAtiva(emAndamento);
+        } else {
+          this.partidaAtual.set(null);
         }
       },
       error: (err) => console.error(err)
-    })
+    });
   }
 
   configurarPartidaAtiva(partida: PartidaResponseDTO) {
@@ -111,6 +142,11 @@ export class EventMatchesComponent implements OnInit, OnChanges {
 
   iniciarPartidaInicial() {
     if(!this.eventoId) return;
+
+    if (this.limitePartidasAtingido()) {
+      this.mostrarMensagem('Limite de partidas atingido para este evento.');
+      return;
+    }
 
     const listaTimes = this.times();
     const timesJogaveis = listaTimes.filter(t => !t.timeDeEspera);
@@ -135,6 +171,8 @@ export class EventMatchesComponent implements OnInit, OnChanges {
             console.log('Iniciando partida criada', partidaCriada);
             this.mostrarMensagem('Partida iniciada!');
             this.configurarPartidaAtiva(partidaIniciada);
+            // atualizar listas/flag após criar e iniciar
+            this.carregarPartidasDoEvento();
           }
         });
       },
