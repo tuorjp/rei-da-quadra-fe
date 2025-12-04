@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import {Component, Inject, inject, OnInit, signal} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -19,6 +19,7 @@ import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.compone
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { EventInscriptionsComponent } from '../event-inscriptions/event-inscriptions.component';
+import {LocationPickerDialogComponent} from '../location-picker-dialog/location-picker-dialog.component';
 
 @Component({
   selector: 'app-event-details',
@@ -56,7 +57,7 @@ export class EventDetailsComponent implements OnInit {
 
   eventForm: FormGroup;
 
-  constructor() {
+  constructor(@Inject('MAPBOX_TOKEN') private mapboxToken: string) {
     this.eventForm = this.fb.group({
       nome: ['', [Validators.required, Validators.minLength(3)]],
       local: ['', Validators.required],
@@ -224,6 +225,57 @@ export class EventDetailsComponent implements OnInit {
     if (!dateString) return '';
     const date = new Date(dateString);
     return date.toLocaleString(this.langService.currentLanguage());
+  }
+
+  openLocationPicker(): void {
+    // Tenta pegar localização atual do usuário
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        this.openMapDialog(position.coords.latitude, position.coords.longitude);
+      },
+      () => {
+        // fallback: local atual do evento, ou SP
+        const [lat, lng] = this.getCurrentEventLatLng();
+        this.openMapDialog(lat, lng);
+      }
+    );
+  }
+
+  private getCurrentEventLatLng(): [number, number] {
+    const local = this.eventForm.get('local')?.value;
+
+    if (local && local.includes(',')) {
+      // @ts-ignore
+      const [latStr, lngStr] = local.split(',').map(v => v.trim());
+      return [parseFloat(latStr), parseFloat(lngStr)];
+    }
+
+    // fallback São Paulo
+    return [-23.55052, -46.633308];
+  }
+
+  private openMapDialog(lat: number, lng: number): void {
+    const dialogRef = this.dialog.open(LocationPickerDialogComponent, {
+      width: '90%',
+      maxWidth: '600px',
+      data: {
+        lat,
+        lng,
+        mapboxToken: this.mapboxToken, // precisa injetar no construtor
+        styleId: 'mapbox/streets-v11'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const { lat, lng, address } = result;
+
+        // Atualiza campo local
+        this.eventForm.patchValue({
+          local: address
+        });
+      }
+    });
   }
 }
 
