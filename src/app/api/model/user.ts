@@ -29,11 +29,11 @@ export interface User {
     desempenhos?: Array<ParticipacaoDesempenho>;
     historicoPontuacao?: Array<HistoricoPontuacao>;
     historicoTransferencia?: Array<HistoricoTransferencia>;
-    username?: string;
+    accountNonExpired?: boolean;
+    credentialsNonExpired?: boolean;
     accountNonLocked?: boolean;
     authorities?: Array<GrantedAuthority>;
-    credentialsNonExpired?: boolean;
-    accountNonExpired?: boolean;
+    username?: string;
 }
 export namespace User {
     export const NivelHabilidadeEnum = {
