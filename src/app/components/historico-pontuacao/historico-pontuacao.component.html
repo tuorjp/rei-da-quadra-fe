@@ -1,0 +1,62 @@
+<div class="custom-dialog-header">
+  <h2>
+    <mat-icon class="header-icon">history</mat-icon>
+    Extrato de Pontos
+  </h2>
+</div>
+
+<mat-dialog-content class="custom-dialog-content">
+
+  <div *ngIf="groupedHistory.length === 0" class="no-data">
+    <mat-icon>receipt_long</mat-icon>
+    <p>Nenhuma movimentação encontrada.</p>
+  </div>
+
+  <div class="extract-container" *ngIf="groupedHistory.length > 0">
+
+    <div class="date-group" *ngFor="let group of groupedHistory">
+
+      <div class="date-header">
+        {{ group.date | date:"dd 'de' MMMM, yyyy" }}
+      </div>
+
+      <div class="transaction-list">
+        <div class="transaction-item" *ngFor="let item of group.items">
+
+          <div class="trans-left">
+            <div class="trans-icon" [ngClass]="{'positive': item.variacao > 0, 'negative': item.variacao < 0}">
+              <mat-icon>{{ item.variacao > 0 ? 'arrow_upward' : 'arrow_downward' }}</mat-icon>
+            </div>
+
+            <div class="trans-info">
+              <span class="trans-action">
+                {{ item.acao }}
+                <span class="trans-game" *ngIf="item.nomePartida"> • {{ item.nomePartida }}</span>
+              </span>
+              <span class="trans-time">{{ item.data | date:'HH:mm' }}</span>
+            </div>
+          </div>
+
+          <div class="trans-right">
+            <span class="trans-value"
+                  [ngClass]="{'positive': item.variacao > 0, 'negative': item.variacao < 0}">
+              {{ item.variacao > 0 ? '+' : ''}}{{ item.variacao }}
+            </span>
+            <div class="trans-balance">
+              Saldo: <span class="balance-value">{{ item.pontosFinais }}</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</mat-dialog-content>
+
+<div class="custom-dialog-actions">
+  <button mat-flat-button class="close-btn" [mat-dialog-close]="true">
+    Fechar
+  </button>
+</div>

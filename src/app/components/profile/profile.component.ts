@@ -12,6 +12,8 @@ import { AuthService } from '../../services/auth.service';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { EditProfileDialogComponent } from '../edit-profile-dialog/edit-profile-dialog.component';
 import { UserProfileDTO } from '../../api';
+import {RegrasPontuacaoComponent} from '../regras-pontuacao/regras-pontuacao.component';
+import {HistoricoPontuacaoComponent} from '../historico-pontuacao/historico-pontuacao.component';
 
 @Component({
   selector: 'app-profile',
@@ -38,6 +40,7 @@ export class ProfileComponent implements OnInit {
   totalMatches: number = 0;
   matchesWon: number = 0;
   nivelHabilidade: string = '';
+  userId: number | null = null;
 
   private authService = inject(AuthService);
   private router = inject(Router);
@@ -61,6 +64,8 @@ export class ProfileComponent implements OnInit {
 
         this.skillRating = (profile as any).pontosHabilidade ?? 1000;
         this.nivelHabilidade = (profile as any).nivelHabilidade ?? 'MEDIANO';
+
+        this.userId = profile.id !== undefined ? profile.id : null;
 
         this.totalMatches = (profile as any).partidasJogadas || 0;
         this.matchesWon = (profile as any).partidasVencidas || 0;
@@ -182,5 +187,23 @@ export class ProfileComponent implements OnInit {
   logout(): void {
     this.authService.logout();
     this.router.navigate(['/login']);
+  }
+
+  openRegrasPontuacao(): void {
+    this.dialog.open(RegrasPontuacaoComponent, {
+      width: '400px'
+    });
+  }
+
+  // Em profile.component.ts
+
+  openHistoricoPontuacao(): void {
+    if (!this.userId) return; // Garante que temos o ID
+
+    // 3. Passa o ID real para o componente de diálogo
+    this.dialog.open(HistoricoPontuacaoComponent, {
+      width: '500px',
+      data: { jogadorId: this.userId }
+    });
   }
 }
