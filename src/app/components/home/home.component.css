@@ -50,6 +50,8 @@
 .feature-card {
   cursor: pointer;
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  background-color: white; /* Garante fundo branco no card */
+  border-radius: 16px; /* Arredondamento */
 }
 
 .feature-card:hover {
@@ -100,7 +102,7 @@
   transition: color 0.2s ease-in-out;
 }
 
-/* --- EFEITO HOVER --- */
+/* --- EFEITO HOVER (Mantido para ficar verde) --- */
 .feature-card:hover .feature-avatar mat-icon,
 .feature-card:hover mat-card-title,
 .feature-card:hover mat-card-content p {
@@ -108,7 +110,7 @@
 }
 
 
-/* --- ESTILO DA FAIXA --- */
+/* --- ESTILO DA FAIXA INFERIOR --- */
 .events-wrapper {
   background-color: #283040;
 }
