@@ -5,7 +5,7 @@
       <mat-icon class="large-icon">sports_soccer</mat-icon>
       <h2>Nenhuma partida em andamento</h2>
 
-      <button mat-raised-button color="primary" (click)="iniciarPartidaInicial()">
+      <button mat-raised-button color="primary" (click)="iniciarPartidaInicial()" [disabled]="times().length < 2">
         INICIAR DESAFIO
       </button>
     </div>
@@ -43,11 +43,18 @@
                   <button mat-mini-fab color="accent" (click)="registrarAcao(jogador, 'GOL')" matTooltip="Gol">
                     G
                   </button>
+                  <button mat-mini-fab color="warn" (click)="removerAcao(jogador, 'GOL')" matTooltip="Remover Gol">-
+                  </button>
                   <button mat-mini-fab color="primary" (click)="registrarAcao(jogador, 'ASSISTENCIA')" matTooltip="Assistência">
                     A
                   </button>
+                  <button mat-mini-fab color="warn" (click)="removerAcao(jogador, 'ASSISTENCIA')" matTooltip="Remover Assistência">-
+                  </button>
                   <button mat-icon-button (click)="registrarAcao(jogador, 'DEFESA')" matTooltip="Defesa">
                     <mat-icon>shield</mat-icon>
+                  </button>
+                  <button mat-icon-button color="warn" (click)="removerAcao(jogador, 'DEFESA')" matTooltip="Remover Defesa">
+                    <mat-icon>undo</mat-icon>
                   </button>
                 </div>
               </div>
@@ -63,9 +70,14 @@
                 <span class="player-name">{{ jogador.nome }}</span>
                 <div class="action-buttons">
                   <button mat-mini-fab color="accent" (click)="registrarAcao(jogador, 'GOL')">G</button>
+                  <button mat-mini-fab color="warn" (click)="removerAcao(jogador, 'GOL')">-</button>
                   <button mat-mini-fab color="primary" (click)="registrarAcao(jogador, 'ASSISTENCIA')">A</button>
+                  <button mat-mini-fab color="warn" (click)="removerAcao(jogador, 'ASSISTENCIA')">-</button>
                   <button mat-icon-button (click)="registrarAcao(jogador, 'DEFESA')">
                     <mat-icon>shield</mat-icon>
+                  </button>
+                  <button mat-icon-button color="warn" (click)="removerAcao(jogador, 'DEFESA')">
+                    <mat-icon>undo</mat-icon>
                   </button>
                 </div>
               </div>

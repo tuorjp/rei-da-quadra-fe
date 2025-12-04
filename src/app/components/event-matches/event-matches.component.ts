@@ -132,6 +132,7 @@ export class EventMatchesComponent implements OnInit, OnChanges {
       next: (partidaCriada) => {
         this.partidaService.iniciarPartida(partidaCriada.id!).subscribe({
           next: (partidaIniciada) => {
+            console.log('Iniciando partida criada', partidaCriada);
             this.mostrarMensagem('Partida iniciada!');
             this.configurarPartidaAtiva(partidaIniciada);
           }
@@ -156,6 +157,24 @@ export class EventMatchesComponent implements OnInit, OnChanges {
         this.atualizarPlacar(partida.id!);
       },
       error: (err) => this.mostrarMensagem('Erro ao registrar ação.')
+    });
+  }
+
+  removerAcao(jogador: JogadorDTO, tipo: 'GOL' | 'ASSISTENCIA' | 'DEFESA') {
+    const partida = this.partidaAtual();
+    if (!partida) return;
+
+    const dto: AcaoJogoDTO = {
+      jogadorId: jogador.id!,
+      tipoAcao: tipo as any
+    };
+
+    this.partidaService.removerAcao(partida.id!, dto).subscribe({
+      next: () => {
+        this.mostrarMensagem(`${tipo} removido para ${jogador.nome}!`);
+        this.atualizarPlacar(partida.id!);
+      },
+      error: (err) => this.mostrarMensagem('Erro ao remover ação.')
     });
   }
 

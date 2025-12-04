@@ -30,10 +30,10 @@ export interface User {
     historicoPontuacao?: Array<HistoricoPontuacao>;
     historicoTransferencia?: Array<HistoricoTransferencia>;
     username?: string;
-    authorities?: Array<GrantedAuthority>;
     accountNonLocked?: boolean;
-    accountNonExpired?: boolean;
+    authorities?: Array<GrantedAuthority>;
     credentialsNonExpired?: boolean;
+    accountNonExpired?: boolean;
 }
 export namespace User {
     export const NivelHabilidadeEnum = {
