@@ -74,8 +74,15 @@
 
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>{{ langService.translate('event.location') }}</mat-label>
-              <input matInput formControlName="local">
+              <input
+                matInput
+                formControlName="local"
+                readonly
+                (click)="openLocationPicker()"
+                style="cursor: pointer;"
+              >
               <mat-icon matPrefix>location_on</mat-icon>
+              <mat-icon matSuffix style="cursor:pointer" (click)="openLocationPicker()">location_searching</mat-icon>
               <mat-error *ngIf="eventForm.get('local')?.hasError('required')">
                 {{ langService.translate('field.required') }}
               </mat-error>
