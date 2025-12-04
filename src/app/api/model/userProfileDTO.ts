@@ -16,6 +16,10 @@ export interface UserProfileDTO {
     role?: UserProfileDTO.RoleEnum;
     dataCriacao?: string;
     fotoPerfil?: string;
+    pontosHabilidade?: number;
+    nivelHabilidade?: UserProfileDTO.NivelHabilidadeEnum;
+    partidasJogadas?: number;
+    partidasVencidas?: number;
 }
 export namespace UserProfileDTO {
     export const RoleEnum = {
@@ -23,6 +27,12 @@ export namespace UserProfileDTO {
         User: 'USER'
     } as const;
     export type RoleEnum = typeof RoleEnum[keyof typeof RoleEnum];
+    export const NivelHabilidadeEnum = {
+        Craque: 'CRAQUE',
+        Mediano: 'MEDIANO',
+        PernaDePau: 'PERNA_DE_PAU'
+    } as const;
+    export type NivelHabilidadeEnum = typeof NivelHabilidadeEnum[keyof typeof NivelHabilidadeEnum];
 }
 
 

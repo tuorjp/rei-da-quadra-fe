@@ -1,0 +1,75 @@
+import {Component, inject, Input, OnInit, signal} from '@angular/core';
+import {AdministraoDeTimesService, Inscricao, TimeResponseDTO, TimesService} from '../../api';
+import {MatButton} from '@angular/material/button';
+import {
+  MatAccordion,
+  MatExpansionPanel, MatExpansionPanelDescription,
+  MatExpansionPanelHeader,
+  MatExpansionPanelTitle
+} from '@angular/material/expansion';
+import {MatList, MatListItem, MatListItemLine, MatListItemTitle} from '@angular/material/list';
+
+@Component({
+  selector: 'app-event-teams',
+  imports: [
+    MatButton,
+    MatAccordion,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle,
+    MatExpansionPanelDescription,
+    MatList,
+    MatListItem,
+    MatListItemTitle,
+    MatListItemLine,
+  ],
+  templateUrl: './event-teams.component.html',
+  styleUrl: './event-teams.component.css'
+})
+export class EventTeamsComponent implements OnInit{
+  @Input() eventoId!: number | undefined;
+
+  admTimesService = inject(AdministraoDeTimesService);
+  timeService = inject(TimesService)
+
+  timesDoEvento = signal<TimeResponseDTO[]>([]);
+
+  ngOnInit() {
+   this.carregarTimesCriados();
+  }
+
+  distribuirJogadoresPorTimes(id: number | undefined) {
+    if(id) {
+      this.admTimesService.distribuirTimes(id).subscribe({
+        next: (response) => {
+          console.log(response);
+          this.carregarTimesCriados();
+        },
+        error: (err) => {
+          console.error(err);
+        },
+      });
+    }
+  }
+
+  carregarTimesCriados() {
+    if (this.eventoId) {
+      this.timeService.listarPorEvento1(this.eventoId).subscribe({
+        next: async (response) => {
+          let times;
+          if(response instanceof Blob) {
+            const jsonStr = await response.text();
+            times = JSON.parse(jsonStr);
+          } else {
+            times = response;
+          }
+          console.log(times);
+          this.timesDoEvento.set(times);
+        },
+        error: (err) => {
+          console.error(err);
+        }
+      });
+    }
+  }
+}

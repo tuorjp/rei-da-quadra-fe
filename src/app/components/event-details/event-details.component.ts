@@ -19,6 +19,7 @@ import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.compone
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { EventInscriptionsComponent } from '../event-inscriptions/event-inscriptions.component';
+import { EventTeamsComponent } from '../event-teams/event-teams.component';
 
 @Component({
   selector: 'app-event-details',
@@ -35,7 +36,8 @@ import { EventInscriptionsComponent } from '../event-inscriptions/event-inscript
     MatSnackBarModule,
     MatDialogModule,
     MatTabsModule,
-    EventInscriptionsComponent
+    EventInscriptionsComponent,
+    EventTeamsComponent,
   ],
   templateUrl: './event-details.component.html',
   styleUrl: './event-details.component.css'

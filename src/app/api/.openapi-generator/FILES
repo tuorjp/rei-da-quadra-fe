@@ -9,6 +9,7 @@ api/eventoController.service.ts
 api/inscricaoController.service.ts
 api/partidas.service.ts
 api/times.service.ts
+api/userController.service.ts
 configuration.ts
 encoder.ts
 git_push.sh
@@ -24,6 +25,7 @@ model/historicoTransferencia.ts
 model/inscricao.ts
 model/inscricaoRequestDTO.ts
 model/inscricaoResponseDTO.ts
+model/jogadorDTO.ts
 model/jogadorResumoDTO.ts
 model/loginResponseDTO.ts
 model/models.ts

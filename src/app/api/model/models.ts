@@ -9,6 +9,7 @@ export * from './historicoTransferencia';
 export * from './inscricao';
 export * from './inscricaoRequestDTO';
 export * from './inscricaoResponseDTO';
+export * from './jogadorDTO';
 export * from './jogadorResumoDTO';
 export * from './loginResponseDTO';
 export * from './participacaoDesempenho';

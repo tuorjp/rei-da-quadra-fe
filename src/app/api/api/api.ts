@@ -10,4 +10,6 @@ export * from './partidas.service';
 import { PartidasService } from './partidas.service';
 export * from './times.service';
 import { TimesService } from './times.service';
-export const APIS = [AdministraoDeTimesService, AuthenticationControllerService, EventoControllerService, InscricaoControllerService, PartidasService, TimesService];
+export * from './userController.service';
+import { UserControllerService } from './userController.service';
+export const APIS = [AdministraoDeTimesService, AuthenticationControllerService, EventoControllerService, InscricaoControllerService, PartidasService, TimesService, UserControllerService];

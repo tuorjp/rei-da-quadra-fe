@@ -109,9 +109,7 @@
             <mat-icon class="tab-icon">groups</mat-icon>
             {{ langService.translate('teams') }}
           </ng-template>
-          <div class="tab-content">
-            <p class="coming-soon">{{ langService.translate('teams.manage') }} - Em breve</p>
-          </div>
+          <app-event-teams [eventoId]="evento()?.id"></app-event-teams>
         </mat-tab>
 
         <!-- Aba de Partidas -->

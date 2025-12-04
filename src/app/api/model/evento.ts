@@ -21,6 +21,8 @@ export interface Evento {
     nome?: string;
     dataCriacao?: string;
     localEvento?: string;
+    latitude?: number;
+    longitude?: number;
     jogadoresPorTime?: number;
     totalPartidasDefinidas?: number;
     status?: Evento.StatusEnum;
