@@ -1,0 +1,73 @@
+<div class="dialog-header">
+  <h2>
+    <mat-icon>info</mat-icon>
+    Como funciona a pontuação?
+  </h2>
+</div>
+
+<mat-dialog-content class="dialog-content">
+
+  <div class="info-section">
+    <h3>Ações de Jogo</h3>
+    <p>Sua pontuação é dinâmica e calculada automaticamente a cada evento:</p>
+
+    <ul class="rules-list">
+      <li>
+        <span class="action-name">Gol</span>
+        <span class="points positive">+15 pts</span>
+      </li>
+      <li>
+        <span class="action-name">Assistência</span>
+        <span class="points positive">+10 pts</span>
+      </li>
+      <li>
+        <span class="action-name">Defesa</span>
+        <span class="points positive">+5 pts</span>
+      </li>
+      <li>
+        <span class="action-name">Impedimento</span>
+        <span class="points negative">-5 pts</span>
+      </li>
+      <li>
+        <span class="action-name">Falta</span>
+        <span class="points negative">-15 pts</span>
+      </li>
+    </ul>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="info-section">
+    <h3>Evolução de Nível</h3>
+    <p>Essa é a pontuação mínima de cada categoria:</p>
+
+    <div class="levels-container">
+
+      <div class="level-row">
+        <div class="score-req">Base</div>
+        <div class="arrow">➔</div>
+        <div class="badge perna-de-pau">PERNA DE PAU</div>
+      </div>
+
+      <div class="level-row">
+        <div class="score-req">> 800</div>
+        <div class="arrow">➔</div>
+        <div class="badge mediano">MEDIANO</div>
+      </div>
+
+      <div class="level-row">
+        <div class="score-req">> 2400</div>
+        <div class="arrow">➔</div>
+        <div class="badge craque">CRAQUE</div>
+      </div>
+
+    </div>
+  </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions class="dialog-actions" align="end">
+  <button mat-flat-button class="action-btn" [mat-dialog-close]="true">
+    Entendi
+  </button>
+</mat-dialog-actions>

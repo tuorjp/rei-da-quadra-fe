@@ -1,150 +1,454 @@
+/* --- CONTAINER E CABEÇALHO (Mantido do seu design original) --- */
 .my-events-container {
+  background-color: #24293E; /* Fundo Azul Escuro */
+  min-height: 100vh;
   padding: 2rem;
+  box-sizing: border-box;
+}
+
+/* --- ESTILOS DAS ABAS --- */
+.tabs-container {
   max-width: 1200px;
   margin: 0 auto;
+}
+
+/* --- CAMPO DE PESQUISA --- */
+.search-container {
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.search-field {
+  width: 100%;
+  max-width: 600px;
+}
+
+::ng-deep .search-field .mat-mdc-form-field-flex {
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+}
+
+::ng-deep .search-field .mat-mdc-text-field-wrapper {
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+}
+
+::ng-deep .search-field .mdc-notched-outline__leading,
+::ng-deep .search-field .mdc-notched-outline__notch,
+::ng-deep .search-field .mdc-notched-outline__trailing {
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+::ng-deep .search-field.mat-focused .mdc-notched-outline__leading,
+::ng-deep .search-field.mat-focused .mdc-notched-outline__notch,
+::ng-deep .search-field.mat-focused .mdc-notched-outline__trailing {
+  border-color: #5B8C2A !important;
+  border-width: 2px !important;
+}
+
+::ng-deep .search-field .mat-mdc-form-field-label {
+  color: #616161;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+::ng-deep .search-field.mat-focused .mat-mdc-form-field-label {
+  color: #5B8C2A !important;
+}
+
+.search-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+}
+
+.clear-btn {
+  color: #616161;
+}
+
+.clear-btn:hover {
+  color: #c62828;
+}
+
+::ng-deep .mat-mdc-tab-group {
+  background-color: transparent;
+}
+
+::ng-deep .mat-mdc-tab-header {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  padding: 8px;
+}
+
+::ng-deep .mat-mdc-tab-labels {
+  gap: 8px;
+}
+
+::ng-deep .mat-mdc-tab {
+  color: rgba(255, 255, 255, 0.7) !important;
+  font-weight: 500;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  min-width: 140px;
+}
+
+::ng-deep .mat-mdc-tab:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+::ng-deep .mat-mdc-tab.mdc-tab--active {
+  background-color: #ffffff;
+  color: #24293E !important;
+}
+
+::ng-deep .mat-mdc-tab.mdc-tab--active .tab-icon {
+  color: #5B8C2A;
+}
+
+::ng-deep .mat-mdc-tab-body-wrapper {
+  background-color: transparent;
+}
+
+.tab-icon {
+  margin-right: 8px;
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.tab-content {
+  padding-top: 1rem;
+}
+
+.inscrito-badge {
+  color: #5B8C2A;
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.event-card-finished {
+  opacity: 0.85;
+}
+
+.event-card-finished:hover {
+  opacity: 1;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .header h1 {
+  color: #ffffff;
   display: flex;
   align-items: center;
   gap: 0.5rem;
   font-size: 2rem;
-  font-weight: 600;
+  font-weight: 500;
   margin: 0;
 }
 
-.header button {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+/* Botão Criar Evento (Topo) */
+.create-event-btn {
+  background-color: #ffffff !important;
+  color: #24293E !important;
+  border-radius: 24px;
+  font-weight: 600;
+  transition: all 0.3s ease;
 }
 
-.loading-container,
-.error-container,
-.empty-state {
+.create-event-btn:hover {
+  background-color: #497320 !important;
+  color: white !important;
+  transform: translateY(-2px);
+}
+
+/* --- INÍCIO DO CSS DO NOVO GRID (Adaptado do seu pedido) --- */
+
+.events-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 32px;
+  max-width: 1200px;
+  margin: 0 auto;
+  /* Removi padding excessivo pois o container pai já tem padding */
+  padding-bottom: 40px;
+}
+
+/* Estilo do Cartão */
+.event-card {
   display: flex;
   flex-direction: column;
+  height: 100%;
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(208, 211, 217, 0.3);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, border-color 0.2s;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.event-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+  border-color: #5B8C2A;
+}
+
+.event-card:hover .event-avatar {
+  color: #3E5922;
+}
+
+.event-card:hover .event-title {
+  color: #3E5922;
+}
+
+/* Header do Cartão (Fundo Cinza) */
+mat-card-header {
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background-color: rgba(208, 211, 217, 0.3);
+  border-bottom: 1px solid #EEEEEE;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+}
+
+.event-avatar {
+  background-color: transparent;
+  color: #283040;
+  display: flex;
   align-items: center;
   justify-content: center;
-  padding: 3rem;
-  text-align: center;
-  min-height: 400px;
+  width: 64px;
+  height: 64px;
+  min-width: 64px;
+  flex-shrink: 0;
+  transition: color 0.2s ease-in-out;
 }
 
-.loading-container p,
-.error-container p {
-  margin-top: 1rem;
-  font-size: 1.1rem;
-}
-
-.error-container mat-icon {
+.event-avatar mat-icon {
   font-size: 64px;
   width: 64px;
   height: 64px;
 }
 
-.empty-state mat-icon {
-  font-size: 96px;
-  width: 96px;
-  height: 96px;
-  opacity: 0.3;
-}
-
-.empty-state h2 {
-  margin: 1rem 0 0.5rem;
-  font-size: 1.5rem;
-}
-
-.empty-state p {
-  margin-bottom: 2rem;
-  color: var(--mat-app-on-surface-variant);
-}
-
-.events-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1.5rem;
-}
-
-.event-card {
+.header-text {
   display: flex;
   flex-direction: column;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  justify-content: center;
+  flex: 1;
+  min-width: 0;
 }
 
-.event-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+.event-title {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #283040;
+  margin: 0;
+  line-height: 1.2;
+  white-space: normal;
+  word-wrap: break-word;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: color 0.2s ease-in-out;
 }
 
-.event-card mat-card-header {
-  margin-bottom: 1rem;
+.organizer-crown {
+  color: #FBC02D;
+  font-size: 30px;
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
 }
 
-.event-card mat-card-title {
-  font-size: 1.25rem;
+/* Conteúdo do Cartão */
+.event-card mat-card-content {
+  flex-grow: 1;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+.event-details {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.detail-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  color: #616161;
+}
+
+.detail-icon {
+  font-size: 22px;
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.detail-text {
+  font-size: 1rem;
+  line-height: 1.4;
+  font-weight: 400;
+  color: #424242;
+  word-wrap: break-word;
+}
+
+.organizer-name {
   font-weight: 600;
 }
 
-.event-info {
+.date-row-container {
+  align-items: center;
+}
+
+.date-text {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #283040;
+}
+
+/* Pílula de Status */
+.status-pill {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 6px;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.status-active {
+  background-color: rgba(91, 140, 42, 0.15);
+  color: #3E5922;
+  border: 1px solid rgba(91, 140, 42, 0.3);
+}
+
+.status-other {
+  background-color: #ffebee;
+  color: #c62828;
+  border: 1px solid #ffcdd2;
+}
+
+/* Ações (Rodapé do Cartão) */
+mat-card-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  background-color: rgba(208, 211, 217, 0.3);
+  border-top: 1px solid #EEEEEE;
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+}
+
+/* Botão Ver Detalhes */
+.btn-details {
+  color: #616161 !important;
+  font-weight: 500;
+}
+
+.btn-details:hover {
+  color: #497320 !important;
+  background-color: rgba(73, 115, 32, 0.05);
+}
+
+/* Botão Editar (Estilo btn-join) */
+.btn-join {
+  background-color: #283040 !important; /* Azul Escuro Padrão */
+  color: white !important;
+  font-weight: 500;
+  padding: 0 24px !important;
+  border-radius: 8px !important;
+  transition: background-color 0.2s ease;
+  height: 40px;
+}
+
+.btn-join:hover {
+  background-color: #3E5922 !important; /* Verde no Hover */
+}
+
+/* Loading & Empty States */
+.loading-container {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-}
-
-.info-item {
-  display: flex;
   align-items: center;
-  gap: 0.5rem;
-  color: var(--mat-app-on-surface-variant);
+  justify-content: center;
+  padding: 4rem 2rem;
+  gap: 1rem;
 }
 
-.info-item mat-icon {
-  font-size: 20px;
-  width: 20px;
-  height: 20px;
+.loading-container p,
+.empty-state h2,
+.empty-state p {
+  color: #eceff1;
 }
 
-mat-card-actions {
-  padding: 1rem;
-  margin: 0;
-}
-
-mat-card-actions button {
+.empty-state {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
 }
 
-@media (max-width: 768px) {
+.empty-state mat-icon {
+  color: #546e7a;
+  font-size: 80px;
+  width: 80px;
+  height: 80px;
+  opacity: 0.5;
+  margin-bottom: 1rem;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
   .my-events-container {
     padding: 1rem;
   }
-
   .header {
     flex-direction: column;
     gap: 1rem;
-    align-items: stretch;
   }
-
-  .header h1 {
-    font-size: 1.5rem;
-  }
-
-  .header button {
-    width: 100%;
-    justify-content: center;
-  }
-
   .events-grid {
     grid-template-columns: 1fr;
+    padding: 0;
+  }
+  mat-card-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding-bottom: 20px;
+  }
+  .header-text {
+    margin-top: 16px;
+  }
+  .event-title {
+    justify-content: center;
+  }
+  .date-row-container div {
+    flex-wrap: wrap;
   }
 }
-

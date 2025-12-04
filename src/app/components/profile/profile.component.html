@@ -58,6 +58,14 @@
                 Nível: {{ nivelHabilidade.replaceAll('_', ' ') }}
               </span>
             </div>
+            <div class="skill-actions">
+              <button mat-stroked-button class="skill-btn" (click)="openRegrasPontuacao()">
+                <mat-icon>info</mat-icon> Saiba mais
+              </button>
+              <button mat-stroked-button class="skill-btn" (click)="openHistoricoPontuacao()">
+                <mat-icon>history</mat-icon> Histórico
+              </button>
+            </div>
           </div>
 
           <div class="stat-card">
