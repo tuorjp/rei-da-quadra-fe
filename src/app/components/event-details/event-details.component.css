@@ -1,150 +1,324 @@
-.event-details-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: calc(100vh - 120px);
-  padding: 2rem;
+/* --- DEFINIÇÃO DE CORES NO ESCOPO DO COMPONENTE --- */
+:host {
+  --primary-bg: #24293E;      /* Azul Escuro Fundo */
+  --accent-green: #5B8C2A;    /* Verde Destaque */
+  --card-bg: #ffffff;         /* Branco Card */
+  --text-dark: #283040;
+  --text-gray: #616161;
+  --border-color: #e0e0e0;
+  --light-gray: #f5f5f5;
+
+  display: block;
 }
 
-.loading-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-}
-
-.event-details-card {
-  max-width: 1200px;
+/* --- WRAPPER DA PÁGINA (FUNDO AZUL OBRIGATÓRIO) --- */
+.page-wrapper {
+  background-color: #24293E !important;
+  min-height: 100vh;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  /* --- MODIFICAÇÕES AQUI --- */
+  justify-content: center; /* Centraliza o card verticalmente na tela */
+  padding: 3rem 1rem;      /* Aumentei o padding superior/inferior (era 2rem) */
+  /* ------------------------- */
+
+  box-sizing: border-box;
+
+  /* Cria faixas horizontais alternadas */
+
+  background-image: linear-gradient(
+
+    to bottom,
+
+    rgba(255, 255, 255, 0.03) 50%,
+
+    transparent 50%
+
+  );
+
+  /* Tamanho das faixas (Altura) */
+
+  background-size: 100% 120px;
 }
 
-mat-card-header {
-  margin-bottom: 2rem;
+/* --- CONTAINER CENTRALIZADO --- */
+.content-container {
+  width: 100%;
+  max-width: 1000px;
+  /* margin-top: 20px; -> Removi pois o justify-content já centraliza */
+  animation: fadeIn 0.4s ease-in-out;
 }
 
-mat-card-title {
+/* --- CARD PRINCIPAL --- */
+.main-card {
+  background-color: #ffffff !important;
+  border-radius: 16px !important;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2) !important;
+  border: none;
+}
+
+/* --- HEADER DO CARD CUSTOMIZADO --- */
+.card-header-custom {
+  padding: 24px 32px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+}
+
+.header-title {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 1.75rem;
+  gap: 12px;
+}
+
+.header-icon {
+  color: #5B8C2A; /* Verde */
+  transform: scale(1.5);
+}
+
+.header-title h1 {
+  margin: 0;
+  font-size: 1.8rem;
+  color: #283040;
   font-weight: 600;
-}
-
-.view-mode {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
 }
 
-.detail-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 1rem;
-  padding: 1rem;
-  background: var(--input-background, rgba(0, 0, 0, 0.02));
-  border-radius: 8px;
+/* Badge de Status */
+.status-badge {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background-color: #eee;
+  color: #616161;
 }
 
-.detail-item mat-icon {
-  color: var(--mat-app-on-surface-variant);
-  margin-top: 0.25rem;
+.status-badge.active {
+  background-color: rgba(91, 140, 42, 0.15);
+  color: #5B8C2A;
 }
 
-.detail-content {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  flex: 1;
+/* --- CORPO DO CARD --- */
+.card-body-custom {
+  padding: 0 !important;
 }
 
-.detail-content .label {
-  font-size: 0.875rem;
-  color: var(--mat-app-on-surface-variant);
+.tab-padding {
+  padding: 32px;
+}
+
+/* ==========================================================================
+   FORÇANDO ESTILOS DO MATERIAL
+   ========================================================================== */
+
+:host ::ng-deep .mat-mdc-tab .mdc-tab__text-label {
+  color: #616161 !important;
+  font-size: 1rem;
   font-weight: 500;
 }
 
-.detail-content .value {
-  font-size: 1rem;
-  color: var(--mat-app-on-surface);
+:host ::ng-deep .mat-mdc-tab.mdc-tab--active .mdc-tab__text-label {
+  color: #5B8C2A !important;
+  font-weight: 700;
 }
 
-.edit-form {
+:host ::ng-deep .mat-mdc-tab.mdc-tab--active .tab-icon {
+  color: #5B8C2A !important;
+}
+
+:host ::ng-deep .mdc-tab-indicator__content--underline {
+  border-color: #5B8C2A !important;
+  border-top-width: 3px !important;
+}
+
+:host ::ng-deep .mdc-text-field--focused .mdc-notched-outline__leading,
+:host ::ng-deep .mdc-text-field--focused .mdc-notched-outline__notch,
+:host ::ng-deep .mdc-text-field--focused .mdc-notched-outline__trailing {
+  border-color: #5B8C2A !important;
+}
+
+:host ::ng-deep .mdc-text-field--focused .mat-mdc-form-field-icon-prefix {
+  color: #5B8C2A !important;
+}
+
+/* --- GRID DE INFORMAÇÕES (VISUAL NOVO) --- */
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 280px; /* Esquerda flexível, Direita fixa para a carta */
+  gap: 32px;
+  align-items: start;
+}
+
+/* Coluna Esquerda (Dados Técnicos) */
+.technical-data {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 16px;
+}
+
+.info-box {
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.info-box:hover {
+  background-color: #fff;
+  border-color: rgba(91, 140, 42, 0.3);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.icon-container {
+  width: 48px;
+  height: 48px;
+  background-color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #5B8C2A;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.info-content {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #283040;
+}
+
+.info-content label {
+  font-size: 0.75rem;
+  color: #616161;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+  font-weight: 600;
+  display: block;
+}
+
+.info-content p {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #283040;
+}
+
+.id-box .icon-container {
+  color: #283040;
+}
+
+/* --- FORMULÁRIO --- */
+.edit-form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  max-width: 700px;
 }
 
 .full-width {
   width: 100%;
 }
 
-mat-card-actions {
+/* --- FOOTER DE AÇÕES --- */
+.card-actions-custom {
+  padding: 20px 32px;
+  background-color: #fff;
+  border-top: 1px solid #e0e0e0;
   display: flex;
   justify-content: space-between;
-  padding: 1rem;
-  margin: 0;
-  border-top: 1px solid var(--border-color);
-}
-
-.actions-left,
-.actions-right {
-  display: flex;
-  gap: 0.5rem;
-}
-
-mat-card-actions button {
-  display: flex;
   align-items: center;
-  gap: 0.5rem;
 }
 
-mat-spinner {
-  display: inline-block;
+.right-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
 }
 
-/* Tabs */
-mat-tab-group {
-  margin-top: -16px;
+/* Botões Customizados */
+.btn-primary {
+  background-color: #5B8C2A !important;
+  color: white !important;
+  padding: 0 24px;
+  height: 44px;
+  border-radius: 8px;
+  font-weight: 500;
 }
 
-.tab-icon {
-  margin-right: 8px;
+.btn-primary:hover {
+  background-color: #4c7523 !important;
 }
 
-.tab-content {
-  padding: 20px 0;
+.btn-success {
+  color: #5B8C2A !important;
+  border-color: #5B8C2A !important;
 }
 
-.coming-soon {
-  text-align: center;
-  padding: 60px 20px;
-  color: rgba(0, 0, 0, 0.54);
-  font-size: 16px;
+.btn-back {
+  color: #616161;
 }
 
+/* --- LOADING --- */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 50vh;
+  color: white;
+}
+
+/* --- RESPONSIVIDADE --- */
 @media (max-width: 768px) {
-  .event-details-container {
-    padding: 1rem;
+  .page-wrapper {
+    padding: 1rem 0.5rem;
   }
 
-  mat-card-actions {
+  .card-header-custom {
     flex-direction: column;
-    gap: 0.5rem;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 20px;
   }
 
-  .actions-left,
-  .actions-right {
-    width: 100%;
-    justify-content: stretch;
+  .info-grid {
+    grid-template-columns: 1fr;
   }
 
-  .actions-right {
+  .card-actions-custom {
     flex-direction: column-reverse;
+    gap: 16px;
+    align-items: stretch;
+    padding: 20px;
   }
 
-  mat-card-actions button {
+  .right-actions, .left-actions {
     width: 100%;
-    justify-content: center;
+    flex-direction: column;
   }
+
+  .right-actions button, .left-actions button {
+    width: 100%;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
