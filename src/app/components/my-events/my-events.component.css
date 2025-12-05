@@ -1,194 +1,189 @@
-/* --- CONTAINER E CABEÇALHO (Mantido do seu design original) --- */
+/* --- VARIAVEIS DE COR --- */
+:root {
+  --color-primary: #24293E;
+  --color-accent: #5B8C2A;
+  --color-card-bg: #fff;
+  --color-header-footer-bg: rgba(208, 211, 217, 0.3);
+  --color-text-dark: #283040;
+  --color-text-medium: #616161;
+  --color-alert: #c62828;
+}
+
+/* --- LAYOUT PRINCIPAL --- */
 .my-events-container {
-  background-color: #24293E; /* Fundo Azul Escuro */
+  background-color: #24293E;
   min-height: 100vh;
-  padding: 2rem;
+  padding: 2rem 1.5rem;
   box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
 }
 
-/* --- ESTILOS DAS ABAS --- */
-.tabs-container {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-/* --- CAMPO DE PESQUISA --- */
-.search-container {
-  margin-bottom: 1.5rem;
-  display: flex;
-  justify-content: center;
-}
-
-.search-field {
-  width: 100%;
-  max-width: 600px;
-}
-
-::ng-deep .search-field .mat-mdc-form-field-flex {
-  background-color: rgba(255, 255, 255, 0.95);
-  border-radius: 12px;
-}
-
-::ng-deep .search-field .mat-mdc-text-field-wrapper {
-  background-color: rgba(255, 255, 255, 0.95);
-  border-radius: 12px;
-}
-
-::ng-deep .search-field .mdc-notched-outline__leading,
-::ng-deep .search-field .mdc-notched-outline__notch,
-::ng-deep .search-field .mdc-notched-outline__trailing {
-  border-color: rgba(255, 255, 255, 0.3) !important;
-}
-
-::ng-deep .search-field.mat-focused .mdc-notched-outline__leading,
-::ng-deep .search-field.mat-focused .mdc-notched-outline__notch,
-::ng-deep .search-field.mat-focused .mdc-notched-outline__trailing {
-  border-color: #5B8C2A !important;
-  border-width: 2px !important;
-}
-
-::ng-deep .search-field .mat-mdc-form-field-label {
-  color: #616161;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-::ng-deep .search-field.mat-focused .mat-mdc-form-field-label {
-  color: #5B8C2A !important;
-}
-
-.search-icon {
-  font-size: 20px;
-  width: 20px;
-  height: 20px;
-  vertical-align: middle;
-}
-
-.clear-btn {
-  color: #616161;
-}
-
-.clear-btn:hover {
-  color: #c62828;
-}
-
-::ng-deep .mat-mdc-tab-group {
-  background-color: transparent;
-}
-
-::ng-deep .mat-mdc-tab-header {
-  background-color: rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-  margin-bottom: 2rem;
-  padding: 8px;
-}
-
-::ng-deep .mat-mdc-tab-labels {
-  gap: 8px;
-}
-
-::ng-deep .mat-mdc-tab {
-  color: rgba(255, 255, 255, 0.7) !important;
-  font-weight: 500;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-  min-width: 140px;
-}
-
-::ng-deep .mat-mdc-tab:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.9) !important;
-}
-
-::ng-deep .mat-mdc-tab.mdc-tab--active {
-  background-color: #ffffff;
-  color: #24293E !important;
-}
-
-::ng-deep .mat-mdc-tab.mdc-tab--active .tab-icon {
-  color: #5B8C2A;
-}
-
-::ng-deep .mat-mdc-tab-body-wrapper {
-  background-color: transparent;
-}
-
-.tab-icon {
-  margin-right: 8px;
-  font-size: 20px;
-  width: 20px;
-  height: 20px;
-}
-
-.tab-content {
-  padding-top: 1rem;
-}
-
-.inscrito-badge {
-  color: #5B8C2A;
-  font-size: 24px;
-  width: 24px;
-  height: 24px;
-  flex-shrink: 0;
-}
-
-.event-card-finished {
-  opacity: 0.85;
-}
-
-.event-card-finished:hover {
-  opacity: 1;
-}
-
-.header {
+/* --- CABEÇALHO --- */
+.header-section {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 3rem;
+  align-items: flex-end;
   max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0 auto 3rem auto;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.header h1 {
+.header-content h1 {
   color: #ffffff;
+  font-size: 2.2rem;
+  font-weight: 500;
+  margin: 0 0 0.5rem 0;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 2rem;
-  font-weight: 500;
-  margin: 0;
+  gap: 12px;
 }
 
-/* Botão Criar Evento (Topo) */
+.header-icon {
+  color: #5B8C2A; /* Verde */
+  transform: scale(1.2);
+}
+
+.header-subtitle {
+  color: #a0aec0;
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 300;
+}
+
+/* Botão Criar Evento */
 .create-event-btn {
-  background-color: #ffffff !important;
-  color: #24293E !important;
-  border-radius: 24px;
-  font-weight: 600;
-  transition: all 0.3s ease;
+  background-color: #5B8C2A !important;
+  color: white !important;
+  border-radius: 8px;
+  padding: 0 24px;
+  height: 48px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(91, 140, 42, 0.3);
 }
 
 .create-event-btn:hover {
-  background-color: #497320 !important;
-  color: white !important;
+  background-color: #4c7523 !important;
   transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(91, 140, 42, 0.4);
 }
 
-/* --- INÍCIO DO CSS DO NOVO GRID (Adaptado do seu pedido) --- */
+/* --- BARRA DE PESQUISA --- */
+.search-wrapper {
+  /* Mantido em 600px para ficar menor que o max-width */
+  max-width: 600px;
+  margin: 0 auto 2.5rem auto;
+}
 
+.search-glass {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.08); /* Translúcido */
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50px;
+  padding: 8px 20px;
+  transition: all 0.3s ease;
+}
+
+.search-glass:focus-within {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: #5B8C2A;
+  box-shadow: 0 0 0 4px rgba(91, 140, 42, 0.15);
+}
+
+.search-icon {
+  color: #a0aec0;
+  margin-right: 12px;
+}
+
+.search-glass input {
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-size: 1rem;
+  width: 100%;
+  outline: none;
+}
+
+.search-glass input::placeholder {
+  color: #718096;
+}
+
+.clear-search-btn {
+  background: none;
+  border: none;
+  color: #a0aec0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.clear-search-btn:hover {
+  color: #ffffff;
+}
+
+/* --- ABAS (MATERIAL CUSTOMIZATION) --- */
+::ng-deep .mat-mdc-tab-group {
+  /* MODIFICADO: Largura máxima reduzida para criar espaço lateral */
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+::ng-deep .mat-mdc-tab-header {
+  border-bottom: none !important;
+  margin-bottom: 2rem;
+}
+
+::ng-deep .mat-mdc-tab {
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+::ng-deep .mat-mdc-tab:hover {
+  opacity: 1;
+}
+
+::ng-deep .mdc-tab--active {
+  opacity: 1;
+}
+
+::ng-deep .mdc-tab__text-label {
+  color: white !important;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+}
+
+::ng-deep .mat-mdc-tab.mdc-tab--active .mdc-tab__text-label {
+  color: #5B8C2A !important;
+  font-weight: 600;
+}
+
+::ng-deep .mdc-tab-indicator__content--underline {
+  border-color: #5B8C2A !important;
+  border-top-width: 3px !important;
+}
+
+/* --- GRID LAYOUT --- */
 .events-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  /* MODIFICADO: Reduz a largura mínima dos cards para 300px */
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 32px;
-  max-width: 1200px;
-  margin: 0 auto;
-  /* Removi padding excessivo pois o container pai já tem padding */
-  padding-bottom: 40px;
+  /* MODIFICADO: Remove padding lateral para respeitar o max-width */
+  padding: 0 0 40px 0;
 }
 
-/* Estilo do Cartão */
+@media (min-width: 1200px) {
+  .events-grid {
+    /* Mantido 3 colunas, mas agora cabem em 1000px */
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* --- CARTÃO DE EVENTO (ESTILO BRANCO/CINZA) --- */
 .event-card {
   display: flex;
   flex-direction: column;
@@ -208,21 +203,14 @@
   border-color: #5B8C2A;
 }
 
-.event-card:hover .event-avatar {
-  color: #3E5922;
-}
-
-.event-card:hover .event-title {
-  color: #3E5922;
-}
-
-/* Header do Cartão (Fundo Cinza) */
+/* Header do Card */
 mat-card-header {
-  padding: 20px 24px;
+  /* MODIFICADO: Padding reduzido para achatar o card */
+  padding: 16px 20px;
   display: flex;
   align-items: center;
   gap: 16px;
-  background-color: rgba(208, 211, 217, 0.3);
+  background-color: rgba(208, 211, 217, 0.3); /* Cinza Claro */
   border-bottom: 1px solid #EEEEEE;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
@@ -245,6 +233,11 @@ mat-card-header {
   font-size: 64px;
   width: 64px;
   height: 64px;
+}
+
+.event-card:hover .event-avatar,
+.event-card:hover .event-title {
+  color: #3E5922; /* Efeito hover no texto do header */
 }
 
 .header-text {
@@ -277,10 +270,11 @@ mat-card-header {
   flex-shrink: 0;
 }
 
-/* Conteúdo do Cartão */
+/* Conteúdo do Card */
 .event-card mat-card-content {
   flex-grow: 1;
-  padding: 24px;
+  /* MODIFICADO: Padding reduzido para achatar o card */
+  padding: 18px;
   display: flex;
   flex-direction: column;
 }
@@ -328,7 +322,7 @@ mat-card-header {
   color: #283040;
 }
 
-/* Pílula de Status */
+/* Status Pill */
 .status-pill {
   font-size: 0.75rem;
   font-weight: 700;
@@ -351,19 +345,24 @@ mat-card-header {
   border: 1px solid #ffcdd2;
 }
 
-/* Ações (Rodapé do Cartão) */
+/* --- AÇÕES (RODAPÉ) --- */
 mat-card-actions {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 24px;
+  /* MODIFICADO: Ajustado o padding */
+  padding: 8px 20px;
   background-color: rgba(208, 211, 217, 0.3);
   border-top: 1px solid #EEEEEE;
   border-bottom-left-radius: 16px;
   border-bottom-right-radius: 16px;
+  min-height: 52px; /* Altura fixa para alinhar */
 }
 
-/* Botão Ver Detalhes */
+.btn-icon {
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
 .btn-details {
   color: #616161 !important;
   font-weight: 500;
@@ -374,35 +373,49 @@ mat-card-actions {
   background-color: rgba(73, 115, 32, 0.05);
 }
 
-/* Botão Editar (Estilo btn-join) */
-.btn-join {
-  background-color: #283040 !important; /* Azul Escuro Padrão */
-  color: white !important;
-  font-weight: 500;
-  padding: 0 24px !important;
-  border-radius: 8px !important;
-  transition: background-color 0.2s ease;
-  height: 40px;
+/* Botões Icon-Only: Edit/Delete/Join/Cancel */
+.btn-edit, .btn-delete, .btn-join, .btn-cancel {
+  border-radius: 50% !important; /* Transformado em ícones circulares */
+  width: 40px !important;
+  height: 40px !important;
+  line-height: 40px !important;
+  padding: 0 !important;
+  min-width: 0 !important;
 }
 
-.btn-join:hover {
-  background-color: #3E5922 !important; /* Verde no Hover */
+/* Botão Vermelho (Excluir/Cancelar) */
+.btn-delete, .btn-cancel {
+  color: #c62828 !important;
 }
 
-/* Loading & Empty States */
-.loading-container {
+.btn-delete:hover, .btn-cancel:hover {
+  background-color: rgba(244, 67, 54, 0.1) !important;
+  color: #d32f2f !important;
+}
+
+/* Botão Editar/Participar (Ícone) */
+.btn-edit, .btn-join {
+  color: #283040 !important;
+}
+
+.btn-edit:hover, .btn-join:hover {
+  color: #5B8C2A !important;
+  background-color: rgba(91, 140, 42, 0.1) !important;
+}
+
+/* Estados de Card Desabilitado (Histórico) */
+.event-card-finished {
+  opacity: 0.9;
+}
+
+/* --- ESTADOS VAZIOS/LOADING --- */
+.loading-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 4rem 2rem;
-  gap: 1rem;
-}
-
-.loading-container p,
-.empty-state h2,
-.empty-state p {
-  color: #eceff1;
+  height: 60vh;
+  color: white;
 }
 
 .empty-state {
@@ -410,45 +423,53 @@ mat-card-actions {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 4rem 2rem;
+  padding: 4rem 1rem;
   text-align: center;
+  color: #ffffff;
 }
 
 .empty-state mat-icon {
-  color: #546e7a;
-  font-size: 80px;
-  width: 80px;
-  height: 80px;
-  opacity: 0.5;
+  font-size: 64px;
+  width: 64px;
+  height: 64px;
+  opacity: 0.2;
   margin-bottom: 1rem;
 }
 
-/* Responsividade */
+.empty-state h3 {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin: 0 0 0.5rem 0;
+}
+
+.empty-state p {
+  color: #a0aec0;
+  margin-bottom: 1.5rem;
+}
+
+.btn-outline-light {
+  border-color: rgba(255, 255, 255, 0.3);
+  color: white !important;
+}
+
+/* RESPONSIVIDADE */
 @media (max-width: 600px) {
-  .my-events-container {
-    padding: 1rem;
-  }
-  .header {
+  .header-section {
+    /* Mantido 1000px, mas em telas pequenas o 100% será aplicado */
+    max-width: 1000px;
+    margin: 0 auto 3rem auto;
     flex-direction: column;
+    align-items: flex-start;
     gap: 1rem;
   }
+
+  .create-event-btn {
+    width: 100%;
+  }
+
   .events-grid {
     grid-template-columns: 1fr;
-    padding: 0;
-  }
-  mat-card-header {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding-bottom: 20px;
-  }
-  .header-text {
-    margin-top: 16px;
-  }
-  .event-title {
-    justify-content: center;
-  }
-  .date-row-container div {
-    flex-wrap: wrap;
+    /* Adiciona um pequeno padding nas bordas da tela em mobile */
+    padding: 0 16px 40px 16px;
   }
 }

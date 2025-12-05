@@ -151,10 +151,10 @@ export class LanguageService {
       en: 'My Events',
       es: 'Mis Eventos'
     },
-    'my.events.description': {
-      pt: 'Visualize e gerencie seus eventos criados',
-      en: 'View and manage your created events',
-      es: 'Ver y administrar tus eventos creados'
+    'my.event.description':{
+      pt: 'Gerencie suas partidas e inscrições em um só lugar.',
+      en: 'Manage your matches and registrations in one place.',
+      es: 'Gestiona tus partidos y registros en un solo lugar.'
     },
     'event.name': {
       pt: 'Nome do Evento',
@@ -451,6 +451,11 @@ export class LanguageService {
       en: 'Join',
       es: 'Participar'
     },
+    'search.placeholder':{
+      pt: 'Pesquisar por nome, local ou organizador...',
+      en: 'Search by name, location, or organizer...',
+      es: 'Buscar por nombre, ubicación u organizador...'
+    },
     'player.added.success': {
       pt: 'Jogador adicionado com sucesso!',
       en: 'Player added successfully!',
@@ -497,7 +502,6 @@ export class LanguageService {
       es: 'Participando...'
     }
   };
-
   constructor() {
     this.loadLanguage();
   }
