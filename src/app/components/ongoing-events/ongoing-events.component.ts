@@ -93,11 +93,39 @@ export class OngoingEventsComponent implements OnInit {
     }
   }
 
-  loadNearbyEvents(lat: number, lon: number, limit: number) {
-    // Chama o serviço passando o limite calculado
-    (this.eventoService as any).listarEventosProximos(lat, lon, limit).subscribe({
-      next: (data: EventoResponseDTO[]) => {
-        this.events = data;
+  loadNearbyEvents(userLat: number, userLon: number, limit: number) {
+    (this.eventoService as any).listarEventosProximos(userLat, userLon, limit).subscribe({
+      next: async (data: any) => {
+
+        let eventosArray: EventoResponseDTO[] = [];
+
+        // 1. Converte Blob para JSON se necessário
+        if (data instanceof Blob) {
+          const blobText = await data.text();
+          eventosArray = JSON.parse(blobText);
+        } else {
+          eventosArray = data;
+        }
+
+        // 2. Ordenação: Data (Principal) -> Distância (Secundária)
+        eventosArray.sort((a, b) => {
+          const dateA = new Date(a.dataHorario || '').getTime();
+          const dateB = new Date(b.dataHorario || '').getTime();
+
+          // Critério 1: Data mais próxima primeiro
+          if (dateA !== dateB) {
+            return dateA - dateB;
+          }
+
+          // Critério 2 (Desempate): Localização mais próxima (menor distância)
+          // Assumindo que o DTO possui latitude e longitude. Usamos 'as any' para garantir acesso se a tipagem estiver estrita.
+          const distA = this.calculateDistance(userLat, userLon, (a as any).latitude, (a as any).longitude);
+          const distB = this.calculateDistance(userLat, userLon, (b as any).latitude, (b as any).longitude);
+
+          return distA - distB;
+        });
+
+        this.events = eventosArray;
         this.isLoading = false;
       },
       error: (err: any) => {
@@ -107,6 +135,30 @@ export class OngoingEventsComponent implements OnInit {
     });
   }
 
+  // --- MÉTODOS AUXILIARES PARA CÁLCULO DE DISTÂNCIA (Haversine) ---
+
+  // Retorna a distância em Kilômetros (Km)
+  private calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
+    if (!lat1 || !lon1 || !lat2 || !lon2) return 0;
+
+    const R = 6371; // Raio da Terra em km
+    const dLat = this.deg2rad(lat2 - lat1);
+    const dLon = this.deg2rad(lon2 - lon1);
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2)) *
+      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
+  }
+
+  private deg2rad(deg: number): number {
+    return deg * (Math.PI / 180);
+  }
+
+  // --- OUTROS MÉTODOS ---
+
   onEventClick(event: EventoResponseDTO) {
     if (event.id) {
       this.router.navigate(['/event-details', event.id]);
@@ -115,7 +167,7 @@ export class OngoingEventsComponent implements OnInit {
 
   onRequestJoin(event: EventoResponseDTO, evt: MouseEvent) {
     evt.stopPropagation();
-    this.snackBar.open(this.translate('request.sent'), 'OK', { duration: 3000 });
+    this.snackBar.open(this.translate('request.sent') || 'Solicitação enviada!', 'OK', { duration: 3000 });
   }
 
   onEditEvent(event: EventoResponseDTO, evt: MouseEvent) {
