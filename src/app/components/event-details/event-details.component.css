@@ -273,6 +273,22 @@
   color: #616161;
 }
 
+/* Botão de Deletar - Vermelho */
+:host ::ng-deep button[color="warn"] {
+  background-color: #c32323 !important;
+  color: white !important;
+  padding: 0 24px;
+  height: 44px;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+:host ::ng-deep button[color="warn"]:hover {
+  background-color: #a81f1f !important;
+  box-shadow: 0 4px 12px rgba(195, 35, 35, 0.4) !important;
+}
+
 /* --- LOADING --- */
 .loading-state {
   display: flex;

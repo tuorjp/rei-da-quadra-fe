@@ -307,11 +307,16 @@
   width: 100%;
   height: 48px;
   border-radius: 8px;
-  background-color: #283040 !important;
+  background-color: #c32323 !important;
   color: white !important;
+  border: 2px solid #c32323 !important;
+  transition: all 0.3s ease !important;
 }
 .delete-btn:hover {
-  background-color: #c32323 !important;
+  background-color: #a81f1f !important;
+  border-color: #a81f1f !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(195, 35, 35, 0.4) !important;
 }
 
 /* --- Responsividade --- */

@@ -21,12 +21,11 @@ import {
 } from '@angular/material/card';
 import {MatDivider} from '@angular/material/divider';
 import {MatButton} from '@angular/material/button';
-import { DatePipe } from '@angular/common';
+import {MatTooltip} from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-event-matches',
   imports: [
-    DatePipe,
     MatIcon,
     MatCard,
     MatCardHeader,
@@ -36,6 +35,7 @@ import { DatePipe } from '@angular/common';
     MatDivider,
     MatCardActions,
     MatButton,
+    MatTooltip,
   ],
   templateUrl: './event-matches.component.html',
   styleUrl: './event-matches.component.css'
@@ -92,7 +92,7 @@ export class EventMatchesComponent implements OnInit, OnChanges {
     });
 
     this.carregarPartidasDoEvento();
-    
+
     // buscar informações do evento para obter o limite de partidas
     this.eventoService.buscarEvento(this.eventoId).subscribe({
       next: (evento) => {
@@ -180,7 +180,7 @@ export class EventMatchesComponent implements OnInit, OnChanges {
     });
   }
 
-  registrarAcao(jogador: JogadorDTO, tipo: 'GOL' | 'ASSISTENCIA' | 'DEFESA') {
+  registrarAcao(jogador: JogadorDTO, tipo: 'GOL' | 'ASSISTENCIA' | 'DEFESA' | 'FALTA' | 'IMPEDIMENTO') {
     const partida = this.partidaAtual();
     if (!partida) return;
 
@@ -198,7 +198,7 @@ export class EventMatchesComponent implements OnInit, OnChanges {
     });
   }
 
-  removerAcao(jogador: JogadorDTO, tipo: 'GOL' | 'ASSISTENCIA' | 'DEFESA') {
+  removerAcao(jogador: JogadorDTO, tipo: 'GOL' | 'ASSISTENCIA' | 'DEFESA' | 'FALTA' | 'IMPEDIMENTO') {
     const partida = this.partidaAtual();
     if (!partida) return;
 

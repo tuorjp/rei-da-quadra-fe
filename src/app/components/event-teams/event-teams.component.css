@@ -1,28 +1,212 @@
-.teamsContainer {
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+/* --- VARIÁVEIS DE CORES --- */
+:host {
+  --primary-green: #5B8C2A;
+  --text-dark: #283040;
+  --text-gray: #616161;
+  --border-color: #e0e0e0;
+  --light-bg: #f8f9fa;
 }
 
+/* --- CONTAINER PRINCIPAL --- */
+.teamsContainer {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* --- SEÇÃO DE AÇÕES --- */
 .actions {
   display: flex;
   justify-content: flex-end;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
-.team-color-dot {
-  display: inline-block;
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
-  margin-right: 10px;
-  border: 1px solid #ccc;
-  vertical-align: middle;
+.submit-btn {
+  background-color: var(--primary-green) !important;
+  color: white !important;
+  padding: 0 24px !important;
+  height: 44px !important;
+  border-radius: 8px !important;
+  font-weight: 500 !important;
+  box-shadow: 0 2px 8px rgba(91, 140, 42, 0.2) !important;
+  transition: all 0.2s ease !important;
 }
 
+.submit-btn:hover:not(:disabled) {
+  background-color: #4c7523 !important;
+  box-shadow: 0 4px 12px rgba(91, 140, 42, 0.3) !important;
+  transform: translateY(-2px);
+}
+
+.submit-btn:disabled {
+  background-color: #ccc !important;
+  color: #888 !important;
+  box-shadow: none !important;
+}
+
+/* --- ESTILIZAÇÃO DO ACCORDION --- */
+:host ::ng-deep .mat-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+:host ::ng-deep .mat-expansion-panel {
+  border-radius: 12px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+  border: 1px solid var(--border-color) !important;
+  overflow: hidden;
+  transition: all 0.3s ease !important;
+}
+
+:host ::ng-deep .mat-expansion-panel:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12) !important;
+  border-color: rgba(91, 140, 42, 0.3) !important;
+}
+
+:host ::ng-deep .mat-expansion-panel-header {
+  padding: 16px 24px !important;
+  height: auto !important;
+  min-height: 64px !important;
+  background-color: white !important;
+  transition: background-color 0.2s ease !important;
+}
+
+:host ::ng-deep .mat-expansion-panel-header:hover {
+  background-color: var(--light-bg) !important;
+}
+
+:host ::ng-deep .mat-expansion-panel.mat-expanded .mat-expansion-panel-header {
+  background-color: rgba(91, 140, 42, 0.05) !important;
+  border-bottom: 2px solid var(--primary-green) !important;
+}
+
+/* --- TÍTULO DO PAINEL --- */
 .panel-title {
   display: flex;
   align-items: center;
-  font-weight: bold;
+  font-weight: 600 !important;
+  font-size: 1.1rem !important;
+  color: var(--text-dark) !important;
+}
+
+.team-color-dot {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+}
+
+.team-color-dot::before {
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: var(--background-color, #ccc);
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* --- DESCRIÇÃO DO PAINEL --- */
+:host ::ng-deep .mat-expansion-panel-header-description {
+  color: var(--text-gray) !important;
+  font-weight: 500 !important;
+  font-size: 0.95rem !important;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* --- CORPO DO PAINEL --- */
+:host ::ng-deep .mat-expansion-panel-body {
+  padding: 0 !important;
+  background-color: white;
+}
+
+/* --- LISTA DE JOGADORES --- */
+:host ::ng-deep .mat-mdc-list {
+  padding: 0 !important;
+}
+
+:host ::ng-deep .mat-mdc-list-item {
+  height: auto !important;
+  min-height: 72px !important;
+  padding: 12px 24px !important;
+  border-bottom: 1px solid var(--border-color);
+  transition: background-color 0.2s ease;
+}
+
+:host ::ng-deep .mat-mdc-list-item:last-child {
+  border-bottom: none;
+}
+
+:host ::ng-deep .mat-mdc-list-item:hover {
+  background-color: var(--light-bg);
+}
+
+/* --- AVATAR DO JOGADOR --- */
+:host ::ng-deep .mat-mdc-list-item img[matListItemAvatar] {
+  width: 48px !important;
+  height: 48px !important;
+  border-radius: 50% !important;
+  object-fit: cover;
+  border: 2px solid var(--border-color);
+  margin-right: 16px;
+}
+
+/* --- INFORMAÇÕES DO JOGADOR --- */
+:host ::ng-deep .mat-mdc-list-item-title {
+  font-weight: 600 !important;
+  font-size: 1rem !important;
+  color: var(--text-dark) !important;
+  margin-bottom: 4px !important;
+}
+
+:host ::ng-deep .mat-mdc-list-item-line {
+  font-size: 0.875rem !important;
+  color: var(--text-gray) !important;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* --- ESTADO VAZIO --- */
+.teamsContainer p {
+  text-align: center;
+  color: var(--text-gray);
+  padding: 32px 24px;
+  margin: 0;
+  font-style: italic;
+}
+
+/* --- RESPONSIVIDADE --- */
+@media (max-width: 768px) {
+  .teamsContainer {
+    gap: 16px;
+  }
+
+  :host ::ng-deep .mat-expansion-panel-header {
+    padding: 12px 16px !important;
+    min-height: 56px !important;
+  }
+
+  :host ::ng-deep .mat-mdc-list-item {
+    padding: 12px 16px !important;
+    min-height: 64px !important;
+  }
+
+  .panel-title {
+    font-size: 1rem !important;
+  }
+
+  .team-color-dot::before {
+    width: 16px;
+    height: 16px;
+  }
+
+  .submit-btn {
+    width: 100%;
+  }
 }

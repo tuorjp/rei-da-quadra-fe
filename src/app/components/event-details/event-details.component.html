@@ -141,11 +141,8 @@
               <mat-icon class="tab-icon">dashboard</mat-icon>
               {{ langService.translate('dashboard') }}
             </ng-template>
-            <div class="tab-padding center-content">
-              <div class="coming-soon-box">
-                <mat-icon>engineering</mat-icon>
-                <p>Dashboard em desenvolvimento</p>
-              </div>
+            <div class="tab-padding">
+              <app-event-dashboard [eventoId]="evento()?.id"></app-event-dashboard>
             </div>
           </mat-tab>
 

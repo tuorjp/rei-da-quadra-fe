@@ -1,0 +1,142 @@
+<div class="dashboard-container">
+  
+  <!-- Partidas Não Iniciadas -->
+  <mat-card class="dashboard-card">
+    <mat-card-header>
+      <div class="card-header-content">
+        <mat-icon class="header-icon pending">schedule</mat-icon>
+        <div>
+          <mat-card-title>Partidas Agendadas</mat-card-title>
+          <mat-card-subtitle>{{ partidasNaoIniciadas().length }} partida(s) aguardando início</mat-card-subtitle>
+        </div>
+      </div>
+    </mat-card-header>
+
+    <mat-card-content>
+      @if (partidasNaoIniciadas().length > 0) {
+        <div class="table-container">
+          <table mat-table [dataSource]="partidasNaoIniciadas()" class="matches-table">
+            
+            <ng-container matColumnDef="data">
+              <th mat-header-cell *matHeaderCellDef>Data</th>
+              <td mat-cell *matCellDef="let partida">
+                <div class="cell-content">
+                  <mat-icon class="cell-icon">event</mat-icon>
+                  {{ partida.dataPartida ? (partida.dataPartida | date: 'dd/MM/yyyy') : 'A definir' }}
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="timeA">
+              <th mat-header-cell *matHeaderCellDef>Time A</th>
+              <td mat-cell *matCellDef="let partida">
+                <div class="team-name">{{ partida.timeANome }}</div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="timeB">
+              <th mat-header-cell *matHeaderCellDef>Time B</th>
+              <td mat-cell *matCellDef="let partida">
+                <div class="team-name">{{ partida.timeBNome }}</div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef>Status</th>
+              <td mat-cell *matCellDef="let partida">
+                <mat-chip class="status-chip pending">
+                  <mat-icon>hourglass_empty</mat-icon>
+                  Aguardando
+                </mat-chip>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsNaoIniciadas"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsNaoIniciadas;" class="table-row"></tr>
+          </table>
+        </div>
+      } @else {
+        <div class="empty-state">
+          <mat-icon>check_circle</mat-icon>
+          <p>Todas as partidas foram iniciadas</p>
+        </div>
+      }
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Partidas Finalizadas -->
+  <mat-card class="dashboard-card">
+    <mat-card-header>
+      <div class="card-header-content">
+        <mat-icon class="header-icon finished">emoji_events</mat-icon>
+        <div>
+          <mat-card-title>Resultados</mat-card-title>
+          <mat-card-subtitle>{{ partidasFinalizadas().length }} partida(s) finalizada(s)</mat-card-subtitle>
+        </div>
+      </div>
+    </mat-card-header>
+
+    <mat-card-content>
+      @if (partidasFinalizadas().length > 0) {
+        <div class="table-container">
+          <table mat-table [dataSource]="partidasFinalizadas()" class="matches-table">
+            
+            <ng-container matColumnDef="data">
+              <th mat-header-cell *matHeaderCellDef>Data</th>
+              <td mat-cell *matCellDef="let partida">
+                <div class="cell-content">
+                  <mat-icon class="cell-icon">event</mat-icon>
+                  {{ partida.dataPartida ? (partida.dataPartida | date: 'dd/MM/yyyy HH:mm') : '-' }}
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="timeA">
+              <th mat-header-cell *matHeaderCellDef>Time A</th>
+              <td mat-cell *matCellDef="let partida">
+                <div class="team-name">{{ partida.timeANome }}</div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="timeB">
+              <th mat-header-cell *matHeaderCellDef>Time B</th>
+              <td mat-cell *matCellDef="let partida">
+                <div class="team-name">{{ partida.timeBNome }}</div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="placar">
+              <th mat-header-cell *matHeaderCellDef>Placar</th>
+              <td mat-cell *matCellDef="let partida">
+                <div class="score-display">
+                  <span class="score-number">{{ partida.timeAPlacar || 0 }}</span>
+                  <span class="score-separator">×</span>
+                  <span class="score-number">{{ partida.timeBPlacar || 0 }}</span>
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="vencedor">
+              <th mat-header-cell *matHeaderCellDef>Vencedor</th>
+              <td mat-cell *matCellDef="let partida">
+                <mat-chip class="status-chip winner">
+                  <mat-icon>emoji_events</mat-icon>
+                  {{ getVencedor(partida) }}
+                </mat-chip>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsFinalizadas"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsFinalizadas;" class="table-row"></tr>
+          </table>
+        </div>
+      } @else {
+        <div class="empty-state">
+          <mat-icon>sports_soccer</mat-icon>
+          <p>Nenhuma partida finalizada ainda</p>
+        </div>
+      }
+    </mat-card-content>
+  </mat-card>
+
+</div>

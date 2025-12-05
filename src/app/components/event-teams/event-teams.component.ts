@@ -8,6 +8,8 @@ import {
   MatExpansionPanelTitle
 } from '@angular/material/expansion';
 import {MatList, MatListItem, MatListItemLine, MatListItemTitle} from '@angular/material/list';
+import {MatIcon} from '@angular/material/icon';
+import {MatTooltip} from '@angular/material/tooltip';
 import {CommonModule} from '@angular/common';
 
 @Component({
@@ -24,6 +26,8 @@ import {CommonModule} from '@angular/common';
     MatListItem,
     MatListItemTitle,
     MatListItemLine,
+    MatIcon,
+    MatTooltip,
   ],
   templateUrl: './event-teams.component.html',
   styleUrl: './event-teams.component.css'

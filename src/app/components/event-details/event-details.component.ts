@@ -23,6 +23,7 @@ import {EventInscriptionsComponent} from '../event-inscriptions/event-inscriptio
 import {LocationPickerDialogComponent} from '../location-picker-dialog/location-picker-dialog.component';
 import {EventTeamsComponent} from '../event-teams/event-teams.component';
 import {EventMatchesComponent} from '../event-matches/event-matches.component';
+import {EventDashboardComponent} from '../event-dashboard/event-dashboard.component';
 
 @Component({
   selector: 'app-event-details',
@@ -42,6 +43,7 @@ import {EventMatchesComponent} from '../event-matches/event-matches.component';
     EventInscriptionsComponent,
     EventTeamsComponent,
     EventMatchesComponent,
+    EventDashboardComponent,
   ],
   templateUrl: './event-details.component.html',
   styleUrl: './event-details.component.css'

@@ -1,0 +1,241 @@
+/* --- VARIÁVEIS DE CORES --- */
+:host {
+  --primary-green: #5B8C2A;
+  --text-dark: #283040;
+  --text-gray: #616161;
+  --border-color: #e0e0e0;
+  --light-bg: #f8f9fa;
+  --warning-color: #FF9800;
+  --success-color: #4CAF50;
+}
+
+/* --- CONTAINER PRINCIPAL --- */
+.dashboard-container {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* --- CARDS DO DASHBOARD --- */
+.dashboard-card {
+  border-radius: 16px !important;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08) !important;
+  overflow: hidden;
+  border: 1px solid var(--border-color) !important;
+  transition: all 0.3s ease;
+}
+
+.dashboard-card:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* --- HEADER DO CARD --- */
+:host ::ng-deep .dashboard-card .mat-mdc-card-header {
+  padding: 24px !important;
+  background: linear-gradient(135deg, var(--light-bg) 0%, #ffffff 100%);
+  border-bottom: 2px solid var(--border-color);
+}
+
+.card-header-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+}
+
+.header-icon {
+  font-size: 48px !important;
+  width: 48px !important;
+  height: 48px !important;
+  padding: 12px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-icon.pending {
+  background-color: rgba(255, 152, 0, 0.1);
+  color: var(--warning-color);
+}
+
+.header-icon.finished {
+  background-color: rgba(91, 140, 42, 0.1);
+  color: var(--primary-green);
+}
+
+:host ::ng-deep .dashboard-card .mat-mdc-card-title {
+  font-size: 1.5rem !important;
+  font-weight: 600 !important;
+  color: var(--text-dark) !important;
+  margin: 0 !important;
+}
+
+:host ::ng-deep .dashboard-card .mat-mdc-card-subtitle {
+  font-size: 0.95rem !important;
+  color: var(--text-gray) !important;
+  margin-top: 4px !important;
+}
+
+/* --- CONTEÚDO DO CARD --- */
+:host ::ng-deep .dashboard-card .mat-mdc-card-content {
+  padding: 0 !important;
+}
+
+/* --- CONTAINER DA TABELA --- */
+.table-container {
+  overflow-x: auto;
+}
+
+/* --- TABELA --- */
+.matches-table {
+  width: 100%;
+  background-color: white;
+}
+
+:host ::ng-deep .matches-table .mat-mdc-header-row {
+  background-color: var(--light-bg);
+}
+
+:host ::ng-deep .matches-table .mat-mdc-header-cell {
+  font-weight: 700 !important;
+  font-size: 0.875rem !important;
+  color: var(--text-dark) !important;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 16px 24px !important;
+  border-bottom: 2px solid var(--border-color) !important;
+}
+
+:host ::ng-deep .matches-table .mat-mdc-cell {
+  padding: 20px 24px !important;
+  font-size: 1rem;
+  color: var(--text-dark);
+  border-bottom: 1px solid var(--border-color) !important;
+}
+
+.table-row {
+  transition: background-color 0.2s ease;
+}
+
+.table-row:hover {
+  background-color: var(--light-bg) !important;
+}
+
+/* --- CÉLULAS DA TABELA --- */
+.cell-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cell-icon {
+  font-size: 18px !important;
+  width: 18px !important;
+  height: 18px !important;
+  color: var(--text-gray);
+}
+
+.team-name {
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.score-display {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.score-number {
+  color: var(--primary-green);
+  min-width: 24px;
+  text-align: center;
+}
+
+.score-separator {
+  color: var(--text-gray);
+  font-weight: 400;
+}
+
+/* --- CHIPS DE STATUS --- */
+:host ::ng-deep .status-chip {
+  height: 32px !important;
+  padding: 0 12px !important;
+  border-radius: 16px !important;
+  font-weight: 600 !important;
+  font-size: 0.875rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+
+:host ::ng-deep .status-chip mat-icon {
+  font-size: 16px !important;
+  width: 16px !important;
+  height: 16px !important;
+  margin: 0 !important;
+}
+
+:host ::ng-deep .status-chip.pending {
+  background-color: rgba(255, 152, 0, 0.15) !important;
+  color: #E65100 !important;
+}
+
+:host ::ng-deep .status-chip.winner {
+  background-color: rgba(91, 140, 42, 0.15) !important;
+  color: var(--primary-green) !important;
+}
+
+/* --- ESTADO VAZIO --- */
+.empty-state {
+  text-align: center;
+  padding: 64px 32px;
+  color: var(--text-gray);
+}
+
+.empty-state mat-icon {
+  font-size: 64px !important;
+  width: 64px !important;
+  height: 64px !important;
+  color: var(--border-color);
+  margin-bottom: 16px;
+}
+
+.empty-state p {
+  font-size: 1.1rem;
+  margin: 0;
+  font-style: italic;
+}
+
+/* --- RESPONSIVIDADE --- */
+@media (max-width: 768px) {
+  .card-header-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .header-icon {
+    font-size: 40px !important;
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  :host ::ng-deep .matches-table .mat-mdc-header-cell,
+  :host ::ng-deep .matches-table .mat-mdc-cell {
+    padding: 12px 16px !important;
+    font-size: 0.875rem;
+  }
+
+  .score-display {
+    font-size: 1rem;
+  }
+
+  :host ::ng-deep .status-chip {
+    font-size: 0.75rem !important;
+    height: 28px !important;
+  }
+}

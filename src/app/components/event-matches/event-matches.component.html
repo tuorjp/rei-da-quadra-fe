@@ -6,6 +6,7 @@
       <h2>{{limitePartidasAtingido() ? 'Partidas Encerradas' : 'Nenhuma partida em andamento'}}</h2>
 
       <button mat-raised-button color="primary" (click)="iniciarPartidaInicial()" [disabled]="times().length < 2 || limitePartidasAtingido()">
+        <mat-icon>play_arrow</mat-icon>
         INICIAR DESAFIO
       </button>
     </div>
@@ -40,22 +41,46 @@
               <div class="player-row">
                 <span class="player-name">{{ jogador.nome }}</span>
                 <div class="action-buttons">
-                  <button mat-mini-fab color="accent" (click)="registrarAcao(jogador, 'GOL')" matTooltip="Gol">
-                    G
-                  </button>
-                  <button mat-mini-fab color="warn" (click)="removerAcao(jogador, 'GOL')" matTooltip="Remover Gol">-
-                  </button>
-                  <button mat-mini-fab color="primary" (click)="registrarAcao(jogador, 'ASSISTENCIA')" matTooltip="Assistência">
-                    A
-                  </button>
-                  <button mat-mini-fab color="warn" (click)="removerAcao(jogador, 'ASSISTENCIA')" matTooltip="Remover Assistência">-
-                  </button>
-                  <button mat-icon-button (click)="registrarAcao(jogador, 'DEFESA')" matTooltip="Defesa">
-                    <mat-icon>shield</mat-icon>
-                  </button>
-                  <button mat-icon-button color="warn" (click)="removerAcao(jogador, 'DEFESA')" matTooltip="Remover Defesa">
-                    <mat-icon>undo</mat-icon>
-                  </button>
+                  <div class="button-group">
+                    <button class="action-btn gol-btn" (click)="registrarAcao(jogador, 'GOL')" matTooltip="Registrar Gol">
+                      <mat-icon>sports_soccer</mat-icon>
+                    </button>
+                    <button class="action-btn remove-btn" (click)="removerAcao(jogador, 'GOL')" matTooltip="Remover Gol">
+                      <mat-icon>remove</mat-icon>
+                    </button>
+                  </div>
+                  <div class="button-group">
+                    <button class="action-btn assist-btn" (click)="registrarAcao(jogador, 'ASSISTENCIA')" matTooltip="Registrar Assistência">
+                      <mat-icon>sports</mat-icon>
+                    </button>
+                    <button class="action-btn remove-btn" (click)="removerAcao(jogador, 'ASSISTENCIA')" matTooltip="Remover Assistência">
+                      <mat-icon>remove</mat-icon>
+                    </button>
+                  </div>
+                  <div class="button-group">
+                    <button class="action-btn defense-btn" (click)="registrarAcao(jogador, 'DEFESA')" matTooltip="Registrar Defesa">
+                      <mat-icon>shield</mat-icon>
+                    </button>
+                    <button class="action-btn remove-btn" (click)="removerAcao(jogador, 'DEFESA')" matTooltip="Remover Defesa">
+                      <mat-icon>remove</mat-icon>
+                    </button>
+                  </div>
+                  <div class="button-group">
+                    <button class="action-btn foul-btn" (click)="registrarAcao(jogador, 'FALTA')" matTooltip="Registrar Falta">
+                      <mat-icon>report</mat-icon>
+                    </button>
+                    <button class="action-btn remove-btn" (click)="removerAcao(jogador, 'FALTA')" matTooltip="Remover Falta">
+                      <mat-icon>remove</mat-icon>
+                    </button>
+                  </div>
+                  <div class="button-group">
+                    <button class="action-btn offside-btn" (click)="registrarAcao(jogador, 'IMPEDIMENTO')" matTooltip="Registrar Impedimento">
+                      <mat-icon>flag</mat-icon>
+                    </button>
+                    <button class="action-btn remove-btn" (click)="removerAcao(jogador, 'IMPEDIMENTO')" matTooltip="Remover Impedimento">
+                      <mat-icon>remove</mat-icon>
+                    </button>
+                  </div>
                 </div>
               </div>
             }
@@ -69,16 +94,46 @@
               <div class="player-row">
                 <span class="player-name">{{ jogador.nome }}</span>
                 <div class="action-buttons">
-                  <button mat-mini-fab color="accent" (click)="registrarAcao(jogador, 'GOL')">G</button>
-                  <button mat-mini-fab color="warn" (click)="removerAcao(jogador, 'GOL')">-</button>
-                  <button mat-mini-fab color="primary" (click)="registrarAcao(jogador, 'ASSISTENCIA')">A</button>
-                  <button mat-mini-fab color="warn" (click)="removerAcao(jogador, 'ASSISTENCIA')">-</button>
-                  <button mat-icon-button (click)="registrarAcao(jogador, 'DEFESA')">
-                    <mat-icon>shield</mat-icon>
-                  </button>
-                  <button mat-icon-button color="warn" (click)="removerAcao(jogador, 'DEFESA')">
-                    <mat-icon>undo</mat-icon>
-                  </button>
+                  <div class="button-group">
+                    <button class="action-btn gol-btn" (click)="registrarAcao(jogador, 'GOL')" matTooltip="Registrar Gol">
+                      <mat-icon>sports_soccer</mat-icon>
+                    </button>
+                    <button class="action-btn remove-btn" (click)="removerAcao(jogador, 'GOL')" matTooltip="Remover Gol">
+                      <mat-icon>remove</mat-icon>
+                    </button>
+                  </div>
+                  <div class="button-group">
+                    <button class="action-btn assist-btn" (click)="registrarAcao(jogador, 'ASSISTENCIA')" matTooltip="Registrar Assistência">
+                      <mat-icon>sports</mat-icon>
+                    </button>
+                    <button class="action-btn remove-btn" (click)="removerAcao(jogador, 'ASSISTENCIA')" matTooltip="Remover Assistência">
+                      <mat-icon>remove</mat-icon>
+                    </button>
+                  </div>
+                  <div class="button-group">
+                    <button class="action-btn defense-btn" (click)="registrarAcao(jogador, 'DEFESA')" matTooltip="Registrar Defesa">
+                      <mat-icon>shield</mat-icon>
+                    </button>
+                    <button class="action-btn remove-btn" (click)="removerAcao(jogador, 'DEFESA')" matTooltip="Remover Defesa">
+                      <mat-icon>remove</mat-icon>
+                    </button>
+                  </div>
+                  <div class="button-group">
+                    <button class="action-btn foul-btn" (click)="registrarAcao(jogador, 'FALTA')" matTooltip="Registrar Falta">
+                      <mat-icon>report</mat-icon>
+                    </button>
+                    <button class="action-btn remove-btn" (click)="removerAcao(jogador, 'FALTA')" matTooltip="Remover Falta">
+                      <mat-icon>remove</mat-icon>
+                    </button>
+                  </div>
+                  <div class="button-group">
+                    <button class="action-btn offside-btn" (click)="registrarAcao(jogador, 'IMPEDIMENTO')" matTooltip="Registrar Impedimento">
+                      <mat-icon>flag</mat-icon>
+                    </button>
+                    <button class="action-btn remove-btn" (click)="removerAcao(jogador, 'IMPEDIMENTO')" matTooltip="Remover Impedimento">
+                      <mat-icon>remove</mat-icon>
+                    </button>
+                  </div>
                 </div>
               </div>
             }
@@ -88,64 +143,11 @@
 
       <mat-card-actions align="end">
         <button mat-stroked-button color="warn" (click)="finalizarPartida()">
-          <mat-icon>stop</mat-icon> ENCERRAR PARTIDA E RODAR TIMES
+          <mat-icon>flag</mat-icon>
+          ENCERRAR PARTIDA E RODAR TIMES
         </button>
       </mat-card-actions>
     </mat-card>
   }
 
-  <!-- Listas de partidas abaixo do placar -->
-  <div class="partidas-listas">
-    <mat-card class="list-card">
-      <mat-card-title>Partidas Não Iniciadas</mat-card-title>
-      <mat-card-content>
-        <table class="mat-elevation-z1 simple-table">
-          <thead>
-            <tr>
-              <th>Data</th>
-              <th>Time A</th>
-              <th>Time B</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (p of partidasNaoIniciadas(); track p.id) {
-              <tr>
-                <td>{{ p.dataPartida ? (p.dataPartida | date: 'dd/MM/yyyy') : '-' }}</td>
-                <td>{{ p.timeANome }}</td>
-                <td>{{ p.timeBNome }}</td>
-                <td>{{ p.status }}</td>
-              </tr>
-            }
-          </tbody>
-        </table>
-      </mat-card-content>
-    </mat-card>
-
-    <mat-card class="list-card">
-      <mat-card-title>Partidas Finalizadas</mat-card-title>
-      <mat-card-content>
-        <table class="mat-elevation-z1 simple-table">
-          <thead>
-            <tr>
-              <th>Data</th>
-              <th>Time A</th>
-              <th>Time B</th>
-              <th>Placar</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (p of partidasFinalizadas(); track p.id) {
-              <tr>
-                <td>{{ p.dataPartida || '-' }}</td>
-                <td>{{ p.timeANome }}</td>
-                <td>{{ p.timeBNome }}</td>
-                <td>{{ p.timeAPlacar }} x {{ p.timeBPlacar }}</td>
-              </tr>
-            }
-          </tbody>
-        </table>
-      </mat-card-content>
-    </mat-card>
-  </div>
 </div>

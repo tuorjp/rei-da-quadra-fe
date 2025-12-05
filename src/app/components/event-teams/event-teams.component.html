@@ -7,6 +7,7 @@
       class="submit-btn"
       (click)="distribuirJogadoresPorTimes(eventoId)"
     >
+      <mat-icon>shuffle</mat-icon>
       Distribuir times
     </button>
   </div>
@@ -21,9 +22,10 @@
             </span>
           </mat-panel-title>
           <mat-panel-description>
-            {{ time.jogadores?.length || 0 }}
+            <mat-icon style="font-size: 18px; width: 18px; height: 18px; margin-right: 4px;">group</mat-icon>
+            {{ time.jogadores?.length || 0 }} {{ (time.jogadores?.length || 0) === 1 ? 'jogador' : 'jogadores' }}
             @if (time.timeDeEspera) {
-              (Espera)
+              <mat-icon style="font-size: 18px; width: 18px; height: 18px; margin-left: 8px;" matTooltip="Time de Espera">schedule</mat-icon>
             }
           </mat-panel-description>
         </mat-expansion-panel-header>
@@ -32,16 +34,31 @@
           @for (jogador of time.jogadores; track jogador.id) {
             <mat-list-item>
               @if (jogador.foto) {
-                <img matListItemAvatar [src]="jogador.foto" alt="Avatar">
+                <img matListItemAvatar [src]="jogador.foto" alt="Avatar de {{jogador.nome}}">
+              } @else {
+                <div matListItemAvatar style="width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #5B8C2A, #7AB83F); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 1.2rem; border: 2px solid #e0e0e0;">
+                  {{ (jogador.nome || '?').charAt(0).toUpperCase() }}
+                </div>
               }
-              <span matListItemTitle>{{jogador.nome}}</span>
-              <span matListItemLine>Nível: {{jogador.nivel}}</span>
+              <span matListItemTitle>{{jogador.nome || 'Jogador'}}</span>
+              <span matListItemLine>
+                <mat-icon style="font-size: 14px; width: 14px; height: 14px; vertical-align: middle; margin-right: 4px;">sports_soccer</mat-icon>
+                Nível: {{jogador.nivel}}
+              </span>
             </mat-list-item>
           } @empty {
             <p>Nenhum jogador nesse time.</p>
           }
         </mat-list>
       </mat-expansion-panel>
+    } @empty {
+      <div style="text-align: center; padding: 48px 24px; color: #616161;">
+        <mat-icon style="font-size: 64px; width: 64px; height: 64px; color: #ccc; margin-bottom: 16px;">groups_off</mat-icon>
+        <p style="font-size: 1.1rem; margin: 0;">Nenhum time criado ainda</p>
+        @if (isOrganizer) {
+          <p style="font-size: 0.9rem; margin-top: 8px;">Clique em "Distribuir times" para criar os times automaticamente</p>
+        }
+      </div>
     }
   </mat-accordion>
 </div>
