@@ -19,6 +19,7 @@ import { InscricaoService, InscricaoRequestDTO } from '../../services/inscricao.
 import { API_CONFIG } from '../../config/api.config';
 import {ActivatedRoute} from '@angular/router';
 import {DragDropModule, CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import {MatTooltip, MatTooltipModule} from '@angular/material/tooltip';
 
 interface Inscricao {
   id: number;
@@ -45,7 +46,8 @@ interface Inscricao {
     MatDialogModule,
     MatChipsModule,
     MatDividerModule,
-    DragDropModule
+    DragDropModule,
+    MatTooltip
   ],
   templateUrl: './event-inscriptions.component.html',
   styleUrl: './event-inscriptions.component.css'

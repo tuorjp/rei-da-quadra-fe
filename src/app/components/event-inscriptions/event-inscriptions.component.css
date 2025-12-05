@@ -1,4 +1,6 @@
-/* --- CORES & VARIAVEIS --- */
+/* ==========================================================================
+   CORES & VARIAVEIS
+   ========================================================================== */
 :host {
   --primary-bg: #ffffff;
   --accent-green: #5B8C2A;
@@ -16,7 +18,9 @@
   box-sizing: border-box;
 }
 
-/* --- HEADER DA SEÇÃO --- */
+/* ==========================================================================
+   HEADER DA SEÇÃO
+   ========================================================================== */
 .section-header {
   display: flex;
   justify-content: space-between;
@@ -55,7 +59,7 @@
   font-weight: 500;
 }
 
-/* --- BOTÃO 'ADICIONAR' (Estilo Contrato) --- */
+/* BOTÃO 'CONTRATO' (ADICIONAR) */
 .btn-add-player {
   border-radius: 50px;
   background-color: white !important;
@@ -75,7 +79,7 @@
   transform: translateY(-1px);
 }
 
-/* --- LOADING --- */
+/* LOADING */
 .loading-state {
   display: flex;
   flex-direction: column;
@@ -85,7 +89,7 @@
 }
 
 /* ==========================================================================
-   PENDING REQUESTS (Mesa de Análise)
+   PENDING REQUESTS (MESA DE ANÁLISE)
    ========================================================================== */
 .pending-section {
   background-color: var(--warning-bg);
@@ -97,7 +101,6 @@
   overflow: hidden;
 }
 
-/* Faixa decorativa */
 .pending-section::before {
   content: '';
   position: absolute;
@@ -188,7 +191,7 @@
 .p-name { font-weight: 700; color: var(--text-dark); font-size: 1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .p-email { font-size: 0.8rem; color: var(--text-gray); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-/* --- BOTÕES DE DECISÃO INTERATIVOS --- */
+/* BOTÕES DE DECISÃO */
 .pending-actions {
   display: flex;
   gap: 12px;
@@ -208,49 +211,27 @@
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.btn-decision mat-icon {
-  transition: transform 0.3s ease;
-  font-weight: 700;
-}
+.btn-decision mat-icon { transition: transform 0.3s ease; font-weight: 700; }
 
-/* Aprovar */
-.btn-approve {
-  color: var(--accent-green);
-  border-color: #c6f6d5;
-}
+.btn-approve { color: var(--accent-green); border-color: #c6f6d5; }
 .btn-approve:hover {
-  background-color: var(--accent-green);
-  color: white;
-  border-color: var(--accent-green);
-  box-shadow: 0 0 15px rgba(91, 140, 42, 0.4);
-  transform: translateY(-2px);
+  background-color: var(--accent-green); color: white; border-color: var(--accent-green);
+  box-shadow: 0 0 15px rgba(91, 140, 42, 0.4); transform: translateY(-2px);
 }
-.btn-approve:hover mat-icon {
-  transform: scale(1.2);
-}
+.btn-approve:hover mat-icon { transform: scale(1.2); }
 .btn-approve:active { transform: scale(0.9); box-shadow: none; }
 
-/* Rejeitar */
-.btn-reject {
-  color: var(--text-gray);
-  border-color: #e2e8f0;
-}
+.btn-reject { color: var(--text-gray); border-color: #e2e8f0; }
 .btn-reject:hover {
-  background-color: var(--danger);
-  color: white;
-  border-color: var(--danger);
+  background-color: var(--danger); color: white; border-color: var(--danger);
   box-shadow: 0 0 15px rgba(229, 62, 62, 0.4);
 }
-.btn-reject:hover mat-icon {
-  transform: rotate(90deg) scale(1.1);
-}
+.btn-reject:hover mat-icon { transform: rotate(90deg) scale(1.1); }
 .btn-reject:active { transform: scale(0.9); box-shadow: none; }
 
 /* ==========================================================================
-   FORMULÁRIO E LISTA DE JOGADORES
+   FORMULÁRIO DE ADICIONAR (EXPANDÍVEL)
    ========================================================================== */
-
-/* Formulário (Expandível) */
 .add-player-panel {
   background-color: #fff;
   border: 1px solid var(--light-border);
@@ -264,7 +245,6 @@
 .inline-form { display: flex; gap: 16px; align-items: center; }
 .input-field { flex: 1; margin-bottom: -1.25em; }
 
-/* Input Customizado */
 ::ng-deep .add-player-panel .mdc-notched-outline { background-color: #fcfcfc !important; border-radius: 8px !important; }
 ::ng-deep .input-field.mat-focused .mdc-notched-outline__leading,
 ::ng-deep .input-field.mat-focused .mdc-notched-outline__notch,
@@ -273,7 +253,7 @@
   box-shadow: 0 0 0 2px rgba(91, 140, 42, 0.2);
 }
 
-/* Botão 'CONVOCAR' */
+/* BOTÃO 'CARIMBO' (CONFIRMAR) */
 .btn-confirm-add {
   background-color: var(--text-dark) !important;
   color: white !important;
@@ -293,15 +273,15 @@
 }
 .btn-confirm-add:active { transform: translateY(1px); }
 
-/* --- PLAYER LIST CONTAINER --- */
+/* ==========================================================================
+   LISTA DE ELENCO (PLAYER STRIPS)
+   ========================================================================== */
 .squad-section { width: 100%; margin-top: 20px; }
 .player-list-container { display: flex; flex-direction: column; gap: 16px; }
 
-/* --- PLAYER STRIP (A BARRA) --- */
 .player-strip {
   position: relative;
-  display: flex;
-  align-items: center;
+  display: flex; align-items: center;
   background-color: #ffffff;
   border-radius: 12px;
   padding: 16px 24px;
@@ -317,13 +297,12 @@
 }
 
 .strip-accent {
-  position: absolute;
-  left: 0; top: 0; bottom: 0; width: 6px;
+  position: absolute; left: 0; top: 0; bottom: 0; width: 6px;
   background-color: var(--accent-green);
   border-radius: 12px 0 0 12px;
 }
 
-/* Avatar Squircle */
+/* AVATAR SQUIRCLE */
 .strip-avatar {
   width: 48px; height: 48px;
   background: var(--text-dark);
@@ -335,12 +314,11 @@
   flex-shrink: 0;
 }
 
-/* Info */
 .strip-info { flex: 1; display: flex; flex-direction: column; justify-content: center; }
 .name { margin: 0; font-size: 1.1rem; font-weight: 700; color: var(--text-dark); letter-spacing: 0.3px; }
 .email { font-size: 0.85rem; color: var(--text-gray); font-weight: 400; }
 
-/* Stats */
+/* STATS BADGES */
 .strip-stats { display: flex; align-items: center; gap: 12px; margin-right: 24px; }
 .stat-badge {
   display: flex; align-items: center; gap: 6px;
@@ -355,38 +333,31 @@
 .stat-badge mat-icon { font-size: 18px; width: 18px; height: 18px; color: var(--accent-green); }
 .team-badge { background-color: rgba(91, 140, 42, 0.08); border-color: transparent; color: var(--accent-green); }
 
-/* --- AÇÕES (BOTÃO DELETE) --- */
-.strip-actions {
-  opacity: 0; transform: translateX(10px); transition: all 0.3s ease;
-}
+/* AÇÕES DA LISTA (DELETE ANIMADO) */
+.strip-actions { opacity: 0; transform: translateX(10px); transition: all 0.3s ease; }
 .player-strip:hover .strip-actions { opacity: 1; transform: translateX(0); }
 
 .btn-strip-delete {
-  color: #e0e0e0; background-color: transparent;
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  color: #e0e0e0; background-color: transparent; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
+.btn-strip-delete mat-icon { transition: transform 0.3s ease; }
 .btn-strip-delete:hover {
-  color: var(--danger);
-  background-color: rgba(229, 62, 62, 0.15);
-  box-shadow: 0 0 20px rgba(229, 62, 62, 0.4);
+  color: var(--danger); background-color: rgba(229, 62, 62, 0.15);
+  box-shadow: 0 0 20px rgba(229, 62, 62, 0.4), 0 0 5px rgba(229, 62, 62, 0.8);
 }
-.btn-strip-delete:hover mat-icon {
-  transform: scale(1.2);
-  animation: dangerShake 0.4s ease-in-out infinite alternate;
-}
-.btn-strip-delete:active {
-  transform: scale(0.8);
-  background-color: rgba(229, 62, 62, 0.3) !important;
-  box-shadow: none;
-}
+.btn-strip-delete:hover mat-icon { transform: scale(1.2); animation: dangerShake 0.4s ease-in-out infinite alternate; }
+.btn-strip-delete:active { transform: scale(0.8); background-color: rgba(229, 62, 62, 0.3) !important; box-shadow: none; transition: all 0.1s ease; }
+.btn-strip-delete:active mat-icon { animation: none; transform: scale(0.8); }
 
 @keyframes dangerShake {
-  0%, 100% { transform: scale(1.2) rotate(0deg); }
+  0% { transform: scale(1.2) rotate(0deg); }
   25% { transform: scale(1.2) rotate(-15deg); }
+  50% { transform: scale(1.2) rotate(0deg); }
   75% { transform: scale(1.2) rotate(15deg); }
+  100% { transform: scale(1.2) rotate(0deg); }
 }
 
-/* --- DRAG & DROP --- */
+/* DRAG & DROP */
 .drag-handle { color: #cbd5e0; cursor: grab; margin-right: 12px; display: flex; align-items: center; transition: color 0.2s; }
 .drag-handle:active { cursor: grabbing; }
 .player-strip:hover .drag-handle { color: var(--text-dark); }
@@ -412,30 +383,39 @@
 .cdk-drop-list-dragging .player-strip:not(.cdk-drag-placeholder) { transition: transform 250ms cubic-bezier(0, 0, 0.2, 1); }
 .player-strip { cursor: default; }
 
-/* --- EMPTY STATE --- */
-.empty-squad {
-  text-align: center; padding: 40px; color: var(--text-gray);
-  background-color: #f9f9f9; border-radius: 16px;
-}
+/* EMPTY STATE */
+.empty-squad { text-align: center; padding: 40px; color: var(--text-gray); background-color: #f9f9f9; border-radius: 16px; }
 .empty-squad mat-icon { font-size: 48px; width: 48px; height: 48px; margin-bottom: 12px; opacity: 0.3; }
 
-/* RESPONSIVIDADE */
+/* ==========================================================================
+   RESPONSIVIDADE (MEDIA QUERIES)
+   ========================================================================== */
+
+/* Telas Maiores (Desktop Grande - Ajuste de Largura Fixa) */
+@media (min-width: 1200px) {
+  /* Garante que o container de lista não estique demais, mantendo o design centralizado */
+  .player-list-container, .pending-section {
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* Telas Pequenas (Mobile) */
 @media (max-width: 600px) {
   .inline-form { flex-direction: column; align-items: stretch; }
   .btn-confirm-add { width: 100%; }
+
   .player-strip { flex-wrap: wrap; padding: 16px; }
   .strip-avatar { width: 40px; height: 40px; margin-right: 12px; font-size: 1rem; }
   .strip-info { min-width: 150px; }
   .strip-stats { width: 100%; margin-top: 12px; margin-right: 0; justify-content: flex-start; padding-left: 52px; }
   .strip-actions { opacity: 1; transform: none; position: absolute; top: 12px; right: 12px; }
 
-  /* Ajuste botões mobile */
   .btn-strip-delete { color: #ff8a80; }
   .btn-strip-delete:hover mat-icon { animation: none; transform: scale(1.1); }
 
-  .btn-approve, .btn-reject {
-    width: 48px !important; height: 48px !important; /* Maiores para touch */
-  }
+  .btn-approve, .btn-reject { width: 48px !important; height: 48px !important; }
 }
 
 @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }

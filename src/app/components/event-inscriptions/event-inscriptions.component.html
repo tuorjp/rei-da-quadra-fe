@@ -13,7 +13,7 @@
           <mat-icon>groups</mat-icon>
           {{ langService.translate('inscriptions.manage') }}
         </h2>
-        <span class="squad-counter">{{ inscricoes().length }} Jogadores</span>
+        <span class="squad-counter">{{ inscricoes().length }}</span>
       </div>
 
       <button
@@ -30,7 +30,7 @@
     <div class="pending-section" *ngIf="isOrganizer && solicitacoesPendentes().length > 0">
       <div class="section-label">
         <mat-icon class="pulse-icon">pending_actions</mat-icon>
-        <span class="label-text">Análise de Transferências</span>
+        <span class="label-text">{{ langService.translate('inscriptions.pending.area')}}</span>
         <span class="pending-count">{{ solicitacoesPendentes().length }}</span>
       </div>
 
@@ -52,7 +52,7 @@
               mat-icon-button
               class="btn-decision btn-reject"
               (click)="rejeitarSolicitacao(solicitacao.id)"
-              matTooltip="Rejeitar">
+              [matTooltip]="langService.translate('button.reject') || 'Rejeitar'">
               <mat-icon>close</mat-icon>
             </button>
 
@@ -60,7 +60,7 @@
               mat-icon-button
               class="btn-decision btn-approve"
               (click)="aprovarSolicitacao(solicitacao.id)"
-              matTooltip="Aprovar">
+              [matTooltip]="langService.translate('button.approve') || 'Aprovar'">
               <mat-icon>check</mat-icon>
             </button>
           </div>
@@ -76,7 +76,7 @@
           <mat-icon matPrefix>email</mat-icon>
           <input matInput type="email" formControlName="email" placeholder="exemplo@email.com">
           <mat-error *ngIf="playerForm.get('email')?.hasError('required')">{{ langService.translate('field.required') }}</mat-error>
-          <mat-error *ngIf="playerForm.get('email')?.hasError('email')">Email inválido</mat-error>
+          <mat-error *ngIf="playerForm.get('email')?.hasError('email')">{{ langService.translate('email.invalid') || 'Email inválido' }}</mat-error>
         </mat-form-field>
 
         <button
@@ -86,7 +86,7 @@
           class="btn-confirm-add"
           [disabled]="isAddingPlayer() || playerForm.invalid">
           <mat-spinner diameter="20" *ngIf="isAddingPlayer()"></mat-spinner>
-          <span *ngIf="!isAddingPlayer()">CONVOCAR</span>
+          <span *ngIf="!isAddingPlayer()">{{ langService.translate('button.summon') || 'CONVOCAR' }}</span>
         </button>
       </form>
     </div>
@@ -112,10 +112,9 @@
           [cdkDragData]="inscricao">
 
           <div class="player-strip-placeholder" *cdkDragPlaceholder></div>
-
           <div class="strip-accent"></div>
 
-          <div class="drag-handle" cdkDragHandle *ngIf="isOrganizer" matTooltip="Mover jogador">
+          <div class="drag-handle" cdkDragHandle *ngIf="isOrganizer" [matTooltip]="langService.translate('action.move') || 'Mover'">
             <mat-icon>drag_indicator</mat-icon>
           </div>
 
@@ -129,12 +128,12 @@
           </div>
 
           <div class="strip-stats">
-            <div class="stat-badge" matTooltip="Partidas Jogadas">
+            <div class="stat-badge" [matTooltip]="langService.translate('stats.matches') || 'Partidas Jogadas'">
               <mat-icon>sports_soccer</mat-icon>
               <span>{{ inscricao.partidasJogadas }}</span>
             </div>
 
-            <div class="stat-badge team-badge" *ngIf="inscricao.timeAtual" matTooltip="Time Atual">
+            <div class="stat-badge team-badge" *ngIf="inscricao.timeAtual" [matTooltip]="langService.translate('stats.team') || 'Time Atual'">
               <mat-icon>shield</mat-icon>
               <span>{{ inscricao.timeAtual }}</span>
             </div>
@@ -145,7 +144,7 @@
               mat-icon-button
               class="btn-strip-delete"
               (click)="onRemovePlayer(inscricao)"
-              matTooltip="Dispensar jogador">
+              [matTooltip]="langService.translate('button.dismiss') || 'Dispensar'">
               <mat-icon>close</mat-icon>
             </button>
           </div>
