@@ -106,7 +106,7 @@
             {{ langService.translate('inscriptions') }}
           </ng-template>
           <div class="tab-content">
-            <app-event-inscriptions [eventoId]="evento()!.id!"></app-event-inscriptions>
+            <app-event-inscriptions [eventoId]="evento()!.id!" [isOrganizer]="isOrganizer()"></app-event-inscriptions>
           </div>
         </mat-tab>
 
@@ -116,7 +116,7 @@
             <mat-icon class="tab-icon">groups</mat-icon>
             {{ langService.translate('teams') }}
           </ng-template>
-          <app-event-teams [eventoId]="evento()?.id"></app-event-teams>
+          <app-event-teams [eventoId]="evento()?.id" [isOrganizer]="isOrganizer()"></app-event-teams>
         </mat-tab>
 
         <!-- Aba de Partidas -->
@@ -152,32 +152,60 @@
       </div>
 
       <div class="actions-right">
-        <button mat-button color="warn" (click)="onDelete()" *ngIf="!isEditing()">
-          <mat-icon>delete</mat-icon>
-          {{ langService.translate('button.delete') }}
-        </button>
+        <!-- Botões para o organizador -->
+        <ng-container *ngIf="isOrganizer()">
+          <button mat-button color="warn" (click)="onDelete()" *ngIf="!isEditing()">
+            <mat-icon>delete</mat-icon>
+            {{ langService.translate('button.delete') }}
+          </button>
 
-        <button mat-stroked-button (click)="toggleEdit()" *ngIf="!isEditing()">
-          <mat-icon>edit</mat-icon>
-          {{ langService.translate('button.edit') }}
-        </button>
+          <button mat-stroked-button (click)="toggleEdit()" *ngIf="!isEditing()">
+            <mat-icon>edit</mat-icon>
+            {{ langService.translate('button.edit') }}
+          </button>
 
-        <button mat-button (click)="toggleEdit()" *ngIf="isEditing()" [disabled]="isSaving()">
-          <mat-icon>close</mat-icon>
-          {{ langService.translate('button.cancel') }}
-        </button>
+          <button mat-button (click)="toggleEdit()" *ngIf="isEditing()" [disabled]="isSaving()">
+            <mat-icon>close</mat-icon>
+            {{ langService.translate('button.cancel') }}
+          </button>
 
-        <button
-          mat-raised-button
-          color="primary"
-          (click)="onSave()"
-          *ngIf="isEditing()"
-          [disabled]="isSaving() || eventForm.invalid"
-        >
-          <mat-spinner diameter="20" *ngIf="isSaving()"></mat-spinner>
-          <mat-icon *ngIf="!isSaving()">save</mat-icon>
-          {{ isSaving() ? langService.translate('button.saving') : langService.translate('button.save') }}
-        </button>
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="onSave()"
+            *ngIf="isEditing()"
+            [disabled]="isSaving() || eventForm.invalid"
+          >
+            <mat-spinner diameter="20" *ngIf="isSaving()"></mat-spinner>
+            <mat-icon *ngIf="!isSaving()">save</mat-icon>
+            {{ isSaving() ? langService.translate('button.saving') : langService.translate('button.save') }}
+          </button>
+        </ng-container>
+
+        <!-- Botão para participar (não organizador) -->
+        <ng-container *ngIf="!isOrganizer()">
+          <button 
+            mat-raised-button 
+            color="primary" 
+            (click)="onJoinEvent()"
+            *ngIf="!isParticipating()"
+            [disabled]="isJoining()"
+          >
+            <mat-spinner diameter="20" *ngIf="isJoining()"></mat-spinner>
+            <mat-icon *ngIf="!isJoining()">person_add</mat-icon>
+            {{ isJoining() ? langService.translate('event.joining') : langService.translate('event.join.button') }}
+          </button>
+
+          <button 
+            mat-stroked-button 
+            color="accent"
+            *ngIf="isParticipating()"
+            disabled
+          >
+            <mat-icon>check_circle</mat-icon>
+            {{ langService.translate('event.participating') }}
+          </button>
+        </ng-container>
       </div>
     </mat-card-actions>
   </mat-card>

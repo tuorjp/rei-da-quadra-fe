@@ -8,10 +8,12 @@ import {
   MatExpansionPanelTitle
 } from '@angular/material/expansion';
 import {MatList, MatListItem, MatListItemLine, MatListItemTitle} from '@angular/material/list';
+import {CommonModule} from '@angular/common';
 
 @Component({
   selector: 'app-event-teams',
   imports: [
+    CommonModule,
     MatButton,
     MatAccordion,
     MatExpansionPanel,
@@ -28,6 +30,7 @@ import {MatList, MatListItem, MatListItemLine, MatListItemTitle} from '@angular/
 })
 export class EventTeamsComponent implements OnInit{
   @Input() eventoId!: number | undefined;
+  @Input() isOrganizer: boolean = false;
 
   admTimesService = inject(AdministraoDeTimesService);
   timeService = inject(TimesService)
