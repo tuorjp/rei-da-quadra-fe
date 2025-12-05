@@ -49,6 +49,10 @@ export class HeaderComponent {
     this.authService.getProfile().subscribe(profile => {
       this.userSkillPoints = (profile as any).pontosHabilidade ?? 0;
       this.nivelHabilidade = (profile as any).nivelHabilidade ?? 'MEDIANO';
+
+      if ((profile as any).fotoPerfil) {
+        this.authService.userPhoto.set((profile as any).fotoPerfil);
+      }
     });
   }
 
