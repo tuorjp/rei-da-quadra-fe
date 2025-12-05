@@ -18,7 +18,10 @@ export namespace PontuacaoManualDTO {
         Assistencia: 'ASSISTENCIA',
         Defesa: 'DEFESA',
         Falta: 'FALTA',
-        Impedimento: 'IMPEDIMENTO'
+        Impedimento: 'IMPEDIMENTO',
+        VitoriaElo: 'VITORIA_ELO',
+        EmpateElo: 'EMPATE_ELO',
+        DerrotaElo: 'DERROTA_ELO'
     } as const;
     export type AcaoEnum = typeof AcaoEnum[keyof typeof AcaoEnum];
 }

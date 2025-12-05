@@ -45,7 +45,7 @@ export class AuthService {
           this.saveToken(response.token);
           this.isLoggedIn.set(true);
           this.loadProfilePhoto(); // Atualiza a foto do perfil após o login
-          this.router.navigate(['/']); // Redireciona para a home após o login
+          this.router.navigate(['/home']); // Redireciona para /home explicitamente para evitar conflito com a rota vazia
         }
       })
     );
@@ -56,18 +56,21 @@ export class AuthService {
   }
 
   logout(): void {
-    localStorage.removeItem(this.TOKEN_KEY);
+    // AJUSTE: sessionStorage para limpar ao fechar o navegador
+    sessionStorage.removeItem(this.TOKEN_KEY);
     this.isLoggedIn.set(false);
     this.userPhoto.set(null);
     this.router.navigate(['/login']);
   }
 
   getToken(): string | null {
-    return localStorage.getItem(this.TOKEN_KEY);
+    // AJUSTE: Busca do sessionStorage
+    return sessionStorage.getItem(this.TOKEN_KEY);
   }
 
   private saveToken(token: string): void {
-    localStorage.setItem(this.TOKEN_KEY, token);
+    // AJUSTE: Salva no sessionStorage
+    sessionStorage.setItem(this.TOKEN_KEY, token);
   }
 
   recoverPassword(email: string) {

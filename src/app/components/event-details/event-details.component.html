@@ -1,213 +1,231 @@
-<div class="event-details-container">
-  <!-- Loading -->
-  <div class="loading-container" *ngIf="isLoading()">
-    <mat-spinner diameter="50"></mat-spinner>
+<div class="page-wrapper">
+
+  <div class="loading-state" *ngIf="isLoading()">
+    <mat-spinner diameter="50" color="accent"></mat-spinner>
     <p>{{ langService.translate('loading') }}</p>
   </div>
 
-  <!-- Event Details -->
-  <mat-card class="event-details-card" *ngIf="!isLoading() && evento()">
-    <mat-card-header>
-      <mat-card-title>
-        <mat-icon>event</mat-icon>
-        <span *ngIf="!isEditing()">{{ evento()?.nome }}</span>
-        <span *ngIf="isEditing()">{{ langService.translate('edit.event') }}</span>
-      </mat-card-title>
-    </mat-card-header>
+  <div class="content-container" *ngIf="!isLoading() && evento()">
 
-    <mat-card-content>
-      <mat-tab-group animationDuration="300ms">
-        <!-- Aba de Informações -->
-        <mat-tab>
-          <ng-template mat-tab-label>
-            <mat-icon class="tab-icon">info</mat-icon>
-            Informações
-          </ng-template>
-          <!-- View Mode -->
-          <div class="view-mode" *ngIf="!isEditing()">
-        <div class="detail-item">
-          <mat-icon>location_on</mat-icon>
-          <div class="detail-content">
-            <span class="label">{{ langService.translate('event.location') }}</span>
-            <span class="value">{{ evento()?.local }}</span>
-          </div>
+    <mat-card class="main-card">
+      <div class="card-header-custom">
+        <div class="header-title">
+          <mat-icon class="header-icon">event</mat-icon>
+          <h1>
+            <span *ngIf="!isEditing()">{{ evento()?.nome }}</span>
+            <span *ngIf="isEditing()">{{ langService.translate('edit.event') }}</span>
+          </h1>
         </div>
-
-        <div class="detail-item">
-          <mat-icon>schedule</mat-icon>
-          <div class="detail-content">
-            <span class="label">{{ langService.translate('event.datetime') }}</span>
-            <span class="value">{{ formatDate(evento()?.dataHorario) }}</span>
-          </div>
+        <div class="status-badge" [class.active]="evento()?.status === 'ATIVO'">
+          {{ evento()?.status === 'ATIVO' ? 'Em Aberto' : evento()?.status }}
         </div>
+      </div>
 
-        <div class="detail-item">
-          <mat-icon>person</mat-icon>
-          <div class="detail-content">
-            <span class="label">{{ langService.translate('event.organizer') }}</span>
-            <span class="value">{{ evento()?.usuarioLogin }}</span>
-          </div>
-        </div>
+      <mat-card-content class="card-body-custom">
+        <mat-tab-group animationDuration="300ms" mat-stretch-tabs="false" mat-align-tabs="start">
 
-            <div class="detail-item">
-              <mat-icon>fingerprint</mat-icon>
-              <div class="detail-content">
-                <span class="label">ID</span>
-                <span class="value">{{ evento()?.id }}</span>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <mat-icon class="tab-icon">info</mat-icon>
+              Informações
+            </ng-template>
+
+            <div class="tab-padding">
+              <div class="info-grid" *ngIf="!isEditing()">
+
+                <div class="info-box">
+                  <div class="icon-container">
+                    <mat-icon>location_on</mat-icon>
+                  </div>
+                  <div class="info-content">
+                    <label>{{ langService.translate('event.location') }}</label>
+                    <p>{{ evento()?.local }}</p>
+                  </div>
+                </div>
+
+                <div class="info-box">
+                  <div class="icon-container">
+                    <mat-icon>schedule</mat-icon>
+                  </div>
+                  <div class="info-content">
+                    <label>{{ langService.translate('event.datetime') }}</label>
+                    <p>{{ formatDate(evento()?.dataHorario) }}</p>
+                  </div>
+                </div>
+
+                <div class="info-box">
+                  <div class="icon-container">
+                    <mat-icon>person</mat-icon>
+                  </div>
+                  <div class="info-content">
+                    <label>{{ langService.translate('event.organizer') }}</label>
+                    <p>{{ evento()?.usuarioLogin || 'Desconhecido' }}</p>
+                  </div>
+                </div>
+
+                <div class="info-box id-box">
+                  <div class="icon-container">
+                    <mat-icon>fingerprint</mat-icon>
+                  </div>
+                  <div class="info-content">
+                    <label>ID do Evento</label>
+                    <p>#{{ evento()?.id }}</p>
+                  </div>
+                </div>
+              </div>
+
+              <form [formGroup]="eventForm" *ngIf="isEditing()" class="edit-form-grid">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>{{ langService.translate('event.name') }}</mat-label>
+                  <input matInput formControlName="nome">
+                  <mat-icon matPrefix>sports_soccer</mat-icon>
+                  <mat-error *ngIf="eventForm.get('nome')?.hasError('required')">
+                    {{ langService.translate('field.required') }}
+                  </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>{{ langService.translate('event.location') }}</mat-label>
+                  <input
+                    matInput
+                    formControlName="local"
+                    readonly
+                    (click)="openLocationPicker()"
+                    style="cursor: pointer;"
+                  >
+                  <mat-icon matPrefix>location_on</mat-icon>
+                  <mat-icon matSuffix>edit_location</mat-icon>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>{{ langService.translate('event.datetime') }}</mat-label>
+                  <input matInput type="datetime-local" formControlName="dataHorario">
+                  <mat-icon matPrefix>schedule</mat-icon>
+                </mat-form-field>
+              </form>
+            </div>
+          </mat-tab>
+
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <mat-icon class="tab-icon">group</mat-icon>
+              {{ langService.translate('inscriptions') }}
+            </ng-template>
+            <div class="tab-padding">
+              <app-event-inscriptions [eventoId]="evento()!.id!" [isOrganizer]="isOrganizer()"></app-event-inscriptions>
+            </div>
+          </mat-tab>
+
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <mat-icon class="tab-icon">groups</mat-icon>
+              {{ langService.translate('teams') }}
+            </ng-template>
+            <div class="tab-padding">
+              <app-event-teams [eventoId]="evento()?.id" [isOrganizer]="isOrganizer()"></app-event-teams>
+            </div>
+          </mat-tab>
+
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <mat-icon class="tab-icon">sports_soccer</mat-icon>
+              {{ langService.translate('matches') }}
+            </ng-template>
+            <div class="tab-padding">
+              <app-event-matches [eventoId]="evento()?.id"></app-event-matches>
+            </div>
+          </mat-tab>
+
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <mat-icon class="tab-icon">dashboard</mat-icon>
+              {{ langService.translate('dashboard') }}
+            </ng-template>
+            <div class="tab-padding center-content">
+              <div class="coming-soon-box">
+                <mat-icon>engineering</mat-icon>
+                <p>Dashboard em desenvolvimento</p>
               </div>
             </div>
-          </div>
+          </mat-tab>
 
-          <!-- Edit Mode -->
-          <form [formGroup]="eventForm" *ngIf="isEditing()" class="edit-form">
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>{{ langService.translate('event.name') }}</mat-label>
-              <input matInput formControlName="nome">
-              <mat-icon matPrefix>sports_soccer</mat-icon>
-              <mat-error *ngIf="eventForm.get('nome')?.hasError('required')">
-                {{ langService.translate('field.required') }}
-              </mat-error>
-              <mat-error *ngIf="eventForm.get('nome')?.hasError('minlength')">
-                {{ langService.translate('field.minlength') }}
-              </mat-error>
-            </mat-form-field>
+        </mat-tab-group>
+      </mat-card-content>
 
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>{{ langService.translate('event.location') }}</mat-label>
-              <input
-                matInput
-                formControlName="local"
-                readonly
-                (click)="openLocationPicker()"
-                style="cursor: pointer;"
+      <mat-card-actions class="card-actions-custom">
+        <div class="left-actions">
+          <button mat-button class="btn-back" (click)="onBack()">
+            <mat-icon>arrow_back</mat-icon>
+            {{ langService.translate('button.back') }}
+          </button>
+        </div>
+
+        <div class="right-actions">
+          <ng-container *ngIf="isOrganizer()">
+
+            <ng-container *ngIf="!isEditing()">
+              <button mat-button color="warn" (click)="onDelete()">
+                <mat-icon>delete</mat-icon>
+                {{ langService.translate('button.delete') }}
+              </button>
+
+              <button mat-flat-button class="btn-primary" (click)="toggleEdit()">
+                <mat-icon>edit</mat-icon>
+                {{ langService.translate('button.edit') }}
+              </button>
+
+              <button
+                mat-stroked-button
+                color="accent"
+                (click)="onFinishEvent()"
+                *ngIf="evento()?.status !== 'FINALIZADO'"
+                [disabled]="isSaving()"
               >
-              <mat-icon matPrefix>location_on</mat-icon>
-              <mat-icon matSuffix style="cursor:pointer" (click)="openLocationPicker()">location_searching</mat-icon>
-              <mat-error *ngIf="eventForm.get('local')?.hasError('required')">
-                {{ langService.translate('field.required') }}
-              </mat-error>
-            </mat-form-field>
+                <mat-icon>flag</mat-icon>
+                {{ langService.translate('event.finish') }}
+              </button>
+            </ng-container>
 
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>{{ langService.translate('event.datetime') }}</mat-label>
-              <input matInput type="datetime-local" formControlName="dataHorario">
-              <mat-icon matPrefix>schedule</mat-icon>
-              <mat-error *ngIf="eventForm.get('dataHorario')?.hasError('required')">
-                {{ langService.translate('field.required') }}
-              </mat-error>
-            </mat-form-field>
-          </form>
-        </mat-tab>
+            <ng-container *ngIf="isEditing()">
+              <button mat-button (click)="toggleEdit()" [disabled]="isSaving()">
+                {{ langService.translate('button.cancel') }}
+              </button>
+              <button
+                mat-flat-button
+                class="btn-primary"
+                (click)="onSave()"
+                [disabled]="isSaving() || eventForm.invalid"
+              >
+                <mat-spinner diameter="20" *ngIf="isSaving()"></mat-spinner>
+                <span *ngIf="!isSaving()">{{ langService.translate('button.save') }}</span>
+              </button>
+            </ng-container>
+          </ng-container>
 
-        <!-- Aba de Inscrições -->
-        <mat-tab>
-          <ng-template mat-tab-label>
-            <mat-icon class="tab-icon">group</mat-icon>
-            {{ langService.translate('inscriptions') }}
-          </ng-template>
-          <div class="tab-content">
-            <app-event-inscriptions [eventoId]="evento()!.id!" [isOrganizer]="isOrganizer()"></app-event-inscriptions>
-          </div>
-        </mat-tab>
+          <ng-container *ngIf="!isOrganizer()">
+            <button
+              mat-flat-button
+              class="btn-primary"
+              (click)="onJoinEvent()"
+              *ngIf="!isParticipating()"
+              [disabled]="isJoining()"
+            >
+              <mat-spinner diameter="20" *ngIf="isJoining()"></mat-spinner>
+              <span *ngIf="!isJoining()">{{ langService.translate('event.join.button') }}</span>
+            </button>
 
-        <!-- Aba de Times -->
-        <mat-tab>
-          <ng-template mat-tab-label>
-            <mat-icon class="tab-icon">groups</mat-icon>
-            {{ langService.translate('teams') }}
-          </ng-template>
-          <app-event-teams [eventoId]="evento()?.id" [isOrganizer]="isOrganizer()"></app-event-teams>
-        </mat-tab>
-
-        <!-- Aba de Partidas -->
-        <mat-tab>
-          <ng-template mat-tab-label>
-            <mat-icon class="tab-icon">sports_soccer</mat-icon>
-            {{ langService.translate('matches') }}
-          </ng-template>
-          <ng-template matTabContent>
-            <app-event-matches [eventoId]="evento()?.id"></app-event-matches>
-          </ng-template>
-        </mat-tab>
-
-        <!-- Aba de Dashboard -->
-        <mat-tab>
-          <ng-template mat-tab-label>
-            <mat-icon class="tab-icon">dashboard</mat-icon>
-            {{ langService.translate('dashboard') }}
-          </ng-template>
-          <div class="tab-content">
-            <p class="coming-soon">{{ langService.translate('dashboard') }} - Em breve</p>
-          </div>
-        </mat-tab>
-      </mat-tab-group>
-    </mat-card-content>
-
-    <mat-card-actions>
-      <div class="actions-left">
-        <button mat-button (click)="onBack()">
-          <mat-icon>arrow_back</mat-icon>
-          {{ langService.translate('button.back') }}
-        </button>
-      </div>
-
-      <div class="actions-right">
-        <!-- Botões para o organizador -->
-        <ng-container *ngIf="isOrganizer()">
-          <button mat-button color="warn" (click)="onDelete()" *ngIf="!isEditing()">
-            <mat-icon>delete</mat-icon>
-            {{ langService.translate('button.delete') }}
-          </button>
-
-          <button mat-stroked-button (click)="toggleEdit()" *ngIf="!isEditing()">
-            <mat-icon>edit</mat-icon>
-            {{ langService.translate('button.edit') }}
-          </button>
-
-          <button mat-button (click)="toggleEdit()" *ngIf="isEditing()" [disabled]="isSaving()">
-            <mat-icon>close</mat-icon>
-            {{ langService.translate('button.cancel') }}
-          </button>
-
-          <button
-            mat-raised-button
-            color="primary"
-            (click)="onSave()"
-            *ngIf="isEditing()"
-            [disabled]="isSaving() || eventForm.invalid"
-          >
-            <mat-spinner diameter="20" *ngIf="isSaving()"></mat-spinner>
-            <mat-icon *ngIf="!isSaving()">save</mat-icon>
-            {{ isSaving() ? langService.translate('button.saving') : langService.translate('button.save') }}
-          </button>
-        </ng-container>
-
-        <!-- Botão para participar (não organizador) -->
-        <ng-container *ngIf="!isOrganizer()">
-          <button 
-            mat-raised-button 
-            color="primary" 
-            (click)="onJoinEvent()"
-            *ngIf="!isParticipating()"
-            [disabled]="isJoining()"
-          >
-            <mat-spinner diameter="20" *ngIf="isJoining()"></mat-spinner>
-            <mat-icon *ngIf="!isJoining()">person_add</mat-icon>
-            {{ isJoining() ? langService.translate('event.joining') : langService.translate('event.join.button') }}
-          </button>
-
-          <button 
-            mat-stroked-button 
-            color="accent"
-            *ngIf="isParticipating()"
-            disabled
-          >
-            <mat-icon>check_circle</mat-icon>
-            {{ langService.translate('event.participating') }}
-          </button>
-        </ng-container>
-      </div>
-    </mat-card-actions>
-  </mat-card>
+            <button
+              mat-stroked-button
+              class="btn-success"
+              *ngIf="isParticipating()"
+              disabled
+            >
+              <mat-icon>check_circle</mat-icon>
+              {{ langService.translate('event.participating') }}
+            </button>
+          </ng-container>
+        </div>
+      </mat-card-actions>
+    </mat-card>
+  </div>
 </div>
-

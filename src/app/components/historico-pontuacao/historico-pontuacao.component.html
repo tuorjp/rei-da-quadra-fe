@@ -30,7 +30,7 @@
 
             <div class="trans-info">
               <span class="trans-action">
-                {{ item.acao }}
+                {{ getAcaoLabel(item.acao) }}
                 <span class="trans-game" *ngIf="item.nomePartida"> • {{ item.nomePartida }}</span>
               </span>
               <span class="trans-time">{{ item.data | date:'HH:mm' }}</span>

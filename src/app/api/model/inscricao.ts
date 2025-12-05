@@ -19,5 +19,15 @@ export interface Inscricao {
     jogador?: User;
     timeAtual?: Time;
     dataInscricao?: string;
+    status?: Inscricao.StatusEnum;
 }
+export namespace Inscricao {
+    export const StatusEnum = {
+        Pendente: 'PENDENTE',
+        Aprovada: 'APROVADA',
+        Rejeitada: 'REJEITADA'
+    } as const;
+    export type StatusEnum = typeof StatusEnum[keyof typeof StatusEnum];
+}
+
 

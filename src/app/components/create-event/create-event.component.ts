@@ -62,7 +62,9 @@ export class CreateEventComponent {
       local: ['', Validators.required],
       latitude: [null, Validators.required],
       longitude: [null, Validators.required],
-      dataHorario: ['', Validators.required]
+      dataHorario: ['', Validators.required],
+      jogadoresPorTime: ['', [Validators.required, Validators.min(1)]],
+      totalPartidasDefinidas: ['']
     });
   }
 
@@ -137,7 +139,9 @@ export class CreateEventComponent {
       local: this.eventForm.value.local,
       dataHorario: utcIsoString,
       latitude: this.eventForm.value.latitude,
-      longitude: this.eventForm.value.longitude
+      longitude: this.eventForm.value.longitude,
+      jogadoresPorTime: this.eventForm.value.jogadoresPorTime ? Number(this.eventForm.value.jogadoresPorTime) : undefined,
+      totalPartidasDefinidas: this.eventForm.value.totalPartidasDefinidas ? Number(this.eventForm.value.totalPartidasDefinidas) : undefined
     };
 
     this.eventoService.criarEvento(eventoRequest)

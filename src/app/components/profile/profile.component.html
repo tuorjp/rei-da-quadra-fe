@@ -34,11 +34,6 @@
             <mat-icon>edit</mat-icon>
             Editar
           </button>
-
-          <button mat-flat-button class="header-btn logout-btn-solid" (click)="logout()">
-            <mat-icon>logout</mat-icon>
-            Sair
-          </button>
         </div>
 
       </div>
@@ -48,21 +43,26 @@
         <div class="stats-grid">
 
           <div class="stat-card skill-card">
-            <div class="stat-icon transparent-icon">
-              <mat-icon>star</mat-icon>
+
+            <div class="skill-info-row">
+              <div class="stat-icon" [ngClass]="nivelHabilidade.toLowerCase().replaceAll('_', '-') + '-icon'">
+                <mat-icon>star</mat-icon>
+              </div>
+
+              <div class="stat-content">
+                <span class="stat-label">Pontuação de Habilidade</span>
+                <span class="stat-value skill-value">{{ skillRating }}</span>
+                <span class="stat-label sub-label">
+                  Nível: {{ nivelHabilidade.replaceAll('_', ' ') }}
+                </span>
+              </div>
             </div>
-            <div class="stat-content">
-              <span class="stat-label">Pontuação de Habilidade</span>
-              <span class="stat-value skill-value">{{ skillRating }}</span>
-              <span class="stat-label" style="margin-top: 4px; color: rgba(255,255,255,0.9);">
-                Nível: {{ nivelHabilidade.replaceAll('_', ' ') }}
-              </span>
-            </div>
+
             <div class="skill-actions">
-              <button mat-stroked-button class="skill-btn" (click)="openRegrasPontuacao()">
+              <button mat-flat-button class="skill-btn" (click)="openRegrasPontuacao()">
                 <mat-icon>info</mat-icon> Saiba mais
               </button>
-              <button mat-stroked-button class="skill-btn" (click)="openHistoricoPontuacao()">
+              <button mat-flat-button class="skill-btn" (click)="openHistoricoPontuacao()">
                 <mat-icon>history</mat-icon> Histórico
               </button>
             </div>

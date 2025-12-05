@@ -109,15 +109,15 @@ export class EventDetailsComponent implements OnInit {
         },
         error: (error) => {
           console.error('Erro ao carregar evento:', error);
-          
+
           let errorMessage = this.langService.translate('event.load.error');
-          
+
           if (error.status === 404) {
             errorMessage = 'Evento não encontrado ou você não tem permissão para visualizá-lo.';
           } else if (error.status === 403) {
             errorMessage = 'Você não tem permissão para acessar este evento.';
           }
-          
+
           this.snackBar.open(
             errorMessage,
             'OK',
@@ -134,7 +134,7 @@ export class EventDetailsComponent implements OnInit {
       next: (profile) => {
         const isOrg = this.evento()?.usuarioLogin === profile.email;
         this.isOrganizer.set(isOrg);
-        
+
         // Se não for organizador, verificar se já está inscrito
         if (!isOrg) {
           this.checkParticipation(eventoId);
@@ -179,7 +179,7 @@ export class EventDetailsComponent implements OnInit {
         },
         error: (error) => {
           console.error('Erro ao participar do evento:', error);
-          
+
           // Se retornar 403, significa que o backend não permite
           if (error.status === 403) {
             this.snackBar.open(
@@ -313,6 +313,49 @@ export class EventDetailsComponent implements OnInit {
           );
         }
       });
+  }
+
+  onFinishEvent(): void {
+    if (!this.evento()?.id) return;
+
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: this.langService.translate('event.finish') || 'Finalizar Evento',
+        message: this.langService.translate('event.finish.confirm') || 'Tem certeza que deseja finalizar este evento? Esta ação não pode ser desfeita.'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed && this.evento()?.id) {
+        this.isSaving.set(true);
+
+        const updates = {
+          status: 'FINALIZADO'
+        };
+
+        this.eventoService.atualizarEventoParcial(this.evento()!.id!, updates)
+          .pipe(finalize(() => this.isSaving.set(false)))
+          .subscribe({
+            next: () => {
+              this.snackBar.open(
+                this.langService.translate('event.finished.success') || 'Evento finalizado!',
+                'OK',
+                { duration: 3000 }
+              );
+              // Recarregar o evento para atualizar o status
+              this.loadEvent(this.evento()!.id!);
+            },
+            error: (error: any) => {
+              console.error('Erro ao finalizar evento:', error);
+              this.snackBar.open(
+                this.langService.translate('event.finished.error') || 'Erro ao finalizar evento.',
+                'OK',
+                { duration: 3000 }
+              );
+            }
+          });
+      }
+    });
   }
 
   onBack(): void {

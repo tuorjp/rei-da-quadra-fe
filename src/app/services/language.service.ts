@@ -39,7 +39,6 @@ export class LanguageService {
       en: 'Football Events',
       es: 'Eventos de Fútbol'
     },
-    // --- NOVAS CHAVES ADICIONADAS ---
     'events': {
       pt: 'Eventos',
       en: 'Events',
@@ -50,7 +49,6 @@ export class LanguageService {
       en: 'View and manage all events',
       es: 'Ver y administrar todos los eventos'
     },
-    // --------------------------------
     'create.event': {
       pt: 'Criar Evento',
       en: 'Create Event',
@@ -151,7 +149,7 @@ export class LanguageService {
       en: 'My Events',
       es: 'Mis Eventos'
     },
-    'my.event.description':{
+    'my.event.description': {
       pt: 'Gerencie suas partidas e inscrições em um só lugar.',
       en: 'Manage your matches and registrations in one place.',
       es: 'Gestiona tus partidos y registros en un solo lugar.'
@@ -356,6 +354,53 @@ export class LanguageService {
       en: 'Total Registered',
       es: 'Total de Inscritos'
     },
+    // --- NOVAS CHAVES (PENDING AREA) ---
+    'inscriptions.pending.area': {
+      pt: 'Área de Pendência',
+      en: 'Pending Area',
+      es: 'Área Pendiente'
+    },
+    'button.approve': {
+      pt: 'Aprovar',
+      en: 'Approve',
+      es: 'Aprobar'
+    },
+    'button.reject': {
+      pt: 'Rejeitar',
+      en: 'Reject',
+      es: 'Rechazar'
+    },
+    'button.summon': {
+      pt: 'CONVOCAR',
+      en: 'SUMMON',
+      es: 'CONVOCAR'
+    },
+    'button.dismiss': {
+      pt: 'Dispensar',
+      en: 'Dismiss',
+      es: 'Despedir'
+    },
+    'action.move': {
+      pt: 'Mover',
+      en: 'Move',
+      es: 'Mover'
+    },
+    'stats.matches': {
+      pt: 'Partidas Jogadas',
+      en: 'Matches Played',
+      es: 'Partidos Jugados'
+    },
+    'stats.team': {
+      pt: 'Time Atual',
+      en: 'Current Team',
+      es: 'Equipo Actual'
+    },
+    'email.invalid': {
+      pt: 'Email inválido',
+      en: 'Invalid Email',
+      es: 'Correo inválido'
+    },
+    // -----------------------------------
     'player.name': {
       pt: 'Nome do Jogador',
       en: 'Player Name',
@@ -451,7 +496,7 @@ export class LanguageService {
       en: 'Join',
       es: 'Participar'
     },
-    'search.placeholder':{
+    'search.placeholder': {
       pt: 'Pesquisar por nome, local ou organizador...',
       en: 'Search by name, location, or organizer...',
       es: 'Buscar por nombre, ubicación u organizador...'
@@ -500,8 +545,49 @@ export class LanguageService {
       pt: 'Participando...',
       en: 'Joining...',
       es: 'Participando...'
+    },
+    'finished.events': {
+      pt: 'Finalizados',
+      en: 'Finished',
+      es: 'Finalizados'
+    },
+    'you': {
+      pt: 'Você',
+      en: 'You',
+      es: 'Tú'
+    },
+    'event.players.per.team': {
+      pt: 'Jogadores por Time',
+      en: 'Players per Team',
+      es: 'Jugadores por Equipo'
+    },
+    'event.total.matches': {
+      pt: 'Total de Partidas (Opcional)',
+      en: 'Total Matches (Optional)',
+      es: 'Total de Partidos (Opcional)'
+    },
+    'event.finish': {
+      pt: 'Finalizar Evento',
+      en: 'Finish Event',
+      es: 'Finalizar Evento'
+    },
+    'event.finish.confirm': {
+      pt: 'Tem certeza que deseja finalizar este evento? Esta ação não pode ser desfeita.',
+      en: 'Are you sure you want to finish this event? This action cannot be undone.',
+      es: '¿Estás seguro de que deseas finalizar este evento? Esta acción no se puede deshacer.'
+    },
+    'event.finished.success': {
+      pt: 'Evento finalizado com sucesso!',
+      en: 'Event finished successfully!',
+      es: '¡Evento finalizado con éxito!'
+    },
+    'event.finished.error': {
+      pt: 'Erro ao finalizar evento.',
+      en: 'Error finishing event.',
+      es: 'Error al finalizar evento.'
     }
   };
+
   constructor() {
     this.loadLanguage();
   }

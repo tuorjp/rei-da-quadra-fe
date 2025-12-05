@@ -19,7 +19,10 @@ export namespace AcaoJogoDTO {
         Assistencia: 'ASSISTENCIA',
         Defesa: 'DEFESA',
         Falta: 'FALTA',
-        Impedimento: 'IMPEDIMENTO'
+        Impedimento: 'IMPEDIMENTO',
+        VitoriaElo: 'VITORIA_ELO',
+        EmpateElo: 'EMPATE_ELO',
+        DerrotaElo: 'DERROTA_ELO'
     } as const;
     export type TipoAcaoEnum = typeof TipoAcaoEnum[keyof typeof TipoAcaoEnum];
 }

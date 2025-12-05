@@ -42,6 +42,25 @@
         </mat-error>
       </mat-form-field>
 
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>{{ langService.translate('event.players.per.team') || 'Jogadores por Time' }}</mat-label>
+        <mat-icon matPrefix>groups</mat-icon>
+        <input matInput type="number" formControlName="jogadoresPorTime" min="1" placeholder="Ex: 5">
+        <mat-error *ngIf="eventForm.get('jogadoresPorTime')?.hasError('required')">
+          {{ langService.translate('field.required') }}
+        </mat-error>
+        <mat-error *ngIf="eventForm.get('jogadoresPorTime')?.hasError('min')">
+          Mínimo de 1 jogador
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>{{ langService.translate('event.total.matches') || 'Total de Partidas (Opcional)' }}</mat-label>
+        <mat-icon matPrefix>emoji_events</mat-icon>
+        <input matInput type="number" formControlName="totalPartidasDefinidas" min="1" placeholder="Ex: 10">
+        <mat-hint>Deixe em branco se não quiser definir um limite</mat-hint>
+      </mat-form-field>
+
       <div class="actions-container">
 
         <button

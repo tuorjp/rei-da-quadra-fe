@@ -18,8 +18,10 @@ import { MatTooltipModule } from '@angular/material/tooltip'; // Adicionado para
 
 // Services & Models
 import { EventoControllerService } from '../../api/api/eventoController.service';
+import { InscricaoControllerService } from '../../api/api/inscricaoController.service';
 import { EventoResponseDTO } from '../../api/model/eventoResponseDTO';
 import { LanguageService } from '../../services/language.service';
+import { AuthService } from '../../services/auth.service';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
 // Utils
@@ -53,6 +55,8 @@ dayjs.extend(timezone);
 export class MyEventsComponent implements OnInit {
   // Injeções de Dependência
   private eventoService = inject(EventoControllerService);
+  private inscricaoService = inject(InscricaoControllerService);
+  private authService = inject(AuthService);
   private router = inject(Router);
   // ADICIONADO: Injeção do MatDialog e MatSnackBar
   private dialog = inject(MatDialog);
@@ -104,21 +108,27 @@ export class MyEventsComponent implements OnInit {
 
           // Separa eventos ativos (futuros/presentes) dos finalizados (passados)
           const eventosAtivos = this.sortEventsByDate(
-            eventosArray.filter(e =>
-              e.status === 'ATIVO' || !e.status || dayjs(e.dataHorario).isAfter(now)
-            )
+            eventosArray.filter(e => {
+              const dataEvento = dayjs(e.dataHorario);
+              // Evento é ativo se a data é futura ou se o status é ATIVO
+              return dataEvento.isAfter(now) || (e.status === 'ATIVO' && dataEvento.isSame(now, 'day'));
+            })
           );
           const eventosFinalizadosUsuario = this.sortEventsByDate(
-            eventosArray.filter(e =>
-              e.status !== 'ATIVO' && e.status && dayjs(e.dataHorario).isBefore(now)
-            )
+            eventosArray.filter(e => {
+              const dataEvento = dayjs(e.dataHorario);
+              // Evento é finalizado se a data já passou ou se o status é FINALIZADO
+              return dataEvento.isBefore(now) || e.status === 'FINALIZADO';
+            })
           );
 
           this.eventosUsuario.set(eventosAtivos);
           this.eventosUsuarioFiltrados.set(eventosAtivos);
 
           this.loadNearbyEvents();
-          this.loadInscricoes(eventosArray, eventosFinalizadosUsuario);
+          
+          // Carregar inscrições verificando TODOS os eventos (não apenas os do usuário)
+          this.loadInscricoesFromAllEvents(eventosFinalizadosUsuario);
         },
         error: (error) => {
           console.error('Erro ao carregar eventos:', error);
@@ -165,9 +175,140 @@ export class MyEventsComponent implements OnInit {
     }
   }
 
-  loadInscricoes(_eventosUsuario: EventoResponseDTO[], eventosFinalizadosUsuario: EventoResponseDTO[]): void {
-    this.eventosFinalizados.set(eventosFinalizadosUsuario);
-    this.eventosFinalizadosFiltrados.set(eventosFinalizadosUsuario);
+  loadInscricoesFromAllEvents(eventosFinalizadosUsuario: EventoResponseDTO[]): void {
+    // Buscar eventos próximos (que não são do usuário) para verificar inscrições
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+
+          // Buscar eventos próximos com um raio grande para pegar todos os eventos possíveis
+          (this.eventoService as any).listarEventosProximos(lat, lon, 1000).subscribe({
+            next: async (eventos: any) => {
+              let todosEventos: EventoResponseDTO[] = [];
+
+              if (eventos instanceof Blob) {
+                const blobText = await eventos.text();
+                todosEventos = JSON.parse(blobText);
+              } else {
+                todosEventos = eventos;
+              }
+
+              console.log('🌍 Total de eventos próximos encontrados:', todosEventos.length);
+
+              // Verificar inscrições em TODOS os eventos (incluindo os do usuário)
+              this.loadInscricoes(todosEventos, eventosFinalizadosUsuario);
+            },
+            error: (err: any) => {
+              console.error('❌ Erro ao carregar eventos próximos:', err);
+              // Se falhar, tentar apenas com os eventos do usuário
+              this.loadInscricoes(this.eventosUsuario(), eventosFinalizadosUsuario);
+            }
+          });
+        },
+        (error) => {
+          console.error('❌ Erro ao obter localização:', error);
+          // Se falhar a geolocalização, usar apenas eventos do usuário
+          this.loadInscricoes(this.eventosUsuario(), eventosFinalizadosUsuario);
+        }
+      );
+    } else {
+      // Se não tiver geolocalização, usar apenas eventos do usuário
+      this.loadInscricoes(this.eventosUsuario(), eventosFinalizadosUsuario);
+    }
+  }
+
+  loadInscricoes(eventosArray: EventoResponseDTO[], eventosFinalizadosUsuario: EventoResponseDTO[]): void {
+    // Primeiro, buscar o perfil do usuário para obter o ID
+    this.authService.getProfile().subscribe({
+      next: (profile) => {
+        const usuarioId = profile.id;
+        console.log('🔍 ID do usuário logado:', usuarioId);
+        console.log('📋 Total de eventos para verificar:', eventosArray.length);
+
+        // Buscar eventos em que o usuário está inscrito
+        const inscricoesPromises = eventosArray.map(evento => {
+          if (evento.id) {
+            return this.inscricaoService.listarInscricoes(evento.id).toPromise()
+              .then((inscricoes: any) => {
+                console.log(`📝 Evento "${evento.nome}" (ID: ${evento.id}) - Inscrições:`, inscricoes);
+                
+                // Verificar se o usuário está inscrito neste evento usando o ID
+                const usuarioInscrito = inscricoes?.some((insc: any) => {
+                  console.log(`  Comparando IDs: ${insc.jogadorId} === ${usuarioId}`, insc.jogadorId === usuarioId);
+                  return insc.jogadorId === usuarioId;
+                });
+                
+                console.log(`  ✅ Usuário inscrito em "${evento.nome}":`, usuarioInscrito);
+                
+                if (usuarioInscrito) {
+                  return evento;
+                }
+                return null;
+              })
+              .catch((error) => {
+                console.error(`❌ Erro ao buscar inscrições do evento ${evento.id}:`, error);
+                return null;
+              });
+          }
+          return Promise.resolve(null);
+        });
+
+        this.processarInscricoes(inscricoesPromises, eventosFinalizadosUsuario);
+      },
+      error: (error) => {
+        console.error('❌ Erro ao buscar perfil do usuário:', error);
+        // Se falhar ao buscar o perfil, não conseguimos verificar as inscrições
+        this.eventosFinalizados.set(this.sortEventsByDate(eventosFinalizadosUsuario));
+        this.eventosFinalizadosFiltrados.set(this.sortEventsByDate(eventosFinalizadosUsuario));
+      }
+    });
+  }
+
+  private processarInscricoes(inscricoesPromises: Promise<EventoResponseDTO | null>[], eventosFinalizadosUsuario: EventoResponseDTO[]): void {
+
+    Promise.all(inscricoesPromises).then(resultados => {
+      console.log('📊 Resultados das promessas:', resultados);
+      
+      const eventosInscritosNaoNulos = resultados.filter((e): e is EventoResponseDTO => e !== null);
+      console.log('✅ Eventos em que o usuário está inscrito:', eventosInscritosNaoNulos);
+
+      const now = dayjs();
+      const eventosInscritosAtivos = eventosInscritosNaoNulos.filter(e => {
+        const dataEvento = dayjs(e.dataHorario);
+        const isAtivo = dataEvento.isAfter(now) || dataEvento.isSame(now, 'day');
+        console.log(`  📅 Evento "${e.nome}" - Data: ${e.dataHorario}, É ativo?: ${isAtivo}`);
+        return isAtivo;
+      });
+
+      const eventosInscritosFinalizados = eventosInscritosNaoNulos.filter(e => {
+        const dataEvento = dayjs(e.dataHorario);
+        const isFinalizado = dataEvento.isBefore(now);
+        console.log(`  📅 Evento "${e.nome}" - Data: ${e.dataHorario}, É finalizado?: ${isFinalizado}`);
+        return isFinalizado;
+      });
+
+      console.log('🟢 Eventos inscritos ATIVOS:', eventosInscritosAtivos);
+      console.log('🔴 Eventos inscritos FINALIZADOS:', eventosInscritosFinalizados);
+
+      this.eventosInscritos.set(this.sortEventsByDate(eventosInscritosAtivos));
+      this.eventosInscritosFiltrados.set(this.sortEventsByDate(eventosInscritosAtivos));
+
+      // Combinar eventos finalizados organizados pelo usuário com eventos finalizados em que participou
+      const todosEventosFinalizados = [
+        ...eventosFinalizadosUsuario,
+        ...eventosInscritosFinalizados
+      ];
+
+      // Remover duplicatas baseado no ID
+      const eventosFinalizadosUnicos = todosEventosFinalizados.filter((evento, index, self) =>
+        index === self.findIndex((e) => e.id === evento.id)
+      );
+
+      this.eventosFinalizados.set(this.sortEventsByDate(eventosFinalizadosUnicos));
+      this.eventosFinalizadosFiltrados.set(this.sortEventsByDate(eventosFinalizadosUnicos));
+    });
   }
 
   // --- AÇÕES DO USUÁRIO ---

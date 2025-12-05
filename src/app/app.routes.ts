@@ -16,9 +16,17 @@ import { authGuard } from './config/auth.guard';
 import { loginGuard } from './config/login.guard';
 
 export const routes: Routes = [
-  // Home protegida
+
+  // Quando a URL for vazia, redireciona imediatamente para 'login'
   {
     path: '',
+    redirectTo: 'login',
+    pathMatch: 'full'
+  },
+
+  // A Home precisa de um caminho explícito (ex: '/home')
+  {
+    path: 'home',
     component: HomeComponent,
     canActivate: [authGuard]
   },
@@ -81,9 +89,9 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
 
-  // Wildcard — redireciona para home
+  // Wildcard — Redireciona para 'login' caso a página não exista
   {
     path: '**',
-    redirectTo: ''
+    redirectTo: 'login'
   }
 ];

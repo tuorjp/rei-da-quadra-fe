@@ -204,14 +204,49 @@
                 </mat-card-actions>
               </mat-card>
             </div>
+          </ng-template>
+        </div>
+      </mat-tab>
 
-            <ng-template #noNearbyEvents>
-              <div class="empty-state">
-                <mat-icon>location_off</mat-icon>
-                <h3>{{ langService.translate('no.events') }}</h3>
-                <p>Não encontramos eventos na sua região.</p>
-              </div>
-            </ng-template>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <span class="custom-label">{{ langService.translate('finished.events') || 'Finalizados' }}</span>
+        </ng-template>
+
+        <div class="tab-body">
+          <div class="events-grid" *ngIf="eventosFinalizadosFiltrados().length > 0; else noHistoryEvents">
+            <mat-card
+              *ngFor="let event of eventosFinalizadosFiltrados()"
+              class="event-card event-card-finished"
+              (click)="onViewEvent(event.id)">
+
+              <mat-card-header>
+                <div class="header-text">
+                  <h3 class="event-title">{{ event.nome }}</h3>
+                </div>
+              </mat-card-header>
+
+              <mat-card-content>
+                <div class="event-details">
+                  <div class="detail-row date-row-container">
+                    <mat-icon class="detail-icon">schedule</mat-icon>
+                    <span class="date-text">{{ formatDate(event.dataHorario) }}</span>
+                  </div>
+                </div>
+              </mat-card-content>
+
+              <mat-card-actions>
+                <div class="status-pill status-other">FINALIZADO</div>
+                <button
+                  mat-icon-button
+                  class="btn-icon btn-details"
+                  (click)="$event.stopPropagation(); onViewEvent(event.id)"
+                  matTooltip="{{ langService.translate('view.details') }}"
+                >
+                  <mat-icon>visibility</mat-icon>
+                </button>
+              </mat-card-actions>
+            </mat-card>
           </div>
         </mat-tab>
 

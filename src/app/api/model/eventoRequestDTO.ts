@@ -15,5 +15,7 @@ export interface EventoRequestDTO {
     dataHorario?: string;
     latitude?: number;
     longitude?: number;
+    jogadoresPorTime?: number;
+    totalPartidasDefinidas?: number;
 }
 
