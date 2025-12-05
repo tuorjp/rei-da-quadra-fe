@@ -500,6 +500,16 @@ export class LanguageService {
       pt: 'Participando...',
       en: 'Joining...',
       es: 'Participando...'
+    },
+    'finished.events': {
+      pt: 'Finalizados',
+      en: 'Finished',
+      es: 'Finalizados'
+    },
+    'you': {
+      pt: 'Você',
+      en: 'You',
+      es: 'Tú'
     }
   };
   constructor() {
