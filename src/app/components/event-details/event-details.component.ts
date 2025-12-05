@@ -315,6 +315,49 @@ export class EventDetailsComponent implements OnInit {
       });
   }
 
+  onFinishEvent(): void {
+    if (!this.evento()?.id) return;
+
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: this.langService.translate('event.finish') || 'Finalizar Evento',
+        message: this.langService.translate('event.finish.confirm') || 'Tem certeza que deseja finalizar este evento? Esta ação não pode ser desfeita.'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed && this.evento()?.id) {
+        this.isSaving.set(true);
+
+        const updates = {
+          status: 'FINALIZADO'
+        };
+
+        this.eventoService.atualizarEventoParcial(this.evento()!.id!, updates)
+          .pipe(finalize(() => this.isSaving.set(false)))
+          .subscribe({
+            next: () => {
+              this.snackBar.open(
+                this.langService.translate('event.finished.success') || 'Evento finalizado!',
+                'OK',
+                { duration: 3000 }
+              );
+              // Recarregar o evento para atualizar o status
+              this.loadEvent(this.evento()!.id!);
+            },
+            error: (error: any) => {
+              console.error('Erro ao finalizar evento:', error);
+              this.snackBar.open(
+                this.langService.translate('event.finished.error') || 'Erro ao finalizar evento.',
+                'OK',
+                { duration: 3000 }
+              );
+            }
+          });
+      }
+    });
+  }
+
   onBack(): void {
     this.router.navigate(['/my-events']);
   }

@@ -154,6 +154,17 @@
       <div class="actions-right">
         <!-- Botões para o organizador -->
         <ng-container *ngIf="isOrganizer()">
+          <button 
+            mat-raised-button 
+            color="accent" 
+            (click)="onFinishEvent()" 
+            *ngIf="!isEditing() && evento()?.status !== 'FINALIZADO'"
+            [disabled]="isSaving()"
+          >
+            <mat-icon>flag</mat-icon>
+            {{ langService.translate('event.finish') }}
+          </button>
+
           <button mat-button color="warn" (click)="onDelete()" *ngIf="!isEditing()">
             <mat-icon>delete</mat-icon>
             {{ langService.translate('button.delete') }}

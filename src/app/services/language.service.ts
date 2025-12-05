@@ -510,6 +510,36 @@ export class LanguageService {
       pt: 'Você',
       en: 'You',
       es: 'Tú'
+    },
+    'event.players.per.team': {
+      pt: 'Jogadores por Time',
+      en: 'Players per Team',
+      es: 'Jugadores por Equipo'
+    },
+    'event.total.matches': {
+      pt: 'Total de Partidas (Opcional)',
+      en: 'Total Matches (Optional)',
+      es: 'Total de Partidos (Opcional)'
+    },
+    'event.finish': {
+      pt: 'Finalizar Evento',
+      en: 'Finish Event',
+      es: 'Finalizar Evento'
+    },
+    'event.finish.confirm': {
+      pt: 'Tem certeza que deseja finalizar este evento? Esta ação não pode ser desfeita.',
+      en: 'Are you sure you want to finish this event? This action cannot be undone.',
+      es: '¿Estás seguro de que deseas finalizar este evento? Esta acción no se puede deshacer.'
+    },
+    'event.finished.success': {
+      pt: 'Evento finalizado com sucesso!',
+      en: 'Event finished successfully!',
+      es: '¡Evento finalizado con éxito!'
+    },
+    'event.finished.error': {
+      pt: 'Erro ao finalizar evento.',
+      en: 'Error finishing event.',
+      es: 'Error al finalizar evento.'
     }
   };
   constructor() {
