@@ -10,6 +10,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { LanguageService } from '../../services/language.service';
 import { EventoControllerService } from '../../api/api/eventoController.service';
 import { EventoResponseDTO } from '../../api/model/eventoResponseDTO';
+import { InscricaoControllerService } from '../../api/api/inscricaoController.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-ongoing-events',
@@ -30,6 +32,8 @@ export class OngoingEventsComponent implements OnInit {
   private eventoService = inject(EventoControllerService);
   private snackBar = inject(MatSnackBar);
   public languageService = inject(LanguageService);
+  private inscricaoService = inject(InscricaoControllerService);
+  private authService = inject(AuthService);
 
   events: EventoResponseDTO[] = [];
   isLoading = true;
@@ -167,7 +171,62 @@ export class OngoingEventsComponent implements OnInit {
 
   onRequestJoin(event: EventoResponseDTO, evt: MouseEvent) {
     evt.stopPropagation();
-    this.snackBar.open(this.translate('request.sent') || 'Solicitação enviada!', 'OK', { duration: 3000 });
+    
+    if (!event.id) {
+      this.snackBar.open('Evento inválido', 'OK', { duration: 3000 });
+      return;
+    }
+
+    // Obter o email do usuário logado
+    this.authService.getProfile().subscribe({
+      next: (profile) => {
+        if (!profile.email) {
+          this.snackBar.open('Email do usuário não encontrado', 'OK', { duration: 3000 });
+          return;
+        }
+
+        const request = {
+          jogadorEmail: profile.email
+        };
+
+        // Criar solicitação de participação (status PENDENTE)
+        this.inscricaoService.adicionarInscricao(event.id!, request)
+          .subscribe({
+            next: () => {
+              this.snackBar.open(
+                'Solicitação de participação enviada! Aguarde a aprovação do organizador.',
+                'OK',
+                { duration: 5000 }
+              );
+            },
+            error: (error) => {
+              console.error('Erro ao participar do evento:', error);
+              
+              if (error.status === 403) {
+                this.snackBar.open(
+                  'Você não tem permissão para participar deste evento.',
+                  'OK',
+                  { duration: 5000 }
+                );
+              } else {
+                this.snackBar.open(
+                  error.error?.message || this.translate('event.join.error') || 'Erro ao participar do evento',
+                  'OK',
+                  { duration: 5000 }
+                );
+              }
+            }
+          });
+      },
+      error: (error) => {
+        console.error('Erro ao obter perfil do usuário:', error);
+        this.snackBar.open(
+          'Erro ao obter informações do usuário',
+          'OK',
+          { duration: 3000 }
+        );
+      }
+    });
   }
 
   onEditEvent(event: EventoResponseDTO, evt: MouseEvent) {

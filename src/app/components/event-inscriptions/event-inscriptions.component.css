@@ -240,17 +240,58 @@
   margin-bottom: 32px;
   animation: slideDown 0.3s ease;
   box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  position: relative;
+  z-index: 10;
+  isolation: isolate;
 }
 
-.inline-form { display: flex; gap: 16px; align-items: center; }
-.input-field { flex: 1; margin-bottom: -1.25em; }
+.inline-form { display: flex; gap: 16px; align-items: flex-start; }
+.input-field { 
+  flex: 1; 
+  margin-bottom: 0;
+  position: relative;
+  z-index: 1;
+}
 
-::ng-deep .add-player-panel .mdc-notched-outline { background-color: #fcfcfc !important; border-radius: 8px !important; }
-::ng-deep .input-field.mat-focused .mdc-notched-outline__leading,
-::ng-deep .input-field.mat-focused .mdc-notched-outline__notch,
-::ng-deep .input-field.mat-focused .mdc-notched-outline__trailing {
+::ng-deep .add-player-panel .mat-mdc-text-field-wrapper input {
+  pointer-events: auto !important;
+  cursor: text !important;
+  position: relative;
+  z-index: 2;
+  user-select: text !important;
+}
+
+::ng-deep .add-player-panel .mat-mdc-form-field-icon-prefix {
+  pointer-events: none !important;
+  z-index: 1;
+}
+
+::ng-deep .add-player-panel .mat-mdc-text-field-wrapper {
+  background-color: #fcfcfc;
+  border-radius: 8px;
+  position: relative;
+  z-index: 1;
+}
+
+::ng-deep .add-player-panel .mat-mdc-form-field-focus-overlay {
+  background-color: transparent !important;
+  pointer-events: none !important;
+}
+
+::ng-deep .add-player-panel .mdc-text-field--outlined {
+  --mdc-outlined-text-field-container-shape: 8px;
+}
+
+::ng-deep .add-player-panel .mdc-text-field--outlined .mdc-text-field__input {
+  pointer-events: auto !important;
+  cursor: text !important;
+}
+
+::ng-deep .add-player-panel .mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
+::ng-deep .add-player-panel .mat-mdc-form-field.mat-focused .mdc-notched-outline__notch,
+::ng-deep .add-player-panel .mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing {
   border-color: var(--accent-green) !important;
-  box-shadow: 0 0 0 2px rgba(91, 140, 42, 0.2);
+  border-width: 2px !important;
 }
 
 /* BOTÃO 'CARIMBO' (CONFIRMAR) */

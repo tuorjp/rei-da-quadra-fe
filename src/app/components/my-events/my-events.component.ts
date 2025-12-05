@@ -369,8 +369,62 @@ export class MyEventsComponent implements OnInit {
   // 3. PARTICIPAR
   onRequestJoin(evento: EventoResponseDTO, event: MouseEvent): void {
     event.stopPropagation();
-    // Lógica futura para participar
-    console.log('Solicitar participação em:', evento.nome);
+    
+    if (!evento.id) {
+      this.snackBar.open('Evento inválido', 'OK', { duration: 3000 });
+      return;
+    }
+
+    // Obter o email do usuário logado
+    this.authService.getProfile().subscribe({
+      next: (profile) => {
+        if (!profile.email) {
+          this.snackBar.open('Email do usuário não encontrado', 'OK', { duration: 3000 });
+          return;
+        }
+
+        const request = {
+          jogadorEmail: profile.email
+        };
+
+        // Criar solicitação de participação (status PENDENTE)
+        this.inscricaoService.adicionarInscricao(evento.id!, request)
+          .subscribe({
+            next: () => {
+              this.snackBar.open(
+                'Solicitação de participação enviada! Aguarde a aprovação do organizador.',
+                'OK',
+                { duration: 5000 }
+              );
+            },
+            error: (error) => {
+              console.error('Erro ao participar do evento:', error);
+              
+              if (error.status === 403) {
+                this.snackBar.open(
+                  'Você não tem permissão para participar deste evento.',
+                  'OK',
+                  { duration: 5000 }
+                );
+              } else {
+                this.snackBar.open(
+                  error.error?.message || this.langService.translate('event.join.error') || 'Erro ao participar do evento',
+                  'OK',
+                  { duration: 5000 }
+                );
+              }
+            }
+          });
+      },
+      error: (error) => {
+        console.error('Erro ao obter perfil do usuário:', error);
+        this.snackBar.open(
+          'Erro ao obter informações do usuário',
+          'OK',
+          { duration: 3000 }
+        );
+      }
+    });
   }
 
   // 4. CRIAR EVENTO
