@@ -82,7 +82,7 @@
                 style="cursor: pointer;"
               >
               <mat-icon matPrefix>location_on</mat-icon>
-              <mat-icon matSuffix style="cursor:pointer" (click)="openLocationPicker()">location_searching</mat-icon>
+              <mat-icon matSuffix style="cursor:pointer" (click)="openLocationPicker()">place</mat-icon>
               <mat-error *ngIf="eventForm.get('local')?.hasError('required')">
                 {{ langService.translate('field.required') }}
               </mat-error>
@@ -154,10 +154,10 @@
       <div class="actions-right">
         <!-- Botões para o organizador -->
         <ng-container *ngIf="isOrganizer()">
-          <button 
-            mat-raised-button 
-            color="accent" 
-            (click)="onFinishEvent()" 
+          <button
+            mat-raised-button
+            color="accent"
+            (click)="onFinishEvent()"
             *ngIf="!isEditing() && evento()?.status !== 'FINALIZADO'"
             [disabled]="isSaving()"
           >
@@ -195,9 +195,9 @@
 
         <!-- Botão para participar (não organizador) -->
         <ng-container *ngIf="!isOrganizer()">
-          <button 
-            mat-raised-button 
-            color="primary" 
+          <button
+            mat-raised-button
+            color="primary"
             (click)="onJoinEvent()"
             *ngIf="!isParticipating()"
             [disabled]="isJoining()"
@@ -207,8 +207,8 @@
             {{ isJoining() ? langService.translate('event.joining') : langService.translate('event.join.button') }}
           </button>
 
-          <button 
-            mat-stroked-button 
+          <button
+            mat-stroked-button
             color="accent"
             *ngIf="isParticipating()"
             disabled
