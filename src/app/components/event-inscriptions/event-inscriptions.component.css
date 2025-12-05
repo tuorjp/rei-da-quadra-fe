@@ -169,3 +169,26 @@ mat-divider {
     gap: 10px;
   }
 }
+
+/* Solicitações Pendentes */
+.pending-requests {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: rgba(255, 152, 0, 0.1);
+  border-radius: 8px;
+  border-left: 4px solid #ff9800;
+}
+
+.pending-requests h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 1rem 0;
+  color: #ff9800;
+  font-size: 1.1rem;
+}
+
+.request-actions {
+  display: flex;
+  gap: 0.5rem;
+}

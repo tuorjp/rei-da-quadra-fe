@@ -5,7 +5,7 @@
         <mat-icon>group</mat-icon>
         {{ langService.translate('inscriptions.manage') }}
       </mat-card-title>
-      <div class="header-actions">
+      <div class="header-actions" *ngIf="isOrganizer">
         <button
           mat-raised-button
           color="primary"
@@ -19,8 +19,42 @@
     </mat-card-header>
 
     <mat-card-content>
-      <!-- Formulário de Adicionar Jogador -->
-      <div class="add-player-form" *ngIf="showAddForm()">
+      <!-- Solicitações Pendentes (apenas para organizador) -->
+      <div class="pending-requests" *ngIf="isOrganizer && solicitacoesPendentes().length > 0">
+        <h3>
+          <mat-icon>pending</mat-icon>
+          Solicitações Pendentes ({{ solicitacoesPendentes().length }})
+        </h3>
+        <mat-list>
+          <mat-list-item *ngFor="let solicitacao of solicitacoesPendentes()">
+            <mat-icon matListItemIcon>person_add</mat-icon>
+            <div matListItemTitle>{{ solicitacao.jogadorNome }}</div>
+            <div matListItemLine>{{ solicitacao.jogadorEmail }}</div>
+            <div matListItemMeta class="request-actions">
+              <button
+                mat-icon-button
+                color="primary"
+                (click)="aprovarSolicitacao(solicitacao.id)"
+                [attr.aria-label]="'Aprovar'"
+              >
+                <mat-icon>check_circle</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                color="warn"
+                (click)="rejeitarSolicitacao(solicitacao.id)"
+                [attr.aria-label]="'Rejeitar'"
+              >
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </div>
+          </mat-list-item>
+        </mat-list>
+        <mat-divider></mat-divider>
+      </div>
+
+      <!-- Formulário de Adicionar Jogador (apenas para organizador) -->
+      <div class="add-player-form" *ngIf="showAddForm() && isOrganizer">
         <form [formGroup]="playerForm" (ngSubmit)="onAddPlayer()">
           <div class="form-row">
             <mat-form-field appearance="outline" class="flex-1">
@@ -88,6 +122,7 @@
               matListItemMeta
               (click)="onRemovePlayer(inscricao)"
               [attr.aria-label]="langService.translate('player.remove')"
+              *ngIf="isOrganizer"
             >
               <mat-icon>delete</mat-icon>
             </button>

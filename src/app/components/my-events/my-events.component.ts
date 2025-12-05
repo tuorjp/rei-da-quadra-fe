@@ -135,9 +135,20 @@ export class MyEventsComponent implements OnInit {
           const lon = position.coords.longitude;
 
           (this.eventoService as any).listarEventosProximos(lat, lon, 50).subscribe({
-            next: (eventos: EventoResponseDTO[]) => {
+            next: async (eventos: any) => {
+              let eventosArray: EventoResponseDTO[] = [];
+
+              // Verificar se a resposta é um Blob e converter para array
+              if (eventos instanceof Blob) {
+                const blobText = await eventos.text();
+                eventosArray = JSON.parse(blobText);
+              } else {
+                eventosArray = eventos;
+              }
+
+              // Filtrar apenas eventos que não foram criados pelo usuário
               const eventosOutrosUsuarios = this.sortEventsByDate(
-                eventos.filter(e => {
+                eventosArray.filter(e => {
                   const isUsuarioEvento = this.eventosUsuario().some(eu => eu.id === e.id);
                   return !isUsuarioEvento;
                 })

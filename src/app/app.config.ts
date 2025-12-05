@@ -4,7 +4,7 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { authInterceptor } from './config/auth.interceptor';
-import { ApiModule, Configuration } from './api';
+import {ApiModule, BASE_PATH, Configuration} from './api';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 export function apiConfigFactory(): Configuration {
@@ -21,6 +21,7 @@ export const appConfig: ApplicationConfig = {
       authInterceptor
     ])),
     provideAnimationsAsync(),
-    importProvidersFrom(ApiModule.forRoot(apiConfigFactory))
+    importProvidersFrom(ApiModule.forRoot(apiConfigFactory), ApiModule),
+    { provide: BASE_PATH, useValue: 'http://localhost:8090' }
   ]
 };

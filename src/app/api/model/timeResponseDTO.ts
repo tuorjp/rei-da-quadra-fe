@@ -7,6 +7,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { JogadorDTO } from './jogadorDTO';
 
 
 export interface TimeResponseDTO { 
@@ -15,5 +16,6 @@ export interface TimeResponseDTO {
     cor?: string;
     timeDeEspera?: boolean;
     status?: string;
+    jogadores?: Array<JogadorDTO>;
 }
 

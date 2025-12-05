@@ -17,9 +17,11 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { PontuacaoManualDTO } from '../model/pontuacaoManualDTO';
+import { AcaoJogoDTO } from '../model/acaoJogoDTO';
 // @ts-ignore
-import { TimeComJogadoresDTO } from '../model/timeComJogadoresDTO';
+import { HistoricoPontuacaoDTO } from '../model/historicoPontuacaoDTO';
+// @ts-ignore
+import { PontuacaoManualDTO } from '../model/pontuacaoManualDTO';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -31,77 +33,23 @@ import { BaseService } from '../api.base.service';
 @Injectable({
   providedIn: 'root'
 })
-export class AdministraoDeTimesService extends BaseService {
+export class HistoricoPontuacaoControllerService extends BaseService {
 
     constructor(protected httpClient: HttpClient, @Optional() @Inject(BASE_PATH) basePath: string|string[], @Optional() configuration?: Configuration) {
         super(basePath, configuration);
     }
 
     /**
-     * Distribui os jogadores e cria os times iniciais
-     * @param eventoId 
+     * @param jogadorId 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public distribuirTimes(eventoId: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any>;
-    public distribuirTimes(eventoId: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<any>>;
-    public distribuirTimes(eventoId: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<any>>;
-    public distribuirTimes(eventoId: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any> {
-        if (eventoId === null || eventoId === undefined) {
-            throw new Error('Required parameter eventoId was null or undefined when calling distribuirTimes.');
-        }
-
-        let localVarHeaders = this.defaultHeaders;
-
-        const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
-        ]);
-        if (localVarHttpHeaderAcceptSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
-        }
-
-        const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
-
-        const localVarTransferCache: boolean = options?.transferCache ?? true;
-
-
-        let responseType_: 'text' | 'json' | 'blob' = 'json';
-        if (localVarHttpHeaderAcceptSelected) {
-            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-                responseType_ = 'text';
-            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
-                responseType_ = 'json';
-            } else {
-                responseType_ = 'blob';
-            }
-        }
-
-        let localVarPath = `/api/admin/times/evento/${this.configuration.encodeParam({name: "eventoId", value: eventoId, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}/distribuir`;
-        const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<any>('post', `${basePath}${localVarPath}`,
-            {
-                context: localVarHttpContext,
-                responseType: <any>responseType_,
-                ...(withCredentials ? { withCredentials } : {}),
-                headers: localVarHeaders,
-                observe: observe,
-                transferCache: localVarTransferCache,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * Retorna a estrutura completa de times e seus jogadores atuais
-     * @param eventoId 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public listarTimesDetalhados(eventoId: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<Array<TimeComJogadoresDTO>>;
-    public listarTimesDetalhados(eventoId: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<TimeComJogadoresDTO>>>;
-    public listarTimesDetalhados(eventoId: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<TimeComJogadoresDTO>>>;
-    public listarTimesDetalhados(eventoId: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
-        if (eventoId === null || eventoId === undefined) {
-            throw new Error('Required parameter eventoId was null or undefined when calling listarTimesDetalhados.');
+    public historico(jogadorId: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<Array<HistoricoPontuacaoDTO>>;
+    public historico(jogadorId: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<HistoricoPontuacaoDTO>>>;
+    public historico(jogadorId: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<HistoricoPontuacaoDTO>>>;
+    public historico(jogadorId: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (jogadorId === null || jogadorId === undefined) {
+            throw new Error('Required parameter jogadorId was null or undefined when calling historico.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -129,9 +77,9 @@ export class AdministraoDeTimesService extends BaseService {
             }
         }
 
-        let localVarPath = `/api/admin/times/evento/${this.configuration.encodeParam({name: "eventoId", value: eventoId, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}/detalhado`;
+        let localVarPath = `/pontuacao/historico/${this.configuration.encodeParam({name: "jogadorId", value: jogadorId, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<Array<TimeComJogadoresDTO>>('get', `${basePath}${localVarPath}`,
+        return this.httpClient.request<Array<HistoricoPontuacaoDTO>>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -145,25 +93,20 @@ export class AdministraoDeTimesService extends BaseService {
     }
 
     /**
-     * Ajuste Manual: Aplica pontuação a um jogador vinculando a uma partida
      * @param partidaId 
-     * @param jogadorId 
-     * @param pontuacaoManualDTO 
+     * @param acaoJogoDTO 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public pontuarManualmente(partidaId: number, jogadorId: number, pontuacaoManualDTO: PontuacaoManualDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any>;
-    public pontuarManualmente(partidaId: number, jogadorId: number, pontuacaoManualDTO: PontuacaoManualDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<any>>;
-    public pontuarManualmente(partidaId: number, jogadorId: number, pontuacaoManualDTO: PontuacaoManualDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<any>>;
-    public pontuarManualmente(partidaId: number, jogadorId: number, pontuacaoManualDTO: PontuacaoManualDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public registrarAcao(partidaId: number, acaoJogoDTO: AcaoJogoDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any>;
+    public registrarAcao(partidaId: number, acaoJogoDTO: AcaoJogoDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<any>>;
+    public registrarAcao(partidaId: number, acaoJogoDTO: AcaoJogoDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<any>>;
+    public registrarAcao(partidaId: number, acaoJogoDTO: AcaoJogoDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (partidaId === null || partidaId === undefined) {
-            throw new Error('Required parameter partidaId was null or undefined when calling pontuarManualmente.');
+            throw new Error('Required parameter partidaId was null or undefined when calling registrarAcao.');
         }
-        if (jogadorId === null || jogadorId === undefined) {
-            throw new Error('Required parameter jogadorId was null or undefined when calling pontuarManualmente.');
-        }
-        if (pontuacaoManualDTO === null || pontuacaoManualDTO === undefined) {
-            throw new Error('Required parameter pontuacaoManualDTO was null or undefined when calling pontuarManualmente.');
+        if (acaoJogoDTO === null || acaoJogoDTO === undefined) {
+            throw new Error('Required parameter acaoJogoDTO was null or undefined when calling registrarAcao.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -199,7 +142,77 @@ export class AdministraoDeTimesService extends BaseService {
             }
         }
 
-        let localVarPath = `/api/admin/times/partida/${this.configuration.encodeParam({name: "partidaId", value: partidaId, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}/jogador/${this.configuration.encodeParam({name: "jogadorId", value: jogadorId, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}/pontuar`;
+        let localVarPath = `/pontuacao/acao/${this.configuration.encodeParam({name: "partidaId", value: partidaId, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<any>('post', `${basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                body: acaoJogoDTO,
+                responseType: <any>responseType_,
+                ...(withCredentials ? { withCredentials } : {}),
+                headers: localVarHeaders,
+                observe: observe,
+                transferCache: localVarTransferCache,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param partidaId 
+     * @param jogadorId 
+     * @param pontuacaoManualDTO 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public registrarManual(partidaId: number, jogadorId: number, pontuacaoManualDTO: PontuacaoManualDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any>;
+    public registrarManual(partidaId: number, jogadorId: number, pontuacaoManualDTO: PontuacaoManualDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<any>>;
+    public registrarManual(partidaId: number, jogadorId: number, pontuacaoManualDTO: PontuacaoManualDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<any>>;
+    public registrarManual(partidaId: number, jogadorId: number, pontuacaoManualDTO: PontuacaoManualDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (partidaId === null || partidaId === undefined) {
+            throw new Error('Required parameter partidaId was null or undefined when calling registrarManual.');
+        }
+        if (jogadorId === null || jogadorId === undefined) {
+            throw new Error('Required parameter jogadorId was null or undefined when calling registrarManual.');
+        }
+        if (pontuacaoManualDTO === null || pontuacaoManualDTO === undefined) {
+            throw new Error('Required parameter pontuacaoManualDTO was null or undefined when calling registrarManual.');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
+        ]);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+        const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/pontuacao/manual/${this.configuration.encodeParam({name: "partidaId", value: partidaId, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}/${this.configuration.encodeParam({name: "jogadorId", value: jogadorId, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<any>('post', `${basePath}${localVarPath}`,
             {

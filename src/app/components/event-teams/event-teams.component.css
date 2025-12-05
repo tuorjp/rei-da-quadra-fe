@@ -1,0 +1,28 @@
+.teamsContainer {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
+.team-color-dot {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  vertical-align: middle;
+}
+
+.panel-title {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+}

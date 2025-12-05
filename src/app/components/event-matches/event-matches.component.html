@@ -1,0 +1,151 @@
+<div class="match-container">
+
+  @if (!partidaAtual()) {
+      <div class="empty-state">
+      <mat-icon class="large-icon">sports_soccer</mat-icon>
+      <h2>{{limitePartidasAtingido() ? 'Partidas Encerradas' : 'Nenhuma partida em andamento'}}</h2>
+
+      <button mat-raised-button color="primary" (click)="iniciarPartidaInicial()" [disabled]="times().length < 2 || limitePartidasAtingido()">
+        INICIAR DESAFIO
+      </button>
+    </div>
+  }
+
+  @else {
+    <mat-card class="scoreboard-card">
+      <mat-card-header class="center-header">
+        <mat-card-title>Em andamento</mat-card-title>
+        <mat-card-subtitle>Arena Code - Anápolis</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <div class="scoreboard">
+          <div class="team-score">
+            <span class="team-name">{{ partidaAtual()?.timeANome }}</span>
+            <span class="score">{{ partidaAtual()?.timeAPlacar }}</span>
+          </div>
+          <div class="versus">X</div>
+          <div class="team-score">
+            <span class="team-name">{{ partidaAtual()?.timeBNome }}</span>
+            <span class="score">{{ partidaAtual()?.timeBPlacar }}</span>
+          </div>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <div class="actions-area">
+          <div class="team-column">
+            <h3>Jogadores {{ partidaAtual()?.timeANome }}</h3>
+            @for (jogador of jogadoresTimeA(); track jogador.id) {
+              <div class="player-row">
+                <span class="player-name">{{ jogador.nome }}</span>
+                <div class="action-buttons">
+                  <button mat-mini-fab color="accent" (click)="registrarAcao(jogador, 'GOL')" matTooltip="Gol">
+                    G
+                  </button>
+                  <button mat-mini-fab color="warn" (click)="removerAcao(jogador, 'GOL')" matTooltip="Remover Gol">-
+                  </button>
+                  <button mat-mini-fab color="primary" (click)="registrarAcao(jogador, 'ASSISTENCIA')" matTooltip="Assistência">
+                    A
+                  </button>
+                  <button mat-mini-fab color="warn" (click)="removerAcao(jogador, 'ASSISTENCIA')" matTooltip="Remover Assistência">-
+                  </button>
+                  <button mat-icon-button (click)="registrarAcao(jogador, 'DEFESA')" matTooltip="Defesa">
+                    <mat-icon>shield</mat-icon>
+                  </button>
+                  <button mat-icon-button color="warn" (click)="removerAcao(jogador, 'DEFESA')" matTooltip="Remover Defesa">
+                    <mat-icon>undo</mat-icon>
+                  </button>
+                </div>
+              </div>
+            }
+          </div>
+
+          <div class="vertical-divider"></div>
+
+          <div class="team-column">
+            <h3>Jogadores {{ partidaAtual()?.timeBNome }}</h3>
+            @for (jogador of jogadoresTimeB(); track jogador.id) {
+              <div class="player-row">
+                <span class="player-name">{{ jogador.nome }}</span>
+                <div class="action-buttons">
+                  <button mat-mini-fab color="accent" (click)="registrarAcao(jogador, 'GOL')">G</button>
+                  <button mat-mini-fab color="warn" (click)="removerAcao(jogador, 'GOL')">-</button>
+                  <button mat-mini-fab color="primary" (click)="registrarAcao(jogador, 'ASSISTENCIA')">A</button>
+                  <button mat-mini-fab color="warn" (click)="removerAcao(jogador, 'ASSISTENCIA')">-</button>
+                  <button mat-icon-button (click)="registrarAcao(jogador, 'DEFESA')">
+                    <mat-icon>shield</mat-icon>
+                  </button>
+                  <button mat-icon-button color="warn" (click)="removerAcao(jogador, 'DEFESA')">
+                    <mat-icon>undo</mat-icon>
+                  </button>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions align="end">
+        <button mat-stroked-button color="warn" (click)="finalizarPartida()">
+          <mat-icon>stop</mat-icon> ENCERRAR PARTIDA E RODAR TIMES
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  }
+
+  <!-- Listas de partidas abaixo do placar -->
+  <div class="partidas-listas">
+    <mat-card class="list-card">
+      <mat-card-title>Partidas Não Iniciadas</mat-card-title>
+      <mat-card-content>
+        <table class="mat-elevation-z1 simple-table">
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Time A</th>
+              <th>Time B</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (p of partidasNaoIniciadas(); track p.id) {
+              <tr>
+                <td>{{ p.dataPartida ? (p.dataPartida | date: 'dd/MM/yyyy') : '-' }}</td>
+                <td>{{ p.timeANome }}</td>
+                <td>{{ p.timeBNome }}</td>
+                <td>{{ p.status }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="list-card">
+      <mat-card-title>Partidas Finalizadas</mat-card-title>
+      <mat-card-content>
+        <table class="mat-elevation-z1 simple-table">
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Time A</th>
+              <th>Time B</th>
+              <th>Placar</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (p of partidasFinalizadas(); track p.id) {
+              <tr>
+                <td>{{ p.dataPartida || '-' }}</td>
+                <td>{{ p.timeANome }}</td>
+                <td>{{ p.timeBNome }}</td>
+                <td>{{ p.timeAPlacar }} x {{ p.timeBPlacar }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

@@ -9,11 +9,11 @@
  */
 
 
-export interface EventoRequestDTO { 
-    nome?: string;
-    local?: string;
-    dataHorario?: string;
-    latitude?: number;
-    longitude?: number;
+export interface HistoricoPontuacaoDTO { 
+    data?: string;
+    acao?: string;
+    variacao?: number;
+    pontosFinais?: number;
+    nomePartida?: string;
 }
 

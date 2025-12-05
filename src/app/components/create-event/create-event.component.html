@@ -1,75 +1,73 @@
-<div class="create-event-container">
-  <mat-card class="create-event-card">
-    <mat-card-header>
-      <mat-card-title>
-        <mat-icon>event</mat-icon>
-        {{ langService.translate('create.event') }}
-      </mat-card-title>
-    </mat-card-header>
+<div class="create-event-page">
+  <div class="create-event-form-container">
 
-    <mat-card-content>
-      <form [formGroup]="eventForm" (ngSubmit)="onSubmit()" class="event-form">
+    <div class="create-event-header">
+      <p class="welcome-text">Organize sua partida</p>
+      <h1 class="app-name">{{ langService.translate('create.event') }}</h1>
+      <p class="app-subtitle">Preencha os detalhes do novo evento.</p>
+    </div>
 
-        <!-- Nome do Evento -->
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>{{ langService.translate('event.name') }}</mat-label>
-          <input matInput formControlName="nome" [placeholder]="langService.translate('event.name.placeholder')">
-          <mat-icon matPrefix>sports_soccer</mat-icon>
-          <mat-error *ngIf="eventForm.get('nome')?.hasError('required')">
-            {{ langService.translate('field.required') }}
-          </mat-error>
-          <mat-error *ngIf="eventForm.get('nome')?.hasError('minlength')">
-            {{ langService.translate('field.minlength') }}
-          </mat-error>
-        </mat-form-field>
+    <form [formGroup]="eventForm" (ngSubmit)="onSubmit()" class="event-form">
 
-        <!-- Local com mapa-->
-        <mat-form-field appearance="outline" class="full-width" (click)="openLocationPicker()">
-          <mat-label>{{ langService.translate('event.location') }}</mat-label>
-          <input
-            matInput
-            formControlName="local"
-            readonly
-            [placeholder]="langService.translate('event.location.placeholder')"
-          >
-          <mat-icon matPrefix>location_on</mat-icon>
-        </mat-form-field>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>{{ langService.translate('event.name') }}</mat-label>
+        <mat-icon matPrefix>sports_soccer</mat-icon>
+        <input matInput formControlName="nome" [placeholder]="langService.translate('event.name.placeholder')">
+        <mat-error *ngIf="eventForm.get('nome')?.hasError('required')">
+          {{ langService.translate('field.required') }}
+        </mat-error>
+        <mat-error *ngIf="eventForm.get('nome')?.hasError('minlength')">
+          {{ langService.translate('field.minlength') }}
+        </mat-error>
+      </mat-form-field>
 
-        <!-- Data e Hora -->
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>{{ langService.translate('event.datetime') }}</mat-label>
-          <input matInput type="datetime-local" formControlName="dataHorario">
-          <mat-icon matPrefix>schedule</mat-icon>
-          <mat-error *ngIf="eventForm.get('dataHorario')?.hasError('required')">
-            {{ langService.translate('field.required') }}
-          </mat-error>
-        </mat-form-field>
+      <mat-form-field appearance="outline" class="full-width" (click)="openLocationPicker()" style="cursor: pointer;">
+        <mat-label>{{ langService.translate('event.location') }}</mat-label>
+        <mat-icon matPrefix>location_on</mat-icon>
+        <input
+          matInput
+          formControlName="local"
+          readonly
+          [placeholder]="langService.translate('event.location.placeholder')"
+          style="cursor: pointer;"
+        >
+      </mat-form-field>
 
-        <!-- Botões de Ação -->
-        <div class="form-actions">
-          <button
-            mat-stroked-button
-            type="button"
-            (click)="onCancel()"
-            [disabled]="isSubmitting"
-          >
-            <mat-icon>close</mat-icon>
-            {{ langService.translate('button.cancel') }}
-          </button>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>{{ langService.translate('event.datetime') }}</mat-label>
+        <mat-icon matPrefix>schedule</mat-icon>
+        <input matInput type="datetime-local" formControlName="dataHorario">
+        <mat-error *ngIf="eventForm.get('dataHorario')?.hasError('required')">
+          {{ langService.translate('field.required') }}
+        </mat-error>
+      </mat-form-field>
 
-          <button
-            mat-raised-button
-            color="primary"
-            type="submit"
-            [disabled]="isSubmitting || eventForm.invalid"
-          >
-            <mat-spinner diameter="20" *ngIf="isSubmitting"></mat-spinner>
-            <mat-icon *ngIf="!isSubmitting">check</mat-icon>
-            {{ isSubmitting ? langService.translate('button.creating') : langService.translate('button.create') }}
-          </button>
-        </div>
-      </form>
-    </mat-card-content>
-  </mat-card>
+      <div class="actions-container">
+
+        <button
+          mat-flat-button
+          color="primary"
+          type="submit"
+          class="btn-submit"
+          [disabled]="isSubmitting || eventForm.invalid"
+        >
+          <mat-spinner diameter="24" *ngIf="isSubmitting"></mat-spinner>
+          <span *ngIf="!isSubmitting">
+            <mat-icon style="vertical-align: middle; font-size: 1.2rem; height: 1.2rem; width: 1.2rem;">check</mat-icon>
+            {{ langService.translate('button.create') }}
+          </span>
+        </button>
+
+        <button
+          type="button"
+          class="btn-cancel"
+          (click)="onCancel()"
+          [disabled]="isSubmitting"
+        >
+          {{ langService.translate('button.cancel') }}
+        </button>
+      </div>
+
+    </form>
+  </div>
 </div>
-

@@ -1,0 +1,47 @@
+<div class="teamsContainer">
+  <div class="actions" *ngIf="isOrganizer">
+    <button
+      mat-raised-button
+      color="primary"
+      [disabled]="timesDoEvento().length > 0"
+      class="submit-btn"
+      (click)="distribuirJogadoresPorTimes(eventoId)"
+    >
+      Distribuir times
+    </button>
+  </div>
+
+  <mat-accordion multi>
+    @for (time of timesDoEvento(); track time.id) {
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title class="panel-title">
+            <span class="team-color-dot" [style.--background-color]="time.cor">
+              {{ time.nome }}
+            </span>
+          </mat-panel-title>
+          <mat-panel-description>
+            {{ time.jogadores?.length || 0 }}
+            @if (time.timeDeEspera) {
+              (Espera)
+            }
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <mat-list>
+          @for (jogador of time.jogadores; track jogador.id) {
+            <mat-list-item>
+              @if (jogador.foto) {
+                <img matListItemAvatar [src]="jogador.foto" alt="Avatar">
+              }
+              <span matListItemTitle>{{jogador.nome}}</span>
+              <span matListItemLine>Nível: {{jogador.nivel}}</span>
+            </mat-list-item>
+          } @empty {
+            <p>Nenhum jogador nesse time.</p>
+          }
+        </mat-list>
+      </mat-expansion-panel>
+    }
+  </mat-accordion>
+</div>
