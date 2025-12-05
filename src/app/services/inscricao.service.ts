@@ -77,4 +77,41 @@ export class InscricaoService {
       `${this.baseUrl}/eventos/${eventoId}/inscricoes/${inscricaoId}`
     );
   }
+
+  /**
+   * Lista solicitações pendentes de um evento
+   * @param eventoId ID do evento
+   * @returns Observable com array de solicitações pendentes
+   */
+  listarSolicitacoesPendentes(eventoId: number): Observable<InscricaoResponseDTO[]> {
+    return this.http.get<InscricaoResponseDTO[]>(
+      `${this.baseUrl}/eventos/${eventoId}/inscricoes/pendentes`
+    );
+  }
+
+  /**
+   * Aprova uma solicitação de inscrição
+   * @param eventoId ID do evento
+   * @param solicitacaoId ID da solicitação
+   * @returns Observable void
+   */
+  aprovarSolicitacao(eventoId: number, solicitacaoId: number): Observable<void> {
+    return this.http.post<void>(
+      `${this.baseUrl}/eventos/${eventoId}/inscricoes/${solicitacaoId}/aprovar`,
+      {}
+    );
+  }
+
+  /**
+   * Rejeita uma solicitação de inscrição
+   * @param eventoId ID do evento
+   * @param solicitacaoId ID da solicitação
+   * @returns Observable void
+   */
+  rejeitarSolicitacao(eventoId: number, solicitacaoId: number): Observable<void> {
+    return this.http.post<void>(
+      `${this.baseUrl}/eventos/${eventoId}/inscricoes/${solicitacaoId}/rejeitar`,
+      {}
+    );
+  }
 }

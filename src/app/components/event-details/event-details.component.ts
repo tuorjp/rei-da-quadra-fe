@@ -14,6 +14,8 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {EventoControllerService} from '../../api/api/eventoController.service';
 import {EventoResponseDTO} from '../../api/model/eventoResponseDTO';
 import {LanguageService} from '../../services/language.service';
+import {AuthService} from '../../services/auth.service';
+import {InscricaoService} from '../../services/inscricao.service';
 import {finalize} from 'rxjs';
 import {ConfirmDialogComponent} from '../confirm-dialog/confirm-dialog.component';
 import dayjs from 'dayjs';
@@ -49,6 +51,8 @@ export class EventDetailsComponent implements OnInit {
   private router = inject(Router);
   private fb = inject(FormBuilder);
   private eventoService = inject(EventoControllerService);
+  private authService = inject(AuthService);
+  private inscricaoService = inject(InscricaoService);
   private snackBar = inject(MatSnackBar);
   private dialog = inject(MatDialog);
   public langService = inject(LanguageService);
@@ -57,6 +61,10 @@ export class EventDetailsComponent implements OnInit {
   isLoading = signal<boolean>(true);
   isEditing = signal<boolean>(false);
   isSaving = signal<boolean>(false);
+  isOrganizer = signal<boolean>(false);
+  isParticipating = signal<boolean>(false);
+  isJoining = signal<boolean>(false);
+  currentUserEmail = signal<string>('');
 
   eventForm: FormGroup;
 
@@ -69,14 +77,21 @@ export class EventDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // Carregar perfil do usuário atual
+    this.authService.getProfile().subscribe({
+      next: (profile) => {
+        this.currentUserEmail.set(profile.email || '');
+      }
+    });
+
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.loadEvent(+id);
     }
 
     this.route.queryParams.subscribe(params => {
-      if (params['edit'] === 'true') {
-        this.isEditing.set(true); // <--- Ativa o modo de edição automaticamente
+      if (params['edit'] === 'true' && this.isOrganizer()) {
+        this.isEditing.set(true);
       }
     });
   }
@@ -90,15 +105,95 @@ export class EventDetailsComponent implements OnInit {
         next: (evento) => {
           this.evento.set(evento);
           this.populateForm(evento);
+          this.checkUserRole(id);
         },
         error: (error) => {
           console.error('Erro ao carregar evento:', error);
+          
+          let errorMessage = this.langService.translate('event.load.error');
+          
+          if (error.status === 404) {
+            errorMessage = 'Evento não encontrado ou você não tem permissão para visualizá-lo.';
+          } else if (error.status === 403) {
+            errorMessage = 'Você não tem permissão para acessar este evento.';
+          }
+          
           this.snackBar.open(
-            this.langService.translate('event.load.error'),
+            errorMessage,
             'OK',
             {duration: 5000}
           );
           this.router.navigate(['/my-events']);
+        }
+      });
+  }
+
+  checkUserRole(eventoId: number): void {
+    // Verificar se é o organizador
+    this.authService.getProfile().subscribe({
+      next: (profile) => {
+        const isOrg = this.evento()?.usuarioLogin === profile.email;
+        this.isOrganizer.set(isOrg);
+        
+        // Se não for organizador, verificar se já está inscrito
+        if (!isOrg) {
+          this.checkParticipation(eventoId);
+        }
+      }
+    });
+  }
+
+  checkParticipation(eventoId: number): void {
+    this.inscricaoService.listarInscricoes(eventoId).subscribe({
+      next: (inscricoes) => {
+        const userEmail = this.currentUserEmail();
+        const isParticipant = inscricoes.some(i => i.jogadorEmail === userEmail);
+        this.isParticipating.set(isParticipant);
+      },
+      error: () => {
+        this.isParticipating.set(false);
+      }
+    });
+  }
+
+  onJoinEvent(): void {
+    if (this.isJoining() || !this.evento()?.id) return;
+
+    this.isJoining.set(true);
+
+    const request = {
+      jogadorEmail: this.currentUserEmail()
+    };
+
+    // Criar solicitação de participação (status PENDENTE)
+    this.inscricaoService.adicionarInscricao(this.evento()!.id!, request)
+      .pipe(finalize(() => this.isJoining.set(false)))
+      .subscribe({
+        next: () => {
+          this.snackBar.open(
+            'Solicitação de participação enviada! Aguarde a aprovação do organizador.',
+            'OK',
+            {duration: 5000}
+          );
+          // Não marca como participando ainda, pois está pendente
+        },
+        error: (error) => {
+          console.error('Erro ao participar do evento:', error);
+          
+          // Se retornar 403, significa que o backend não permite
+          if (error.status === 403) {
+            this.snackBar.open(
+              'Você não tem permissão para participar deste evento.',
+              'OK',
+              {duration: 5000}
+            );
+          } else {
+            this.snackBar.open(
+              error.error?.message || this.langService.translate('event.join.error'),
+              'OK',
+              {duration: 5000}
+            );
+          }
         }
       });
   }

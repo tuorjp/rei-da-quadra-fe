@@ -428,6 +428,51 @@ export class LanguageService {
       pt: 'Participar',
       en: 'Join',
       es: 'Participar'
+    },
+    'player.added.success': {
+      pt: 'Jogador adicionado com sucesso!',
+      en: 'Player added successfully!',
+      es: '¡Jugador agregado con éxito!'
+    },
+    'player.added.error': {
+      pt: 'Erro ao adicionar jogador',
+      en: 'Error adding player',
+      es: 'Error al agregar jugador'
+    },
+    'player.removed.success': {
+      pt: 'Jogador removido com sucesso!',
+      en: 'Player removed successfully!',
+      es: '¡Jugador eliminado con éxito!'
+    },
+    'player.removed.error': {
+      pt: 'Erro ao remover jogador',
+      en: 'Error removing player',
+      es: 'Error al eliminar jugador'
+    },
+    'event.join.success': {
+      pt: 'Inscrição realizada com sucesso!',
+      en: 'Successfully joined the event!',
+      es: '¡Inscripción realizada con éxito!'
+    },
+    'event.join.error': {
+      pt: 'Erro ao participar do evento',
+      en: 'Error joining the event',
+      es: 'Error al participar del evento'
+    },
+    'event.participating': {
+      pt: 'Você está participando',
+      en: 'You are participating',
+      es: 'Estás participando'
+    },
+    'event.join.button': {
+      pt: 'Participar do Evento',
+      en: 'Join Event',
+      es: 'Participar del Evento'
+    },
+    'event.joining': {
+      pt: 'Participando...',
+      en: 'Joining...',
+      es: 'Participando...'
     }
   };
 

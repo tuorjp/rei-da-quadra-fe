@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnInit, signal } from '@angular/core';
+import { Component, inject, Input, OnInit, OnChanges, SimpleChanges, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
@@ -48,8 +48,9 @@ interface Inscricao {
   templateUrl: './event-inscriptions.component.html',
   styleUrl: './event-inscriptions.component.css'
 })
-export class EventInscriptionsComponent implements OnInit {
+export class EventInscriptionsComponent implements OnInit, OnChanges {
   @Input() eventoId!: number;
+  @Input() isOrganizer: boolean = false;
 
   private fb = inject(FormBuilder);
   private snackBar = inject(MatSnackBar);
@@ -59,6 +60,7 @@ export class EventInscriptionsComponent implements OnInit {
   public eventId: string | null;
 
   inscricoes = signal<Inscricao[]>([]);
+  solicitacoesPendentes = signal<any[]>([]);
   isLoading = signal<boolean>(false);
   isAddingPlayer = signal<boolean>(false);
   showAddForm = signal<boolean>(false);
@@ -73,7 +75,30 @@ export class EventInscriptionsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log('EventInscriptionsComponent ngOnInit - isOrganizer:', this.isOrganizer);
+    console.log('EventInscriptionsComponent ngOnInit - eventoId:', this.eventoId);
+    
     this.carregarLista();
+    this.verificarECarregarSolicitacoes();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log('EventInscriptionsComponent ngOnChanges:', changes);
+    
+    if (changes['isOrganizer'] && !changes['isOrganizer'].firstChange) {
+      console.log('isOrganizer mudou para:', changes['isOrganizer'].currentValue);
+      this.verificarECarregarSolicitacoes();
+    }
+  }
+
+  verificarECarregarSolicitacoes(): void {
+    console.log('verificarECarregarSolicitacoes - isOrganizer:', this.isOrganizer);
+    if (this.isOrganizer && this.eventoId) {
+      console.log('Carregando solicitações pendentes...');
+      this.carregarSolicitacoesPendentes();
+    } else {
+      console.log('Não carregando solicitações. isOrganizer:', this.isOrganizer, 'eventoId:', this.eventoId);
+    }
   }
 
   carregarLista() {
@@ -87,6 +112,75 @@ export class EventInscriptionsComponent implements OnInit {
     });
   }
 
+  carregarSolicitacoesPendentes() {
+    console.log('Chamando API para listar solicitações pendentes...');
+    this.inscricaoService.listarSolicitacoesPendentes(this.eventoId).subscribe({
+      next: async (response: any) => {
+        console.log('Solicitações pendentes recebidas (raw):', response);
+        
+        let solicitacoes: any[] = [];
+        
+        // Verificar se a resposta é um Blob e converter
+        if (response instanceof Blob) {
+          console.log('Resposta é Blob, convertendo...');
+          const blobText = await response.text();
+          solicitacoes = JSON.parse(blobText);
+        } else {
+          solicitacoes = response;
+        }
+        
+        console.log('Solicitações pendentes processadas:', solicitacoes);
+        this.solicitacoesPendentes.set(solicitacoes);
+      },
+      error: (err) => {
+        console.error('Erro ao carregar solicitações:', err);
+      }
+    });
+  }
+
+  aprovarSolicitacao(solicitacaoId: number) {
+    this.inscricaoService.aprovarSolicitacao(this.eventoId, solicitacaoId).subscribe({
+      next: () => {
+        this.snackBar.open(
+          'Solicitação aprovada com sucesso!',
+          'OK',
+          { duration: 3000 }
+        );
+        this.carregarSolicitacoesPendentes();
+        this.carregarLista();
+      },
+      error: (err) => {
+        console.error(err);
+        this.snackBar.open(
+          'Erro ao aprovar solicitação',
+          'OK',
+          { duration: 5000 }
+        );
+      }
+    });
+  }
+
+  rejeitarSolicitacao(solicitacaoId: number) {
+    this.inscricaoService.rejeitarSolicitacao(this.eventoId, solicitacaoId).subscribe({
+      next: () => {
+        this.snackBar.open(
+          'Solicitação rejeitada',
+          'OK',
+          { duration: 3000 }
+        );
+        this.carregarSolicitacoesPendentes();
+      },
+      error: (err) => {
+        console.error(err);
+        this.snackBar.open(
+          'Erro ao rejeitar solicitação',
+          'OK',
+          { duration: 5000 }
+        );
+      }
+    });
+  }
+
   toggleAddForm(): void {
     this.showAddForm.set(!this.showAddForm());
     if (!this.showAddForm()) {
@@ -95,8 +189,47 @@ export class EventInscriptionsComponent implements OnInit {
   }
 
   onAddPlayer(): void {
-    const email = this.playerForm.get('email');
+    if (this.playerForm.invalid || this.isAddingPlayer()) {
+      this.playerForm.markAllAsTouched();
+      return;
+    }
 
+    this.isAddingPlayer.set(true);
+
+    const request: InscricaoRequestDTO = {
+      jogadorEmail: this.playerForm.value.email
+    };
+
+    this.inscricaoService.adicionarInscricao(this.eventoId, request)
+      .pipe(finalize(() => this.isAddingPlayer.set(false)))
+      .subscribe({
+        next: (inscricao) => {
+          this.inscricoes.update(list => [...list, {
+            id: inscricao.id,
+            jogadorNome: inscricao.jogadorNome,
+            jogadorEmail: inscricao.jogadorEmail,
+            partidasJogadas: inscricao.partidasJogadas,
+            timeAtual: inscricao.timeAtualNome
+          }]);
+          
+          this.playerForm.reset();
+          this.showAddForm.set(false);
+          
+          this.snackBar.open(
+            this.langService.translate('player.added.success') || 'Jogador adicionado com sucesso!',
+            'OK',
+            { duration: 3000 }
+          );
+        },
+        error: (error) => {
+          console.error('Erro ao adicionar jogador:', error);
+          this.snackBar.open(
+            error.error?.message || this.langService.translate('player.added.error') || 'Erro ao adicionar jogador',
+            'OK',
+            { duration: 5000 }
+          );
+        }
+      });
   }
 
   onRemovePlayer(inscricao: Inscricao): void {
@@ -119,9 +252,19 @@ export class EventInscriptionsComponent implements OnInit {
     this.inscricaoService.removerInscricao(this.eventoId, id).subscribe({
       next: () => {
         this.carregarLista();
+        this.snackBar.open(
+          this.langService.translate('player.removed.success'),
+          'OK',
+          { duration: 3000 }
+        );
       },
       error: (err) => {
         console.error(err);
+        this.snackBar.open(
+          this.langService.translate('player.removed.error'),
+          'OK',
+          { duration: 5000 }
+        );
       }
     });
   }
