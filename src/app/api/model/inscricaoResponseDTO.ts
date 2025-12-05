@@ -18,5 +18,6 @@ export interface InscricaoResponseDTO {
     timeAtualId?: number;
     timeAtualNome?: string;
     dataInscricao?: string;
+    status?: string;
 }
 

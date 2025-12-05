@@ -73,4 +73,18 @@ export class HistoricoPontuacaoComponent implements OnInit {
       items: groups[dateKey]
     }));
   }
+
+  getAcaoLabel(acao: string): string {
+    const labels: Record<string, string> = {
+      'GOL': 'Gol',
+      'ASSISTENCIA': 'Assistência',
+      'DEFESA': 'Defesa',
+      'FALTA': 'Falta',
+      'IMPEDIMENTO': 'Impedimento',
+      'VITORIA_ELO': 'Vitória',
+      'EMPATE_ELO': 'Empate',
+      'DERROTA_ELO': 'Derrota'
+    };
+    return labels[acao] || acao;
+  }
 }
