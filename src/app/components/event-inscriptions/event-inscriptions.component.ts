@@ -77,14 +77,14 @@ export class EventInscriptionsComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     console.log('EventInscriptionsComponent ngOnInit - isOrganizer:', this.isOrganizer);
     console.log('EventInscriptionsComponent ngOnInit - eventoId:', this.eventoId);
-    
+
     this.carregarLista();
     this.verificarECarregarSolicitacoes();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log('EventInscriptionsComponent ngOnChanges:', changes);
-    
+
     if (changes['isOrganizer'] && !changes['isOrganizer'].firstChange) {
       console.log('isOrganizer mudou para:', changes['isOrganizer'].currentValue);
       this.verificarECarregarSolicitacoes();
@@ -117,9 +117,9 @@ export class EventInscriptionsComponent implements OnInit, OnChanges {
     this.inscricaoService.listarSolicitacoesPendentes(this.eventoId).subscribe({
       next: async (response: any) => {
         console.log('Solicitações pendentes recebidas (raw):', response);
-        
+
         let solicitacoes: any[] = [];
-        
+
         // Verificar se a resposta é um Blob e converter
         if (response instanceof Blob) {
           console.log('Resposta é Blob, convertendo...');
@@ -128,7 +128,7 @@ export class EventInscriptionsComponent implements OnInit, OnChanges {
         } else {
           solicitacoes = response;
         }
-        
+
         console.log('Solicitações pendentes processadas:', solicitacoes);
         this.solicitacoesPendentes.set(solicitacoes);
       },
@@ -211,10 +211,10 @@ export class EventInscriptionsComponent implements OnInit, OnChanges {
             partidasJogadas: inscricao.partidasJogadas,
             timeAtual: inscricao.timeAtualNome
           }]);
-          
+
           this.playerForm.reset();
           this.showAddForm.set(false);
-          
+
           this.snackBar.open(
             this.langService.translate('player.added.success') || 'Jogador adicionado com sucesso!',
             'OK',
@@ -222,12 +222,24 @@ export class EventInscriptionsComponent implements OnInit, OnChanges {
           );
         },
         error: (error) => {
-          console.error('Erro ao adicionar jogador:', error);
-          this.snackBar.open(
-            error.error?.message || this.langService.translate('player.added.error') || 'Erro ao adicionar jogador',
-            'OK',
-            { duration: 5000 }
-          );
+          let message = 'Erro ao adicionar jogador';
+
+          // Caso o usuário não exista no banco (403)
+          if (error.status === 403) {
+            message = 'Usuário não encontrado. Ele precisa estar cadastrado no sistema.';
+          }
+
+          // Caso já exista inscrição (409)
+          else if (error.status === 409) {
+            message = 'Este usuário já está inscrito no evento.';
+          }
+
+          // Qualquer outra mensagem do backend
+          else if (error.error?.message) {
+            message = error.error.message;
+          }
+
+          this.snackBar.open(message, 'OK', { duration: 5000 });
         }
       });
   }
