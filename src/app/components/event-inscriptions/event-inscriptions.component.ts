@@ -18,6 +18,7 @@ import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.compone
 import { InscricaoService, InscricaoRequestDTO } from '../../services/inscricao.service';
 import { API_CONFIG } from '../../config/api.config';
 import {ActivatedRoute} from '@angular/router';
+import {DragDropModule, CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
 interface Inscricao {
   id: number;
@@ -43,7 +44,8 @@ interface Inscricao {
     MatSnackBarModule,
     MatDialogModule,
     MatChipsModule,
-    MatDividerModule
+    MatDividerModule,
+    DragDropModule
   ],
   templateUrl: './event-inscriptions.component.html',
   styleUrl: './event-inscriptions.component.css'
@@ -77,14 +79,14 @@ export class EventInscriptionsComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     console.log('EventInscriptionsComponent ngOnInit - isOrganizer:', this.isOrganizer);
     console.log('EventInscriptionsComponent ngOnInit - eventoId:', this.eventoId);
-    
+
     this.carregarLista();
     this.verificarECarregarSolicitacoes();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log('EventInscriptionsComponent ngOnChanges:', changes);
-    
+
     if (changes['isOrganizer'] && !changes['isOrganizer'].firstChange) {
       console.log('isOrganizer mudou para:', changes['isOrganizer'].currentValue);
       this.verificarECarregarSolicitacoes();
@@ -117,9 +119,9 @@ export class EventInscriptionsComponent implements OnInit, OnChanges {
     this.inscricaoService.listarSolicitacoesPendentes(this.eventoId).subscribe({
       next: async (response: any) => {
         console.log('Solicitações pendentes recebidas (raw):', response);
-        
+
         let solicitacoes: any[] = [];
-        
+
         // Verificar se a resposta é um Blob e converter
         if (response instanceof Blob) {
           console.log('Resposta é Blob, convertendo...');
@@ -128,7 +130,7 @@ export class EventInscriptionsComponent implements OnInit, OnChanges {
         } else {
           solicitacoes = response;
         }
-        
+
         console.log('Solicitações pendentes processadas:', solicitacoes);
         this.solicitacoesPendentes.set(solicitacoes);
       },
@@ -211,10 +213,10 @@ export class EventInscriptionsComponent implements OnInit, OnChanges {
             partidasJogadas: inscricao.partidasJogadas,
             timeAtual: inscricao.timeAtualNome
           }]);
-          
+
           this.playerForm.reset();
           this.showAddForm.set(false);
-          
+
           this.snackBar.open(
             this.langService.translate('player.added.success') || 'Jogador adicionado com sucesso!',
             'OK',
@@ -267,5 +269,15 @@ export class EventInscriptionsComponent implements OnInit, OnChanges {
         );
       }
     });
+  }
+
+  drop(event: CdkDragDrop<any[]>) {
+    // Apenas organizadores podem mover
+    if (!this.isOrganizer) return;
+
+    // Atualiza a lista visualmente
+    const currentList = this.inscricoes();
+    moveItemInArray(currentList, event.previousIndex, event.currentIndex);
+    this.inscricoes.set([...currentList]); // Dispara a atualização do sinal
   }
 }

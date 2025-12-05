@@ -109,15 +109,15 @@ export class EventDetailsComponent implements OnInit {
         },
         error: (error) => {
           console.error('Erro ao carregar evento:', error);
-          
+
           let errorMessage = this.langService.translate('event.load.error');
-          
+
           if (error.status === 404) {
             errorMessage = 'Evento não encontrado ou você não tem permissão para visualizá-lo.';
           } else if (error.status === 403) {
             errorMessage = 'Você não tem permissão para acessar este evento.';
           }
-          
+
           this.snackBar.open(
             errorMessage,
             'OK',
@@ -134,7 +134,7 @@ export class EventDetailsComponent implements OnInit {
       next: (profile) => {
         const isOrg = this.evento()?.usuarioLogin === profile.email;
         this.isOrganizer.set(isOrg);
-        
+
         // Se não for organizador, verificar se já está inscrito
         if (!isOrg) {
           this.checkParticipation(eventoId);
@@ -179,7 +179,7 @@ export class EventDetailsComponent implements OnInit {
         },
         error: (error) => {
           console.error('Erro ao participar do evento:', error);
-          
+
           // Se retornar 403, significa que o backend não permite
           if (error.status === 403) {
             this.snackBar.open(
