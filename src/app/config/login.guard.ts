@@ -9,7 +9,7 @@ export const loginGuard: CanActivateFn = (route, state) => {
   if (authService.isLoggedIn()) {
     // Se o usuário já está logado, redireciona para a home
     // e impede o acesso à rota de login.
-    router.navigate(['/']);
+    router.navigate(['/home']);
     return false;
   }
 
